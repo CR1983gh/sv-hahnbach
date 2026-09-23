@@ -51,9 +51,13 @@
   .home-tag.a{background:#e8e8e8;color:#555}
   .venue{font-size:.72rem;color:var(--grau);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:180px}
   .score{font-weight:900;background:var(--schwarz);color:var(--gelb);border-radius:6px;padding:.05rem .4rem;white-space:nowrap;flex:none}
-  .res-S{font-size:.72rem;font-weight:800;color:var(--gruen)}
-  .res-U{font-size:.72rem;font-weight:800;color:#b8860b}
-  .res-N{font-size:.72rem;font-weight:800;color:var(--rot)}
+  .res-S{font-size:.72rem;font-weight:800;color:#fff;background:var(--gruen);padding:.15rem .5rem;border-radius:999px}
+  .res-U{font-size:.72rem;font-weight:800;color:#fff;background:#e08a00;padding:.15rem .5rem;border-radius:999px}
+  .res-N{font-size:.72rem;font-weight:800;color:#fff;background:var(--rot);padding:.15rem .5rem;border-radius:999px}
+  .spiel.resrow-S{background:#eaf7ec;border-left:4px solid var(--gruen)}
+  .spiel.resrow-U{background:#fdf3e3;border-left:4px solid #e08a00}
+  .spiel.resrow-N{background:#fdecec;border-left:4px solid var(--rot)}
+  .spiel.resrow-S,.spiel.resrow-U,.spiel.resrow-N{border-radius:0 10px 10px 0;padding-left:.5rem}
   .tablewrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:12px}
   table{width:100%;border-collapse:collapse;font-size:.84rem;background:#fff}
   th{background:var(--schwarz);color:var(--gelb);text-align:left;padding:.45rem .5rem;font-size:.74rem;text-transform:uppercase;letter-spacing:.4px;white-space:nowrap}
@@ -230,8 +234,8 @@ function gameRow(g, withScore){
   const isHome = isHahnbach(g.home);
   const venue = g.venue ? esc(g.venue.split(',')[0]) : '';
   let resHtml = '';
+  const cls = withScore ? resultClass(g) : '';
   if (withScore) {
-    const cls = resultClass(g);
     const label = {S:'SIEG', U:'UNENTSCHIEDEN', N:'NIEDERLAGE'}[cls];
     resHtml = `<span class="res-${cls}">${label}</span>`;
   }
@@ -242,7 +246,7 @@ function gameRow(g, withScore){
   const font = '700 ' + (window.innerWidth >= 760 ? '14.7px' : '14.4px') + " 'Segoe UI',system-ui,sans-serif";
   const maxW = Math.max(120, (window.innerWidth - 110) / 2);
   hn = fitName(hn, maxW, font); an = fitName(an, maxW, font);
-  return `<div class="spiel">
+  return `<div class="spiel${withScore ? ' resrow-' + cls : ''}">
     <div class="row1"><span class="when"><span class="wd">${weekday(g.date)}.</span> ${esc(g.date)}${g.time ? ' · ' + esc(g.time) : ''}</span><span class="venue2">${venue}</span><span class="tagcol"><span class="home-tag ${isHome?'h':'a'}"><span class="tag-s">${isHome?'H':'A'}</span><span class="tag-l">${isHome?'HEIM':'AUSWÄRTS'}</span></span>${resHtml}</span></div>
     <div class="vsline"><span class="cell home"><span class="t">${esc(hn)}</span>${crest(g.home)}</span><span class="mid">${mid}</span><span class="cell away">${crest(g.away)}<span class="t">${esc(an)}</span></span></div>
   </div>`;
