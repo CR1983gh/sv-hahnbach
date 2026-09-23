@@ -319,7 +319,9 @@ function checkForUpdate(btn){
     .then(t => {
       const m = t.match(/const DATA = \/\*__DATA__\*\/(\{.*?\});\s*const BADGES/s);
       if (!m) throw new Error('no data');
-      if (m[1] !== localData) {
+      // Normalize: compare parsed JSON, not raw text (whitespace differs after minify)
+      const isNew = JSON.stringify(JSON.parse(m[1])) !== JSON.stringify(JSON.parse(localData));
+      if (isNew) {
         msg.textContent = '✅ Neue Daten verfügbar – Seite wird geladen…';
         location.reload();
       } else {
