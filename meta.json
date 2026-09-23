@@ -1,0 +1,132 @@
+{
+ "Herren": {
+  "liga": "Bezirksliga Oberpfalz Nord",
+  "platz": 7,
+  "tv": "15:14",
+  "pkt": 16,
+  "sp": 11,
+  "bilanz": "4-4-3",
+  "bfv": "https://www.bfv.de/mannschaften/sv-hahnbach/016PC5PE5S000000VV0AG80NVV8OQVTB",
+  "fupa": "https://www.fupa.net/league/bezirksliga-oberpfalz-nord"
+ },
+ "Herren II": {
+  "liga": "Kreisklasse AM/WEN West",
+  "platz": 7,
+  "tv": "14:16",
+  "pkt": 10,
+  "sp": 9,
+  "bilanz": "2-4-3",
+  "bfv": "https://www.bfv.de/mannschaften/sv-hahnbach-ii/016PGHD9VK000000VV0AG811VUDIC8D7",
+  "fupa": "https://www.fupa.net/league/weiden-kreisklasse-west"
+ },
+ "U19 (A-Junioren)": {
+  "liga": "U19 BOL Oberpfalz",
+  "platz": 5,
+  "tv": "7:7",
+  "pkt": 6,
+  "sp": 4,
+  "bilanz": "2-0-2",
+  "bfv": "https://www.bfv.de/mannschaften/sg-sv-hahnbach/01E0LADHQK000000VV0AG811VSV7BE29",
+  "fupa": "https://www.fupa.net/league/oberpfalz-u19-bezirksoberliga"
+ },
+ "U17 (B-Junioren)": {
+  "liga": "U17 Q-KK Süd AM/WEN",
+  "platz": 6,
+  "tv": "3:7",
+  "pkt": 0,
+  "sp": 2,
+  "bilanz": "0-0-2",
+  "bfv": "https://www.bfv.de/mannschaften/sg-sv-hahnbach/02TP8A41CK000000VS5489BSVTNMVP4D",
+  "fupa": "https://www.fupa.net/league/oberpfalz-u17-kreisklasse-q-amberg-weiden"
+ },
+ "U15 (C-Junioren)": {
+  "liga": "U15 Q-KK Süd AM/WEN",
+  "platz": 3,
+  "tv": "0:0",
+  "pkt": 0,
+  "sp": 0,
+  "bilanz": "0-0-0",
+  "bfv": "https://www.bfv.de/mannschaften/sg-sv-hahnbach/02MECACC84000000VS5489B2VSMMET75",
+  "fupa": "https://www.fupa.net/league/oberpfalz-u15-kreisklasse1-amberg-weiden"
+ },
+ "U13 (D-Junioren)": {
+  "liga": "U13 Q-KK Süd AM/WEN",
+  "platz": 1,
+  "tv": "3:2",
+  "pkt": 3,
+  "sp": 1,
+  "bilanz": "1-0-0",
+  "bfv": "https://www.bfv.de/mannschaften/sg-sv-hahnbach/016Q971P6K000000VV0AG811VTSDEJ30",
+  "fupa": "https://www.fupa.net/league/u13-qkknord-amberg"
+ },
+ "U13 II (D-Junioren)": {
+  "liga": "U13 Q-Gr. West 2 AM/WEN",
+  "platz": 1,
+  "tv": "4:1",
+  "pkt": 3,
+  "sp": 1,
+  "bilanz": "1-0-0",
+  "bfv": "https://www.bfv.de/mannschaften/sg-sv-hahnbach-ii/02F2LREJMS000000VS5489B2VUBVHUE0",
+  "fupa": ""
+ },
+ "U13 III (D-Junioren)": {
+  "liga": "U13 D2/3-Gruppe AM/WEN",
+  "platz": 2,
+  "tv": "0:0",
+  "pkt": 0,
+  "sp": 0,
+  "bilanz": "0-0-0",
+  "bfv": "https://www.bfv.de/mannschaften/sg-sv-hahnbach-iii/031FLAUINS000000VS5489BSVU7CJV8J",
+  "fupa": ""
+ },
+ "U11 (E-Junioren)": {
+  "liga": "Entwicklungsliga Amberg 1",
+  "platz": 2,
+  "tv": "0:0",
+  "pkt": 0,
+  "sp": 0,
+  "bilanz": "—",
+  "bfv": "https://www.bfv.de/mannschaften/sg-sv-hahnbach/011MIAFHJK000000VTVG0001VTR8C1K7",
+  "fupa": ""
+ },
+ "U11 2 (E-Junioren)": {
+  "liga": "Entwicklungsliga Amberg 2",
+  "platz": 6,
+  "tv": "0:0",
+  "pkt": 0,
+  "sp": 0,
+  "bilanz": "—",
+  "bfv": "https://www.bfv.de/mannschaften/sg-sv-hahnbach-2/011MI9K5H8000000VTVG0001VTR8C1K7",
+  "fupa": ""
+ },
+ "U9 (F-Junioren)": {
+  "liga": "ELiga Amberg II (neu) · Kinderfestival",
+  "platz": null,
+  "tv": "—",
+  "pkt": null,
+  "sp": null,
+  "bilanz": "—",
+  "bfv": "https://www.bfv.de/mannschaften/sg-sv-hahnbach/011MIF7KR8000000VTVG0001VTR8C1K7",
+  "fupa": ""
+ },
+ "U9 II (F-Junioren)": {
+  "liga": "ELiga Amberg II (neu) · Kinderfestival",
+  "platz": null,
+  "tv": "—",
+  "pkt": null,
+  "sp": null,
+  "bilanz": "—",
+  "bfv": "https://www.bfv.de/mannschaften/sg-sv-hahnbach-ii/01E1A9GC9C000000VV0AG811VUC6UE8S",
+  "fupa": ""
+ },
+ "U7 (G-Junioren)": {
+  "liga": "Herbst 2026 · Kinderfestival",
+  "platz": null,
+  "tv": "—",
+  "pkt": null,
+  "sp": null,
+  "bilanz": "—",
+  "bfv": "https://www.bfv.de/mannschaften/sg-sv-hahnbach/02P7R1KGJ8000000VS5489B1VTJQ56QM",
+  "fupa": ""
+ }
+}

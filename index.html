@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SV Hahnbach 1949 e.V. — Alle Mannschaften</title>
+<style>
+  :root{--gelb:#ffd200;--schwarz:#111;--gruen:#1b8a3a;--rot:#c0392b;--hell:#f7f5ef;--grau:#6b6b6b;--card:#fff}
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%}
+  body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--hell);color:var(--schwarz);line-height:1.45}
+  header{background:var(--schwarz);color:#fff;padding:1.6rem 1rem 1.2rem;text-align:center;position:relative}
+  header::after{content:"";position:absolute;left:0;right:0;bottom:0;height:6px;background:linear-gradient(90deg,var(--gelb) 0 50%,#fff 50% 100%)}
+  .wappen{width:60px;height:60px;border-radius:50%;background:var(--gelb);color:var(--schwarz);display:inline-flex;align-items:center;justify-content:center;font-weight:900;font-size:1.2rem;border:3px solid #fff;margin-bottom:.4rem;letter-spacing:-1px}
+  header h1{font-size:1.5rem;letter-spacing:.5px}
+  header p{color:#cfcfcf;margin-top:.2rem;font-size:.88rem}
+  .picker{position:sticky;top:0;z-index:20;background:#fff;border-bottom:2px solid var(--gelb);box-shadow:0 2px 6px rgba(0,0,0,.08)}
+  .picker-inner{max-width:980px;margin:0 auto;display:flex;gap:.35rem;flex-wrap:wrap;justify-content:center;align-items:center;padding:.55rem .6rem}
+  .group-label{font-size:.72rem;font-weight:800;text-transform:uppercase;color:var(--grau);margin:0 .2rem 0 .5rem;letter-spacing:.5px}
+  .tbtn{border:2px solid #ddd;background:#fff;color:var(--schwarz);border-radius:999px;padding:.25rem .7rem .25rem .35rem;font-size:.82rem;font-weight:700;cursor:pointer;transition:all .15s;display:inline-flex;align-items:center;gap:.35rem;white-space:nowrap}
+  .tbtn:hover{border-color:var(--gelb);background:#fffbe6}
+  .tbtn.active{background:var(--schwarz);color:var(--gelb);border-color:var(--schwarz)}
+  .tbtn img,.tbtn .crest-fb{width:22px;height:22px;border-radius:50%;object-fit:contain;background:#fff;flex:none}
+  main{max-width:980px;margin:0 auto;padding:1rem .8rem}
+  .team-head{display:flex;flex-wrap:wrap;align-items:center;gap:.7rem;margin-bottom:.9rem}
+  .team-head img{width:42px;height:42px;border-radius:50%;object-fit:contain;background:#fff;border:2px solid var(--gelb)}
+  .team-head h2{font-size:1.3rem}
+  .chip{background:var(--gelb);color:var(--schwarz);border-radius:999px;padding:.15rem .65rem;font-size:.78rem;font-weight:800}
+  .chip.dark{background:var(--schwarz);color:var(--gelb)}
+  h3.sec{font-size:1rem;border-left:5px solid var(--gelb);padding-left:.5rem;margin:1.2rem 0 .5rem}
+  .card{background:var(--card);border-radius:12px;padding:.7rem .8rem;box-shadow:0 1px 4px rgba(0,0,0,.08);margin-bottom:.8rem}
+  .spiel{display:block;padding:.55rem .2rem;border-bottom:1px dashed #e2e0d8}
+  .spiel:last-child{border-bottom:none}
+  .row1{display:flex;align-items:center;gap:.5rem;min-width:0;justify-content:space-between}
+  .when{font-weight:700;font-size:.82rem;color:var(--grau);white-space:nowrap}
+  .when .wd{color:#1a6fb5}
+  .vsline{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:.2rem .5rem;font-size:.9rem;margin-top:.15rem}
+  .vsline .cell{display:flex;align-items:center;gap:.35rem;min-width:0}
+  .vsline .cell.home{justify-content:flex-end}
+  .vsline .cell.away{justify-content:flex-start}
+  .vsline .t{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .vsline .mid{flex:none}
+  .crest{width:22px;height:22px;border-radius:50%;object-fit:contain;background:#f2f2f2;flex:none}
+  .crest-fb{display:inline-flex;width:22px;height:22px;border-radius:50%;background:#eee;align-items:center;justify-content:center;font-size:.7rem;flex:none}
+  .tagcol{display:flex;align-items:center;gap:.4rem;flex:none}
+  .venue2{display:inline;color:var(--grau);font-weight:400;font-size:.75rem;margin-left:.4rem}
+  .home-tag{font-size:.68rem;font-weight:800;border-radius:4px;padding:.05rem .35rem;white-space:nowrap}
+  .tag-l{display:none}
+  @media(min-width:760px){.tag-s{display:none}.tag-l{display:inline}}
+  .home-tag.h{background:var(--gelb);color:var(--schwarz)}
+  .home-tag.a{background:#e8e8e8;color:#555}
+  .venue{font-size:.72rem;color:var(--grau);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:180px}
+  .score{font-weight:900;background:var(--schwarz);color:var(--gelb);border-radius:6px;padding:.05rem .4rem;white-space:nowrap;flex:none}
+  .res-S{font-size:.72rem;font-weight:800;color:var(--gruen)}
+  .res-U{font-size:.72rem;font-weight:800;color:#b8860b}
+  .res-N{font-size:.72rem;font-weight:800;color:var(--rot)}
+  .tablewrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:12px}
+  table{width:100%;border-collapse:collapse;font-size:.84rem;background:#fff;min-width:520px}
+  th{background:var(--schwarz);color:var(--gelb);text-align:left;padding:.45rem .5rem;font-size:.74rem;text-transform:uppercase;letter-spacing:.4px;white-space:nowrap}
+  td{padding:.4rem .5rem;border-bottom:1px solid #eee;white-space:nowrap}
+  td.tname{white-space:normal;min-width:170px}
+  td.tname .crest{width:20px;height:20px;margin-right:.45rem;vertical-align:middle}
+  tr.hahnbach td{background:var(--gelb);font-weight:800}
+  .links a{color:#1a6fb5;font-size:.82rem;text-decoration:none;margin-right:.8rem}
+  .links a:hover{text-decoration:underline}
+  .empty{color:var(--grau);font-style:italic;padding:.4rem .2rem}
+  footer{background:var(--schwarz);color:#bbb;text-align:center;padding:1.1rem;font-size:.78rem;margin-top:1.5rem}
+  .note{font-size:.78rem;color:var(--grau)}
+  /* Desktop: venue beside, one line */
+  @media(min-width:760px){
+    .spiel{display:grid;grid-template-columns:170px 1fr auto;align-items:center}
+    .row1{display:contents}
+    .when{grid-column:1}
+    .vsline{grid-column:2;display:flex;align-items:center;gap:.4rem;font-size:.92rem;margin-top:0}
+    .vsline .cell{display:contents}
+    .vsline .t{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+    .tagcol{grid-column:3;grid-row:1}
+    .venue2{display:none}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wappen">SCH</div>
+  <h1>SV Hahnbach 1949 e.V.</h1>
+  <p>Schwarz-Gelb aus der Oberpfalz · Alle Mannschaften auf einen Blick</p>
+</header>
+
+<div class="picker"><div class="picker-inner" id="picker"></div></div>
+<main><div id="teamView"></div></main>
+<footer>Daten: BFV.de &amp; Vereinswappen via FuPa · Stand: 22.09.2026 · Inoffizielle Fan-Seite ⚽💛🖤</footer>
+
+<script>
+const DATA = /*__DATA__*/{};
+const BADGES = /*__BADGES__*/{};
+
+const GROUPS = [
+  {label:"Herren", teams:["Herren","Herren II"]},
+  {label:"Jugend", teams:["U19 (A-Junioren)","U17 (B-Junioren)","U15 (C-Junioren)"]},
+  {label:"D-Jugend", teams:["U13 (D-Junioren)","U13 II (D-Junioren)","U13 III (D-Junioren)"]},
+  {label:"E-Jugend", teams:["U11 (E-Junioren)","U11 2 (E-Junioren)"]},
+  {label:"Kleinste", teams:["U9 (F-Junioren)","U9 II (F-Junioren)","U7 (G-Junioren)"]},
+];
+
+const WD = ['So','Mo','Di','Mi','Do','Fr','Sa'];
+function weekday(dateStr){
+  const [dd,mm,yy] = dateStr.split('.').map(Number);
+  return WD[new Date(yy, mm-1, dd).getDay()];
+}
+function esc(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML}
+
+// Shorten long team names for narrow screens
+const SHORT = {
+  "SG SV Hahnbach / Kaltenbrunn / Gebenbach / SF Upo / FC Freihung": "SG Hahnbach/Kaltenbrunn/Geb./Upo/Freihung",
+  "SG SV Hahnbach / Gebenbach / SF Upo": "SG Hahnbach/Gebenbach/Upo",
+  "SG Hahnbach / Kaltenbrunn / Gebenbach / SF Upo / FC Freihung": "SG Hahnbach/Kaltenbrunn/Geb./Upo/Freihung",
+  "SG Hahnbach / Gebenbach / SF Upo": "SG Hahnbach/Gebenbach/Upo",
+  "SG TSV Kümmersbruck / Inter Amberg": "SG Kümmersbruck/Inter Amberg",
+  "SG Freier TuS / SC Regensb.": "SG Freier TuS/SC Regsb.",
+  "SG Jahn Futsal / Fortuna": "SG Jahn Futsal/Fortuna",
+  "SG SV Auerbach / Michelfeld": "SG Auerbach/Michelfeld",
+  "SG Seugast / Freihung": "SG Seugast/Freihung",
+  "SG 1) Seugast - Freihung": "SG Seugast/Freihung",
+  "Freier TuS Regensburg": "Freier TuS Regsb.",
+  "Jahn Regensburg Futsal": "Jahn Regensburg Futsal",
+  "SV Inter Bergsteig Amberg": "SV Inter Amberg",
+  "SF Ursulapoppenricht I": "SF Ursulapoppenricht",
+  "1. FC Neukirchen b. Su-Ro. (Kinderf.)": "1. FC Neukirchen (Kinderf.)",
+  "JFG Drei Wappen Oberpfalz": "JFG Drei Wappen OPf.",
+  "SVSW Kemnath/Stadt": "SV SW Kemnath/St.",
+  "SV SW Kemnath-Stadt": "SV SW Kemnath-Stadt",
+};
+const FIT_RULES = [
+  [/(^|\s)Kinderfestival/g, '$1KiF'],
+  [/(\(|\s)Kinderf\.\)/g, ' (KiF)'],
+  [/(^|\s)Hubertus(\s|$)/g, '$1Hub.$2'],
+  [/Schwarzenfeld/g, 'Schwarzenf.'],
+  [/Schmidmühlen/g, 'Schmidmh.'],
+  [/Ebermannsdorf/g, 'Ebermannsd.'],
+  [/Kümmersbruck/g, 'Kümmersbr.'],
+  [/Michael-Poppenricht/g, 'Michaelpoppr.'],
+  [/Ursulapoppenricht/g, 'Ursulapoppr.'],
+  [/Vohenstrauß/g, 'Vohenstr.'],
+  [/Regensburg/g, 'Regsb.'],
+  [/Kaltenbrunn/g, 'Kaltenbr.'],
+  [/Kareth-Lappersdorf/g, 'Kareth-Lapp.'],
+  [/Neukirchen b\. Su-Ro\./g, 'Neukirchen b.S-R'],
+  [/Weiherhammer/g, 'Weiherh.'],
+  [/Kirchenthumbach/g, 'Kirchent.'],
+  [/Kohlberg-Roethenbach/g, 'Kohlberg-R.'],
+  [/Schwarzenfeld/g, 'Schwarzenf.'],
+  [/Kemnath\/Stadt/g, 'Kemnath/St.'],
+  [/Kemnath-Stadt/g, 'Kemnath-St.'],
+  [/(^|\s)1927\s/g, ' '],
+    [/Schlösser-Eck/g, 'Schlösser-E.'],
+  [/Bergsteig/g, 'Bergst.'],
+    [/(^|\s)Eintracht(\s|$)/g, '$1Eintr.$2'],
+  [/(^|\s)1\. FC(\s|$)/g, '$1FC$2'],
+  [/(^|\s)1\.(\s)/g, '$1$2'],
+];
+const _cv = document.createElement('canvas');
+const _cx = _cv.getContext('2d');
+function textW(s, font){ _cx.font = font; return _cx.measureText(s).width; }
+function fitName(s, maxW, font){
+  for (const [re, rep] of FIT_RULES) {
+    if (textW(s, font) <= maxW) return s;
+    s = s.replace(re, rep);
+  }
+  return s;
+}
+function shortName(s){
+  s = s.trim();
+  if (SHORT[s]) return SHORT[s];
+  s = s.replace(/\(SG[^)]*\)\s?/g,'');
+  s = s.replace(/\s+-\s+Kinderfestival/g,' (Kinderf.)').replace(/\s+/g,' ').trim();
+  if (SHORT[s]) return SHORT[s];
+  return s;
+}
+
+function basekey(s){
+  return s.replace(/\(SG\)\s?/g,'').replace(/\s*-\s*Kinderfestival/g,'')
+          .replace(/\s+(I{1,3}|1|2|3)$/,'').replace(/\s+/g,' ').trim();
+}
+function badgeFor(name){ return BADGES[basekey(name)] || BADGES[name] || null; }
+function crest(name){
+  const u = badgeFor(name);
+  if (u) return `<img class="crest" src="${u}" alt="" loading="lazy" onerror="this.outerHTML='<span class=\\'crest-fb\\'>⚽</span>'">`;
+  return `<span class="crest-fb">⚽</span>`;
+}
+function isHahnbach(name){ return /Hahnbach/.test(name); }
+function resultClass(g){
+  const [a,b] = g.score.split(':').map(Number);
+  const hn = isHahnbach(g.home);
+  const my = hn ? a : b, other = hn ? b : a;
+  return my > other ? 'S' : my === other ? 'U' : 'N';
+}
+
+const picker = document.getElementById('picker');
+GROUPS.forEach(g => {
+  const lbl = document.createElement('span');
+  lbl.className = 'group-label'; lbl.textContent = g.label;
+  picker.appendChild(lbl);
+  g.teams.forEach(t => {
+    const b = document.createElement('button');
+    b.className = 'tbtn'; b.dataset.team = t;
+    const short = t.replace(/ \((.)-Junioren\)/, ' $1');
+    b.innerHTML = crest(t) + '<span>' + esc(short) + '</span>';
+    b.onclick = () => select(t);
+    picker.appendChild(b);
+  });
+});
+
+function gameRow(g, withScore){
+  const isHome = isHahnbach(g.home);
+  const venue = g.venue ? esc(g.venue.split(',')[0]) : '';
+  let resHtml = '';
+  if (withScore) {
+    const cls = resultClass(g);
+    const label = {S:'SIEG', U:'UNENTSCHIEDEN', N:'NIEDERLAGE'}[cls];
+    resHtml = `<span class="res-${cls}">${label}</span>`;
+  }
+  const mid = withScore
+    ? `<span class="score">${esc(g.score)}</span>`
+    : `<span style="color:var(--grau);flex:none">–</span>`;
+  let hn = shortName(g.home), an = shortName(g.away);
+  const font = '700 ' + (window.innerWidth >= 760 ? '14.7px' : '14.4px') + " 'Segoe UI',system-ui,sans-serif";
+  const maxW = Math.max(120, (window.innerWidth - 110) / 2);
+  hn = fitName(hn, maxW, font); an = fitName(an, maxW, font);
+  return `<div class="spiel">
+    <div class="row1"><span class="when"><span class="wd">${weekday(g.date)}.</span> ${esc(g.date)}${g.time ? ' · ' + esc(g.time) : ''}</span><span class="venue2">${venue}</span><span class="tagcol"><span class="home-tag ${isHome?'h':'a'}"><span class="tag-s">${isHome?'H':'A'}</span><span class="tag-l">${isHome?'HEIM':'AUSWÄRTS'}</span></span>${resHtml}</span></div>
+    <div class="vsline"><span class="cell home"><span class="t">${esc(hn)}</span>${crest(g.home)}</span><span class="mid">${mid}</span><span class="cell away">${crest(g.away)}<span class="t">${esc(an)}</span></span></div>
+  </div>`;
+}
+
+function select(team){
+  document.querySelectorAll('.tbtn').forEach(b => b.classList.toggle('active', b.dataset.team === team));
+  const d = DATA[team];
+  d.games = (d.games||[]).filter(g => {
+    const [dd,mm,yy] = g.date.split('.').map(Number);
+    const JUNK = /TORREICHSTES|HÖCHSTER|HÖCHSTE|ZUSAMMENFASSUNG|SPIELFREI|Abgesetzt/;
+    return new Date(yy, mm-1, dd) >= new Date(2026, 8, 22) && g.home && g.away && g.home.length > 2
+      && !JUNK.test(g.home) && !JUNK.test(g.away);
+  });
+  const m = d.meta;
+  const view = document.getElementById('teamView');
+
+  let h = `<div class="team-head">${crest(team)}<h2>${esc(team)}</h2><span class="chip">${esc(m.liga)}</span>`;
+  if (m.platz != null) h += `<span class="chip dark">Platz ${m.platz} · ${esc(m.tv)}</span>`;
+  h += `</div>`;
+
+  h += `<h3 class="sec">📅 Nächste Spiele</h3><div class="card">`;
+  h += d.games.length ? d.games.map(g => gameRow(g, false)).join('')
+                     : `<div class="empty">Derzeit keine Spiele angesetzt.</div>`;
+  h += `</div>`;
+
+  h += `<h3 class="sec">🏁 Ergebnisse Saison 26/27</h3><div class="card">`;
+  const JUNK = /TORREICHSTES|HÖCHSTER|HÖCHSTE|ZUSAMMENFASSUNG|SPIELFREI|Abgesetzt|\d\s-\s\(?SG\)?\sSV\sHahnbach/;
+  const res = (d.results||[]).filter(g => !JUNK.test(g.home) && !JUNK.test(g.away)).slice().reverse();
+  h += res.length ? res.map(g => gameRow(g, true)).join('')
+                  : `<div class="empty">Noch keine Ergebnisse in dieser Saison (bzw. keine erfassten Pflichtspielergebnisse).</div>`;
+  h += `</div>`;
+
+  if (d.standings && d.standings.length) {
+    h += `<h3 class="sec">📊 Tabelle — ${esc(m.liga)}</h3><div class="tablewrap">`;
+    h += `<table><thead><tr><th>Pl.</th><th>Team</th><th>Sp.</th><th>S-U-N</th><th>Tore</th><th>Diff.</th><th>Pkt.</th></tr></thead><tbody>`;
+    d.standings.forEach(r => {
+      const me = isHahnbach(r.name);
+      h += `<tr class="${me?'hahnbach':''}"><td>${esc(r.pos)}</td><td class="tname">${crest(r.name)}${esc(shortName(r.name))}${me?' ⭐':''}</td>
+        <td>${esc(r.sp)}</td><td>${esc(r.g)}-${esc(r.u)}-${esc(r.v)}</td>
+        <td>${esc(r.tor)}</td><td>${Number(r.diff)>0?'+':''}${esc(r.diff)}</td><td>${esc(r.pkt)}</td></tr>`;
+    });
+    h += `</tbody></table></div>`;
+  } else {
+    h += `<h3 class="sec">📊 Tabelle</h3><p class="note">Für ${esc(m.liga)} wird beim BFV keine Tabelle geführt (Kinderfestival / Freundschaftsrunde).</p>`;
+  }
+
+  h += `<p class="links" style="margin-top:1rem"><a href="${m.bfv}" target="_blank" rel="noopener">Team auf bfv.de →</a>
+    ${m.fupa ? `<a href="${m.fupa}" target="_blank" rel="noopener">Liga auf FuPa →</a>` : ''}</p>`;
+
+  view.innerHTML = h;
+  // precise fit: shorten or shrink font so no name is cut off
+  const font = getComputedStyle(document.body).fontFamily;
+  view.querySelectorAll('.vsline .t').forEach(el => {
+    const cs = getComputedStyle(el);
+    const f = cs.fontWeight + ' ' + cs.fontSize + ' ' + font;
+    let txt = el.textContent;
+    let guard = 0;
+    while (el.scrollWidth > el.clientWidth + 1 && guard < 40) {
+      const next = fitName(txt, Math.max(60, el.clientWidth), f);
+      if (next !== txt) { txt = next; el.textContent = txt; guard++; continue; }
+      // rules exhausted: shrink font before cutting anything
+      const cur = parseFloat(getComputedStyle(el).fontSize);
+      if (cur > 11.5) { el.style.fontSize = (cur - 0.5) + 'px'; guard++; continue; }
+      break;
+    }
+  });
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+select('Herren');
+</script>
+</body>
+</html>
