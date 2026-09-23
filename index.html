@@ -55,11 +55,17 @@
   .res-U{font-size:.72rem;font-weight:800;color:#b8860b}
   .res-N{font-size:.72rem;font-weight:800;color:var(--rot)}
   .tablewrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:12px}
-  table{width:100%;border-collapse:collapse;font-size:.84rem;background:#fff;min-width:520px}
+  table{width:100%;border-collapse:collapse;font-size:.84rem;background:#fff}
   th{background:var(--schwarz);color:var(--gelb);text-align:left;padding:.45rem .5rem;font-size:.74rem;text-transform:uppercase;letter-spacing:.4px;white-space:nowrap}
   td{padding:.4rem .5rem;border-bottom:1px solid #eee;white-space:nowrap}
-  td.tname{white-space:normal;min-width:170px}
+  td.tname{white-space:normal;min-width:150px}
   td.tname .crest{width:20px;height:20px;margin-right:.45rem;vertical-align:middle}
+  /* core columns (Pl., Team, Sp., Diff., Pkt.) fit the phone screen; extras scroll sideways */
+  @media (max-width: 560px){
+    table{min-width:560px}
+    th:nth-child(-n+5), td:nth-child(-n+5){background-clip:padding-box}
+    td.pkt{font-weight:800}
+  }
   tr.hahnbach td{background:var(--gelb);font-weight:800}
   .links a{color:#1a6fb5;font-size:.82rem;text-decoration:none;margin-right:.8rem}
   .links a:hover{text-decoration:underline}
@@ -272,12 +278,13 @@ function select(team){
 
   if (d.standings && d.standings.length) {
     h += `<h3 class="sec">📊 Tabelle — ${esc(m.liga)}</h3><div class="tablewrap">`;
-    h += `<table><thead><tr><th>Pl.</th><th>Team</th><th>Sp.</th><th>S-U-N</th><th>Tore</th><th>Diff.</th><th>Pkt.</th></tr></thead><tbody>`;
+    h += `<table><thead><tr><th>Pl.</th><th>Team</th><th>Sp.</th><th>Diff.</th><th>Pkt.</th><th class="xcol">S-U-N</th><th class="xcol">Tore</th></tr></thead><tbody>`;
     d.standings.forEach(r => {
       const me = isHahnbach(r.name);
       h += `<tr class="${me?'hahnbach':''}"><td>${esc(r.pos)}</td><td class="tname">${crest(r.name)}${esc(shortName(r.name))}${me?' ⭐':''}</td>
-        <td>${esc(r.sp)}</td><td>${esc(r.g)}-${esc(r.u)}-${esc(r.v)}</td>
-        <td>${esc(r.tor)}</td><td>${Number(r.diff)>0?'+':''}${esc(r.diff)}</td><td>${esc(r.pkt)}</td></tr>`;
+        <td>${esc(r.sp)}</td><td>${Number(r.diff)>0?'+':''}${esc(r.diff)}</td><td class="pkt">${esc(r.pkt)}</td>
+        <td class="xcol">${esc(r.g)}-${esc(r.u)}-${esc(r.v)}</td>
+        <td class="xcol">${esc(r.tor)}</td></tr>`;
     });
     h += `</tbody></table></div>`;
   } else {
