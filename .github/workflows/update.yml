@@ -1,0 +1,25 @@
+name: Update site data
+on:
+  schedule:
+    # Mo-Fr 7:30 und 19:30 deutsche Zeit
+    - cron: '30 5,17 * * 1-5'
+    # Sa+So alle 2 Stunden (8-18 Uhr deutsche Zeit)
+    - cron: '0 6-16/2 * * 6,0'
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install --quiet pypdf
+      - run: python3 -m pytest tests/ -q
+      - run: python3 update_site.py
+        env:
+          GITHUB_TOKEN: ${}{ secrets.GITHUB_TOKEN }}

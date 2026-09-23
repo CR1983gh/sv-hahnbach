@@ -9,6 +9,7 @@ Safety: if any team's data looks broken, NOTHING is pushed (exit 1).
 import datetime
 import io
 import json
+import os
 import re
 import subprocess
 import sys
@@ -161,13 +162,48 @@ def sanity_check(data):
 def render(data):
     badges = json.load(open("badges.json", encoding="utf-8"))
     html = open("index.html", encoding="utf-8").read()
-    html = html.replace(
-        "/*__DATA__*/{}", "/*__DATA__*/" + json.dumps(data, ensure_ascii=False), 1
+    html = re.sub(
+        r"/\*__DATA__\*/\{.*?\};(?=\nconst BADGES)",
+        "/*__DATA__*/" + json.dumps(data, ensure_ascii=False) + ";",
+        html, count=1, flags=re.S,
     )
-    html = html.replace(
-        "/*__BADGES__*/{}", "/*__BADGES__*/" + json.dumps(badges, ensure_ascii=False), 1
+    html = re.sub(
+        r"/\*__BADGES__\*/\{.*?\};",
+        "/*__BADGES__*/" + json.dumps(badges, ensure_ascii=False) + ";",
+        html, count=1, flags=re.S,
+    )
+    html = re.sub(
+        r'(<span id="stand">)[^<]*(</span>)',
+        r"\g<1>" + datetime.date.today().strftime("%d.%m.%Y") + r"\g<2>",
+        html,
     )
     return html
+
+
+def push_via_api(html):
+    """Commit index.html through the GitHub API (for GitHub Actions runs)."""
+    import base64
+    import urllib.request
+
+    token = os.environ["GITHUB_TOKEN"]
+    repo = os.environ.get("GITHUB_REPO", "CR1983gh/sv-hahnbach")
+    api = f"https://api.github.com/repos/{repo}/contents/index.html"
+
+    def req(url, data=None, method=None):
+        r = urllib.request.Request(url, data=data, method=method, headers={
+            "Authorization": f"Bearer {token}",
+            "Accept": "application/vnd.github+json",
+        })
+        return json.load(urllib.request.urlopen(r))
+
+    sha = req(api, method="GET")["sha"]
+    body = json.dumps({
+        "message": f"data: auto-update {datetime.date.today()}",
+        "content": base64.b64encode(html.encode("utf-8")).decode(),
+        "sha": sha,
+        "branch": "main",
+    }).encode()
+    req(api, data=body, method="PUT")
 
 
 def main():
@@ -183,6 +219,15 @@ def main():
             print("  - " + p, file=sys.stderr)
         return 1
     html = render(data)
+    if os.environ.get("GITHUB_TOKEN"):
+        # GitHub Actions: push via API (no git credentials needed)
+        current = open("index.html", encoding="utf-8").read()
+        if html == current:
+            print("No changes today.")
+            return 0
+        push_via_api(html)
+        print(f"Deployed update for {datetime.date.today()}.")
+        return 0
     open("index.html", "w", encoding="utf-8").write(html)
     subprocess.run(["git", "add", "index.html"], check=True)
     r = subprocess.run(
