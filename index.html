@@ -62,8 +62,8 @@
   td.tname .crest{width:20px;height:20px;margin-right:.45rem;vertical-align:middle}
   /* core columns (Pl., Team, Sp., Diff., Pkt.) fit the phone screen; extras scroll sideways */
   @media (max-width: 560px){
-    table{min-width:560px}
-    th:nth-child(-n+5), td:nth-child(-n+5){background-clip:padding-box}
+    th, td{padding-left:.35rem; padding-right:.35rem}
+    td.tname{min-width:125px}
     td.pkt{font-weight:800}
   }
   tr.hahnbach td{background:var(--gelb);font-weight:800}
