@@ -51,6 +51,9 @@
   .home-tag.a{background:#e8e8e8;color:#555}
   .venue{font-size:.72rem;color:var(--grau);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:180px}
   .score{font-weight:900;background:var(--schwarz);color:var(--gelb);border-radius:6px;padding:.05rem .4rem;white-space:nowrap;flex:none}
+  .score.sc-S{background:var(--gruen);color:#fff}
+  .score.sc-U{background:#e08a00;color:#fff}
+  .score.sc-N{background:var(--rot);color:#fff}
   .res-S{font-size:.72rem;font-weight:800;color:#fff;background:var(--gruen);padding:.15rem .5rem;border-radius:999px}
   .res-U{font-size:.72rem;font-weight:800;color:#fff;background:#e08a00;padding:.15rem .5rem;border-radius:999px}
   .res-N{font-size:.72rem;font-weight:800;color:#fff;background:var(--rot);padding:.15rem .5rem;border-radius:999px}
@@ -240,7 +243,7 @@ function gameRow(g, withScore){
     resHtml = `<span class="res-${cls}">${label}</span>`;
   }
   const mid = withScore
-    ? `<span class="score">${esc(g.score)}</span>`
+    ? `<span class="score sc-${cls}">${esc(g.score)}</span>`
     : `<span style="color:var(--grau);flex:none">–</span>`;
   let hn = shortName(g.home), an = shortName(g.away);
   const font = '700 ' + (window.innerWidth >= 760 ? '14.7px' : '14.4px') + " 'Segoe UI',system-ui,sans-serif";
