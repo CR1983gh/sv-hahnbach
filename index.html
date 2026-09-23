@@ -54,6 +54,8 @@
   .score.sc-S{background:var(--gruen);color:#fff}
   .score.sc-U{background:#e08a00;color:#fff}
   .score.sc-N{background:var(--rot);color:#fff}
+  .score.sc-A{background:#6b6b6b;color:#fff;font-size:.68rem;letter-spacing:.5px}
+  .spiel.resrow-A{background:#f0f0f0;border-left:4px solid #6b6b6b;border-radius:0 10px 10px 0;padding-left:.5rem}
   .res-S{font-size:.72rem;font-weight:800;color:#fff;background:var(--gruen);padding:.15rem .5rem;border-radius:999px}
   .res-U{font-size:.72rem;font-weight:800;color:#fff;background:#e08a00;padding:.15rem .5rem;border-radius:999px}
   .res-N{font-size:.72rem;font-weight:800;color:#fff;background:var(--rot);padding:.15rem .5rem;border-radius:999px}
@@ -236,21 +238,19 @@ GROUPS.forEach(g => {
 function gameRow(g, withScore){
   const isHome = isHahnbach(g.home);
   const venue = g.venue ? esc(g.venue.split(',')[0]) : '';
-  let resHtml = '';
-  const cls = withScore ? resultClass(g) : '';
-  if (withScore) {
-    const label = {S:'SIEG', U:'UNENTSCHIEDEN', N:'NIEDERLAGE'}[cls];
-    resHtml = `<span class="res-${cls}">${label}</span>`;
-  }
-  const mid = withScore
+  const isAbsage = withScore && /ausgefallen|abgesagt/i.test(g.score || '');
+  const cls = withScore && !isAbsage ? resultClass(g) : '';
+  const mid = isAbsage
+    ? `<span class="score sc-A">ABGESAGT</span>`
+    : withScore
     ? `<span class="score sc-${cls}">${esc(g.score)}</span>`
     : `<span style="color:var(--grau);flex:none">–</span>`;
   let hn = shortName(g.home), an = shortName(g.away);
   const font = '700 ' + (window.innerWidth >= 760 ? '14.7px' : '14.4px') + " 'Segoe UI',system-ui,sans-serif";
   const maxW = Math.max(120, (window.innerWidth - 110) / 2);
   hn = fitName(hn, maxW, font); an = fitName(an, maxW, font);
-  return `<div class="spiel${withScore ? ' resrow-' + cls : ''}">
-    <div class="row1"><span class="when"><span class="wd">${weekday(g.date)}.</span> ${esc(g.date)}${g.time ? ' · ' + esc(g.time) : ''}</span><span class="venue2">${venue}</span><span class="tagcol"><span class="home-tag ${isHome?'h':'a'}"><span class="tag-s">${isHome?'H':'A'}</span><span class="tag-l">${isHome?'HEIM':'AUSWÄRTS'}</span></span>${resHtml}</span></div>
+  return `<div class="spiel${withScore && !isAbsage ? ' resrow-' + cls : (isAbsage ? ' resrow-A' : '')}">
+    <div class="row1"><span class="when"><span class="wd">${weekday(g.date)}.</span> ${esc(g.date)}${g.time ? ' · ' + esc(g.time) : ''}</span><span class="venue2">${venue}</span><span class="tagcol"><span class="home-tag ${isHome?'h':'a'}"><span class="tag-s">${isHome?'H':'A'}</span><span class="tag-l">${isHome?'HEIM':'AUSWÄRTS'}</span></span></span></div>
     <div class="vsline"><span class="cell home"><span class="t">${esc(hn)}</span>${crest(g.home)}</span><span class="mid">${mid}</span><span class="cell away">${crest(g.away)}<span class="t">${esc(an)}</span></span></div>
   </div>`;
 }
