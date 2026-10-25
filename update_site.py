@@ -151,7 +151,11 @@ def sanity_check(data):
         if STAFFEL[team] is None:
             continue
         if not d["games"]:
-            problems.append(f"{team}: no upcoming games")
+            # Saison beendet ist kein Datenfehler: leerer Spielplan erlaubt,
+            # wenn bereits Ergebnisse vorliegen (dann fehlen keine Zukunftsspiele,
+            # sondern die Runde ist durch). Ohne Ergebnisse = echter Fehler.
+            if not d["results"]:
+                problems.append(f"{team}: no upcoming games")
         if len(d["standings"]) < 4:
             problems.append(f"{team}: table has <4 rows ({len(d['standings'])})")
         if not any("Hahnbach" in r["name"] for r in d["standings"]):
