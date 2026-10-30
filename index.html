@@ -203,8 +203,8 @@ function shortName(s){
 }
 
 function basekey(s){
-  return s.replace(/\(SG\)\s?/g,'').replace(/\s*-\s*Kinderfestival/g,'')
-          .replace(/\s+(I{1,3}|1|2|3)$/,'').replace(/\s+/g,' ').trim();
+  return s.replace(/\(SG\d?\)\s?/g,'').replace(/\s*-\s*Kinderfestival/g,'')
+          .replace(/\s+(zg\.|I{1,3}|1|2|3)$/,'').replace(/\s+/g,' ').trim();
 }
 function badgeFor(name){ return BADGES[basekey(name)] || BADGES[name] || null; }
 function crest(name){
