@@ -11,7 +11,8 @@
   body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--hell);color:var(--schwarz);line-height:1.45}
   header{background:var(--schwarz);color:#fff;padding:1.6rem 1rem 1.2rem;text-align:center;position:relative}
   header::after{content:"";position:absolute;left:0;right:0;bottom:0;height:6px;background:linear-gradient(90deg,var(--gelb) 0 50%,#fff 50% 100%)}
-  .wappen{width:60px;height:60px;border-radius:50%;background:var(--gelb);color:var(--schwarz);display:inline-flex;align-items:center;justify-content:center;font-weight:900;font-size:1.2rem;border:3px solid #fff;margin-bottom:.4rem;letter-spacing:-1px}
+  .wappen{width:64px;height:64px;object-fit:contain;background:#fff;border-radius:14px;border:3px solid #fff;margin-bottom:.4rem;box-shadow:0 2px 8px rgba(0,0,0,.45)}
+  div.wappen{display:inline-flex;align-items:center;justify-content:center;font-weight:900;font-size:1.2rem;letter-spacing:-1px;background:var(--gelb);color:var(--schwarz);border-radius:50%}
   header h1{font-size:1.5rem;letter-spacing:.5px}
   header p{color:#cfcfcf;margin-top:.2rem;font-size:.88rem}
   .picker{position:sticky;top:0;z-index:20;background:#fff;border-bottom:2px solid var(--gelb);box-shadow:0 2px 6px rgba(0,0,0,.08)}
@@ -97,7 +98,8 @@
 <body>
 
 <header>
-  <div class="wappen">SCH</div>
+  <img class="wappen" src="https://image.fupa.net/club/ml15uoiVATsd/192x192.png" alt="Wappen SV Hahnbach"
+       onerror="this.outerHTML='<div class=&quot;wappen&quot;>SCH</div>'">
   <h1>SV Hahnbach 1949 e.V.</h1>
   <p>Schwarz-Gelb aus der Oberpfalz · Alle Mannschaften auf einen Blick</p>
 </header>
