@@ -38,11 +38,9 @@
   .zonelegend{display:flex;flex-wrap:wrap;gap:.35rem .55rem;align-items:center;font-size:.72rem;margin-top:.35rem}
   .zonelegend .lg{display:inline-block;width:.75rem;height:.75rem;border-radius:3px;margin-right:.15rem;vertical-align:-1px}
   .lg.z-A{background:#2e9e4f}.lg.z-AR{background:#8bc34a}.lg.z-NR{background:#f0a030}.lg.z-N{background:#d32f2f}
-  td.pyr-dot{width:1.1rem}
-  td.pyr-dot span{display:inline-block;width:.6rem;height:.6rem;border-radius:50%}
   td.pyr-eb{color:var(--grau);font-size:.72rem;text-transform:uppercase;letter-spacing:.3px}
-  tr.pyr-hdr td{color:#fff;font-size:.74rem;font-weight:800;letter-spacing:.03em;padding:.34rem .5rem;text-shadow:0 1px 2px rgba(0,0,0,.25);border-bottom:none}
-  .pyr-stno{background:rgba(255,255,255,.25);border-radius:999px;padding:.08rem .55rem;font-size:.68rem;margin-right:.5rem}
+  tr.pyr-hdr td{background:var(--line);color:var(--fg);font-size:.72rem;font-weight:800;letter-spacing:.04em;text-transform:uppercase;padding:.3rem .5rem;border-bottom:1px solid var(--line2)}
+  .pyr-stno{background:var(--line2);border-radius:999px;padding:.08rem .55rem;font-size:.68rem;margin-right:.5rem}
   .pyr a{color:inherit;text-decoration:none;border-bottom:1px dotted #bbb}
   .pyr-note{color:var(--grau);font-size:.72rem;margin-top:.4rem}
 
@@ -323,41 +321,25 @@ function pyrBlock(team, liga, staffelId){
   if (!jg || !PYRAMIDE[jg]) return '';
   const tiers = PYRAMIDE[jg];
   const norm = s => s.replace(/\s+/g,' ').replace(/AM\/WEN/g,'AM/WEN').replace(/\(D-?Jun\.?\)/g,'').toLowerCase();
-  const EBFARB = {
-    'Bundes':  {c:'#b3001b', h:'🔴 Bundesliga-NLZ (BuLi-Nachwuchs)'},
-    'Region':  {c:'#6a3fb5', h:'🟣 Regionalebene'},
-    'Verband': {c:'#0b62c4', h:'🔵 Verbandsebene (BFV)'},
-    'Bezirk':  {c:'#1b8a3a', h:'🟢 Bezirksebene'},
-    'Kreis':   {c:'#b96a00', h:'🟠 Kreisebene'}
-  };
-  // Unterhalb Kreisebene: jeder Stufe einen eigenen Orange-Ton (dunkel = hoeher)
-  const KREIS_TONE = ['#8f4e00', '#c47200', '#e08f16', '#f0a83c', '#f7c370'];
-  const kreisStufen = [...new Set(tiers.filter(t => t.ebene === 'Kreis').map(t => t.st))];
-  const kreisFarbe = st => KREIS_TONE[Math.max(0, kreisStufen.indexOf(st)) % KREIS_TONE.length];
-  const kreisName = st => { const t = tiers.find(x => x.st === st && x.ebene === 'Kreis'); return t ? t.name : ''; };
+  // dezente Ebenen-Kurznamen statt Farbcodes
+  const EBKURZ = { 'Bundes':'Bundesliga-NLZ', 'Region':'Region', 'Verband':'Verband', 'Bezirk':'Bezirk', 'Kreis':'Kreis' };
+  const kreisKlasse = name => /KL/.test(name) ? 'Kreisliga' : /KK/.test(name) ? 'Kreisklasse' : 'Gruppe';
   let rows = '', lastKey = null;
   for (const t of tiers){
     const key = t.st + '|' + t.ebene;
     if (key !== lastKey){
       lastKey = key;
-      let col = EBFARB[t.ebene] ? EBFARB[t.ebene].c : '#6b6b6b';
-      let hdr = EBFARB[t.ebene] ? EBFARB[t.ebene].h : '';
-      if (t.ebene === 'Kreis'){
-        col = kreisFarbe(t.st);
-        const kl = /KL/.test(kreisName(t.st)) ? 'Kreisliga' : /KK/.test(kreisName(t.st)) ? 'Kreisklasse' : 'Gruppe';
-        hdr = `🟠 Kreisebene — ${kl}`;
-      }
-      rows += `<tr class="pyr-hdr"><td colspan="3" style="background:${col}"><span class="pyr-stno">Stufe ${t.st}</span>${esc(hdr)}</td></tr>`;
+      const kl = t.ebene === 'Kreis' ? ' — ' + kreisKlasse(t.name) : '';
+      rows += `<tr class="pyr-hdr"><td colspan="2"><span class="pyr-stno">Stufe ${t.st}</span>${esc(EBKURZ[t.ebene] || t.ebene)}${esc(kl)}</td></tr>`;
     }
     const own = (staffelId && t.id === staffelId) ||
                 (!staffelId && (norm(liga).includes(norm(t.name)) || norm(t.name).includes(norm(liga))));
     const label = esc(t.name) + (own ? ' ⭐' : '');
     const inner = t.id ? `<a href="https://www.bfv.de/ergebnisse/wettbewerb/-/${t.id}" target="_blank" rel="noopener">${label}</a>` : label;
-    const col = t.ebene === 'Kreis' ? kreisFarbe(t.st) : (EBFARB[t.ebene] ? EBFARB[t.ebene].c : '#6b6b6b');
-    const ebName = t.ebene === 'Kreis' ? 'Kreis' : esc(t.ebene);
-    rows += `<tr class="${own ? 'hahnbach' : ''}"><td class="pyr-dot"><span style="background:${col}"></span></td><td class="tname">${inner}</td><td class="pyr-eb">${ebName}</td></tr>`;
+    const ebName = EBKURZ[t.ebene] || t.ebene;
+    rows += `<tr class="${own ? 'hahnbach' : ''}"><td class="tname">${inner}</td><td class="pyr-eb">${esc(ebName)}</td></tr>`;
   }
-  return `<div class="pyr"><h3 class="sec">🏟️ Ligen-Pyramide ${esc(jg.replace(/ \(.-Junioren\)/,''))}</h3><div class="tablewrap"><table><thead><tr><th></th><th>Liga</th><th>Ebene</th></tr></thead><tbody>${rows}</tbody></table></div><div class="pyr-note">Quelle: BFV — von der untersten Gruppe bis zur Spitze. Klick öffnet Tabelle &amp; Ergebnisse auf bfv.de. ⭐ = Spielklasse des eigenen Teams.</div></div>`;
+  return `<div class="pyr"><h3 class="sec">🏟️ Ligen-Pyramide ${esc(jg.replace(/ \(.-Junioren\)/,''))}</h3><div class="tablewrap"><table><thead><tr><th>Liga</th><th>Ebene</th></tr></thead><tbody>${rows}</tbody></table></div><div class="pyr-note">Quelle: BFV — von der untersten Gruppe bis zur Spitze. Klick öffnet Tabelle &amp; Ergebnisse auf bfv.de. ⭐ = Spielklasse des eigenen Teams.</div></div>`;
 }
 
 function select(team){
