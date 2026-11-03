@@ -1,0 +1,236 @@
+{
+ "pyramide": {
+  "U19 (A-Junioren)": [
+   {
+    "st": "1",
+    "name": "U19-DFB-Nachwuchsliga",
+    "fupa": "u19-dfb-nachwuchsliga-gruppe-d",
+    "ebene": "Bundesliga"
+   },
+   {
+    "st": "2",
+    "name": "U19 Bayernliga",
+    "fupa": "a-junioren-bayernliga",
+    "ebene": "Verband"
+   },
+   {
+    "st": "3",
+    "name": "U19 Landesliga Nord",
+    "fupa": "u19-landesliga-nord-bayern",
+    "ebene": "Verband"
+   },
+   {
+    "st": "4",
+    "name": "U19 BOL Oberpfalz",
+    "fupa": "oberpfalz-u19-bezirksoberliga",
+    "ebene": "Bezirk"
+   },
+   {
+    "st": "5",
+    "name": "U19 Kreisliga Nord AM/WEN",
+    "fupa": "u19-klreisliga-nord-amberg-weiden",
+    "ebene": "Kreis"
+   },
+   {
+    "st": "5",
+    "name": "U19 Kreisliga Süd AM/WEN",
+    "fupa": "u19-klreisliga-sued-amberg-weiden",
+    "ebene": "Kreis"
+   },
+   {
+    "st": "6",
+    "name": "U19 Kreisklasse Nord AM/WEN",
+    "fupa": "oberpfalz-u19-kreisklasse-nord-amberg-weiden",
+    "ebene": "Kreis"
+   },
+   {
+    "st": "6",
+    "name": "U19 Kreisklasse Süd AM/WEN",
+    "fupa": "u19-kreisklasse-sued-amberg-weiden",
+    "ebene": "Kreis"
+   },
+   {
+    "st": "7",
+    "name": "U19 Gruppe Nord AM/WEN",
+    "fupa": "u19-gruppe1-amberg",
+    "ebene": "Kreis"
+   },
+   {
+    "st": "7",
+    "name": "U19 Gruppe Süd AM/WEN",
+    "fupa": "u19-gruppe-sued-amberg",
+    "ebene": "Kreis"
+   }
+  ],
+  "U17 (B-Junioren)": [
+   {
+    "st": "1",
+    "name": "U17-DFB-Nachwuchsliga",
+    "fupa": "u17-dfb-nachwuchsliga-gruppe-c",
+    "ebene": "Bundesliga"
+   },
+   {
+    "st": "2",
+    "name": "U17 Bayernliga",
+    "fupa": "b-junioren-bayernliga",
+    "ebene": "Verband"
+   },
+   {
+    "st": "3",
+    "name": "U17 Landesliga Nord",
+    "fupa": "u17-landesliga-nord-bayern",
+    "ebene": "Verband"
+   },
+   {
+    "st": "3",
+    "name": "U17 Landesliga Süd",
+    "fupa": "u17-landesliga-sued-bayern",
+    "ebene": "Verband"
+   },
+   {
+    "st": "4",
+    "name": "U17 BOL Oberpfalz",
+    "fupa": "oberpfalz-u17-bezirksoberliga",
+    "ebene": "Bezirk"
+   },
+   {
+    "st": "5",
+    "name": "U17 Kreisklasse Nord AM/WEN",
+    "fupa": "oberpfalz-u17-kreisklasse1-amberg-weiden",
+    "ebene": "Kreis"
+   },
+   {
+    "st": "5",
+    "name": "U17 Kreisklasse Süd AM/WEN",
+    "fupa": "oberpfalz-u17-kreisklasse-q-amberg-weiden",
+    "ebene": "Kreis"
+   },
+   {
+    "st": "6",
+    "name": "U17 Gruppe AM/WEN",
+    "fupa": "u17-gr1-am",
+    "ebene": "Kreis"
+   }
+  ],
+  "U15 (C-Junioren)": [
+   {
+    "st": "1",
+    "name": "U15 Regionalliga Bayern",
+    "fupa": "u15-regionalliga-bayern",
+    "ebene": "Region"
+   },
+   {
+    "st": "2",
+    "name": "U15 Bayernliga Nord",
+    "fupa": "u15-bayernliga-nord",
+    "ebene": "Verband"
+   },
+   {
+    "st": "3",
+    "name": "U15 BOL Oberpfalz",
+    "fupa": "oberpfalz-u15-bezirksoberliga",
+    "ebene": "Bezirk"
+   },
+   {
+    "st": "4",
+    "name": "U15 Kreisliga AM/WEN",
+    "fupa": "u15-kreisliga-amberg-weiden",
+    "ebene": "Kreis"
+   },
+   {
+    "st": "5",
+    "name": "U15 Kreisklasse Nord AM/WEN",
+    "fupa": "oberpfalz-u15-kreisklasse-amberg-weiden",
+    "ebene": "Kreis"
+   },
+   {
+    "st": "5",
+    "name": "U15 Kreisklasse Süd AM/WEN",
+    "fupa": "oberpfalz-u15-kreisklasse1-amberg-weiden",
+    "ebene": "Kreis"
+   },
+   {
+    "st": "5",
+    "name": "U15 Kreisklasse Ost AM/WEN",
+    "fupa": "oberpfalz-u15-kreisklasse2-amberg-weiden",
+    "ebene": "Kreis"
+   },
+   {
+    "st": "6",
+    "name": "U15 Gruppe Nord AM/WEN",
+    "fupa": "oberpfalz-u15-gruppe1-amberg-weiden",
+    "ebene": "Kreis"
+   },
+   {
+    "st": "6",
+    "name": "U15 Gruppe Süd AM/WEN",
+    "fupa": "oberpfalz-u15-gruppesued-amberg-weiden",
+    "ebene": "Kreis"
+   },
+   {
+    "st": "6",
+    "name": "U15 Gruppe Ost AM/WEN",
+    "fupa": "oberpfalz-u15-gruppe-ost-amberg-weiden",
+    "ebene": "Kreis"
+   },
+   {
+    "st": "6",
+    "name": "U15 Gruppe West AM/WEN",
+    "fupa": "oberpfalz-u15-gruppe-west-amberg-weiden",
+    "ebene": "Kreis"
+   },
+   {
+    "st": "6",
+    "name": "U15 Gruppe Mitte AM/WEN",
+    "fupa": "u15-gr1-am",
+    "ebene": "Kreis"
+   }
+  ],
+  "U13 (D-Junioren)": [
+   {
+    "st": "1",
+    "name": "U13-Förderliga Bundesliga/NLZ",
+    "fupa": "u13-foerderliga-bayern-nlz-bundesliga",
+    "ebene": "Bundesliga"
+   },
+   {
+    "st": "2",
+    "name": "U13 BOL Oberpfalz",
+    "fupa": "u13-bezirksoberliga-oberpfalz",
+    "ebene": "Bezirk"
+   },
+   {
+    "st": "3",
+    "name": "U13 Kreisliga AM/WEN",
+    "fupa": "oberpfalz-u13-kl",
+    "ebene": "Kreis"
+   },
+   {
+    "st": "4",
+    "name": "U13 Kreisklasse Nord AM/WEN",
+    "fupa": "u13-kreisliga2-amberg",
+    "ebene": "Kreis"
+   },
+   {
+    "st": "4",
+    "name": "U13 Kreisklasse Süd AM/WEN",
+    "fupa": "u13-qkknord-amberg",
+    "ebene": "Kreis"
+   },
+   {
+    "st": "5",
+    "name": "U13 Kreisklasse 3 AM/WEN",
+    "fupa": "oberpfalz-u13-qkksued-amberg",
+    "ebene": "Kreis"
+   }
+  ]
+ },
+ "team_zu_jg": {
+  "U19 (A-Junioren)": "U19 (A-Junioren)",
+  "U17 (B-Junioren)": "U17 (B-Junioren)",
+  "U15 (C-Junioren)": "U15 (C-Junioren)",
+  "U13 (D-Junioren)": "U13 (D-Junioren)",
+  "U13 II (D-Junioren)": "U13 (D-Junioren)",
+  "U13 III (D-Junioren)": "U13 (D-Junioren)"
+ }
+}

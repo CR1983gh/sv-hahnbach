@@ -26,6 +26,16 @@
   .team-head{display:flex;flex-wrap:wrap;align-items:center;gap:.7rem;margin-bottom:.9rem}
   .team-head img{width:42px;height:42px;border-radius:50%;object-fit:contain;background:#fff;border:2px solid var(--gelb)}
   .team-head h2{font-size:1.3rem}
+  .pyr{margin-top:1.1rem;background:#fff;border:1px solid #e3e3e3;border-radius:12px;padding:.9rem 1rem}
+  .pyr h3{font-size:.95rem;margin-bottom:.55rem;display:flex;align-items:center;gap:.4rem}
+  .pyr-tier{display:flex;align-items:center;gap:.5rem;padding:.42rem .55rem;border-radius:8px;margin-bottom:.28rem;font-size:.86rem}
+  .pyr-tier.own{background:#FFF3C4;border:1.5px solid var(--gelb);font-weight:800}
+  .pyr-tier .st{flex:none;width:1.5rem;height:1.5rem;border-radius:50%;background:#eee;color:#555;font-size:.72rem;font-weight:800;display:inline-flex;align-items:center;justify-content:center}
+  .pyr-tier.own .st{background:var(--gelb);color:#000}
+  .pyr-tier .eb{margin-left:auto;color:#888;font-size:.72rem;flex:none}
+  .pyr-tier a{color:inherit;text-decoration:none;border-bottom:1px dotted #bbb}
+  .pyr-note{color:#999;font-size:.72rem;margin-top:.4rem}
+
   .chip{background:var(--gelb);color:var(--schwarz);border-radius:999px;padding:.15rem .65rem;font-size:.78rem;font-weight:800}
   .chip.dark{background:var(--schwarz);color:var(--gelb)}
   h3.sec{font-size:1rem;border-left:5px solid var(--gelb);padding-left:.5rem;margin:1.2rem 0 .5rem}
@@ -129,6 +139,8 @@ const GROUPS = [
   {label:"Kleinste", teams:["U9 (F-Junioren)","U9 II (F-Junioren)","U7 (G-Junioren)"]},
 ];
 
+const PYRAMIDE = /*__PYRAMIDE__*/{"U19 (A-Junioren)": [{"st": "1", "name": "U19-DFB-Nachwuchsliga", "fupa": "u19-dfb-nachwuchsliga-gruppe-d", "ebene": "Bundesliga"}, {"st": "2", "name": "U19 Bayernliga", "fupa": "a-junioren-bayernliga", "ebene": "Verband"}, {"st": "3", "name": "U19 Landesliga Nord", "fupa": "u19-landesliga-nord-bayern", "ebene": "Verband"}, {"st": "4", "name": "U19 BOL Oberpfalz", "fupa": "oberpfalz-u19-bezirksoberliga", "ebene": "Bezirk"}, {"st": "5", "name": "U19 Kreisliga Nord AM/WEN", "fupa": "u19-klreisliga-nord-amberg-weiden", "ebene": "Kreis"}, {"st": "5", "name": "U19 Kreisliga Süd AM/WEN", "fupa": "u19-klreisliga-sued-amberg-weiden", "ebene": "Kreis"}, {"st": "6", "name": "U19 Kreisklasse Nord AM/WEN", "fupa": "oberpfalz-u19-kreisklasse-nord-amberg-weiden", "ebene": "Kreis"}, {"st": "6", "name": "U19 Kreisklasse Süd AM/WEN", "fupa": "u19-kreisklasse-sued-amberg-weiden", "ebene": "Kreis"}, {"st": "7", "name": "U19 Gruppe Nord AM/WEN", "fupa": "u19-gruppe1-amberg", "ebene": "Kreis"}, {"st": "7", "name": "U19 Gruppe Süd AM/WEN", "fupa": "u19-gruppe-sued-amberg", "ebene": "Kreis"}], "U17 (B-Junioren)": [{"st": "1", "name": "U17-DFB-Nachwuchsliga", "fupa": "u17-dfb-nachwuchsliga-gruppe-c", "ebene": "Bundesliga"}, {"st": "2", "name": "U17 Bayernliga", "fupa": "b-junioren-bayernliga", "ebene": "Verband"}, {"st": "3", "name": "U17 Landesliga Nord", "fupa": "u17-landesliga-nord-bayern", "ebene": "Verband"}, {"st": "3", "name": "U17 Landesliga Süd", "fupa": "u17-landesliga-sued-bayern", "ebene": "Verband"}, {"st": "4", "name": "U17 BOL Oberpfalz", "fupa": "oberpfalz-u17-bezirksoberliga", "ebene": "Bezirk"}, {"st": "5", "name": "U17 Kreisklasse Nord AM/WEN", "fupa": "oberpfalz-u17-kreisklasse1-amberg-weiden", "ebene": "Kreis"}, {"st": "5", "name": "U17 Kreisklasse Süd AM/WEN", "fupa": "oberpfalz-u17-kreisklasse-q-amberg-weiden", "ebene": "Kreis"}, {"st": "6", "name": "U17 Gruppe AM/WEN", "fupa": "u17-gr1-am", "ebene": "Kreis"}], "U15 (C-Junioren)": [{"st": "1", "name": "U15 Regionalliga Bayern", "fupa": "u15-regionalliga-bayern", "ebene": "Region"}, {"st": "2", "name": "U15 Bayernliga Nord", "fupa": "u15-bayernliga-nord", "ebene": "Verband"}, {"st": "3", "name": "U15 BOL Oberpfalz", "fupa": "oberpfalz-u15-bezirksoberliga", "ebene": "Bezirk"}, {"st": "4", "name": "U15 Kreisliga AM/WEN", "fupa": "u15-kreisliga-amberg-weiden", "ebene": "Kreis"}, {"st": "5", "name": "U15 Kreisklasse Nord AM/WEN", "fupa": "oberpfalz-u15-kreisklasse-amberg-weiden", "ebene": "Kreis"}, {"st": "5", "name": "U15 Kreisklasse Süd AM/WEN", "fupa": "oberpfalz-u15-kreisklasse1-amberg-weiden", "ebene": "Kreis"}, {"st": "5", "name": "U15 Kreisklasse Ost AM/WEN", "fupa": "oberpfalz-u15-kreisklasse2-amberg-weiden", "ebene": "Kreis"}, {"st": "6", "name": "U15 Gruppe Nord AM/WEN", "fupa": "oberpfalz-u15-gruppe1-amberg-weiden", "ebene": "Kreis"}, {"st": "6", "name": "U15 Gruppe Süd AM/WEN", "fupa": "oberpfalz-u15-gruppesued-amberg-weiden", "ebene": "Kreis"}, {"st": "6", "name": "U15 Gruppe Ost AM/WEN", "fupa": "oberpfalz-u15-gruppe-ost-amberg-weiden", "ebene": "Kreis"}, {"st": "6", "name": "U15 Gruppe West AM/WEN", "fupa": "oberpfalz-u15-gruppe-west-amberg-weiden", "ebene": "Kreis"}, {"st": "6", "name": "U15 Gruppe Mitte AM/WEN", "fupa": "u15-gr1-am", "ebene": "Kreis"}], "U13 (D-Junioren)": [{"st": "1", "name": "U13-Förderliga Bundesliga/NLZ", "fupa": "u13-foerderliga-bayern-nlz-bundesliga", "ebene": "Bundesliga"}, {"st": "2", "name": "U13 BOL Oberpfalz", "fupa": "u13-bezirksoberliga-oberpfalz", "ebene": "Bezirk"}, {"st": "3", "name": "U13 Kreisliga AM/WEN", "fupa": "oberpfalz-u13-kl", "ebene": "Kreis"}, {"st": "4", "name": "U13 Kreisklasse Nord AM/WEN", "fupa": "u13-kreisliga2-amberg", "ebene": "Kreis"}, {"st": "4", "name": "U13 Kreisklasse Süd AM/WEN", "fupa": "u13-qkknord-amberg", "ebene": "Kreis"}, {"st": "5", "name": "U13 Kreisklasse 3 AM/WEN", "fupa": "oberpfalz-u13-qkksued-amberg", "ebene": "Kreis"}]};
+const TEAM_JG = /*__TEAMJG__*/{"U19 (A-Junioren)": "U19 (A-Junioren)", "U17 (B-Junioren)": "U17 (B-Junioren)", "U15 (C-Junioren)": "U15 (C-Junioren)", "U13 (D-Junioren)": "U13 (D-Junioren)", "U13 II (D-Junioren)": "U13 (D-Junioren)", "U13 III (D-Junioren)": "U13 (D-Junioren)"};
 const WD = ['So','Mo','Di','Mi','Do','Fr','Sa'];
 function weekday(dateStr){
   const [dd,mm,yy] = dateStr.split('.').map(Number);
@@ -257,6 +269,22 @@ function gameRow(g, withScore){
   </div>`;
 }
 
+
+function pyrBlock(team, liga){
+  const jg = TEAM_JG[team];
+  if (!jg || !PYRAMIDE[jg]) return '';
+  const tiers = PYRAMIDE[jg];
+  const norm = s => s.replace(/\s+/g,' ').replace(/AM\/WEN/g,'AM/WEN').toLowerCase();
+  let rows = '';
+  for (const t of tiers){
+    const own = norm(liga).includes(norm(t.name)) || norm(t.name).includes(norm(liga)) ||
+                (liga.includes('Q-KK') && t.name.includes('Kreisklasse') && liga.includes('Süd') && t.name.includes('Süd')) ||
+                (liga.includes('Q-KK') && t.name.includes('Kreisklasse') && liga.includes('Nord') && t.name.includes('Nord'));
+    rows += `<div class="pyr-tier${own?' own':''}"><span class="st">${t.st}</span><span><a href="https://www.fupa.net/league/${t.fupa}" target="_blank" rel="noopener">${esc(t.name)}</a>${own?' ⭐':''}</span><span class="eb">${esc(t.ebene)}</span></div>`;
+  }
+  return `<div class="pyr"><h3>🏟️ Ligen-Pyramide ${esc(jg.replace(/ \(.-Junioren\)/,''))}</h3>${rows}<div class="pyr-note">Von der untersten Gruppe bis zur Spitze — Klick öffnet Tabelle &amp; Ergebnisse auf FuPa. ⭐ = Spielklasse des eigenen Teams.</div></div>`;
+}
+
 function select(team){
   document.querySelectorAll('.tbtn').forEach(b => b.classList.toggle('active', b.dataset.team === team));
   const d = DATA[team];
@@ -272,6 +300,7 @@ function select(team){
   let h = `<div class="team-head">${crest(team)}<h2>${esc(team)}</h2><span class="chip">${esc(m.liga)}</span>`;
   if (m.platz != null) h += `<span class="chip dark">Platz ${m.platz} · ${esc(m.tv)}</span>`;
   h += `</div>`;
+  h += pyrBlock(team, m.liga);
 
   h += `<h3 class="sec">📅 Nächste Spiele</h3><div class="card">`;
   h += d.games.length ? d.games.map(g => gameRow(g, false)).join('')
