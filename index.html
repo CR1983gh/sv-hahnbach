@@ -326,7 +326,6 @@ function select(team){
   let h = `<div class="team-head">${crest(team)}<h2>${esc(team)}</h2><span class="chip">${esc(m.liga)}</span>`;
   if (m.platz != null) h += `<span class="chip dark">Platz ${m.platz} · ${esc(m.tv)}</span>`;
   h += `</div>`;
-  h += pyrBlock(team, m.liga, m.staffel);
 
   h += `<h3 class="sec">📅 Nächste Spiele</h3><div class="card">`;
   h += d.games.length ? d.games.map(g => gameRow(g, false)).join('')
@@ -354,6 +353,8 @@ function select(team){
   } else {
     h += `<h3 class="sec">📊 Tabelle</h3><p class="note">Für ${esc(m.liga)} wird beim BFV keine Tabelle geführt (Kinderfestival / Freundschaftsrunde).</p>`;
   }
+
+  h += pyrBlock(team, m.liga, m.staffel);
 
   h += `<p class="links" style="margin-top:1rem"><a href="${m.bfv}" target="_blank" rel="noopener">Team auf bfv.de →</a>
     ${m.fupa ? `<a href="${m.fupa}" target="_blank" rel="noopener">Liga auf FuPa →</a>` : ''}</p>`;
