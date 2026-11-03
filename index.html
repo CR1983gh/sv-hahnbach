@@ -28,11 +28,11 @@
   .team-head h2{font-size:1.3rem}
   .pyr{margin-top:1.1rem;background:#fff;border:1px solid #e3e3e3;border-radius:12px;padding:.9rem 1rem}
   .pyr h3{font-size:.95rem;margin-bottom:.55rem;display:flex;align-items:center;gap:.4rem}
-  .pyr-tier{display:flex;align-items:center;gap:.5rem;padding:.42rem .55rem;border-radius:8px;margin-bottom:.28rem;font-size:.86rem}
+  .pyr-tier{display:flex;align-items:center;gap:.5rem;padding:.42rem .6rem;border-radius:0 8px 8px 0;margin-bottom:.28rem;font-size:.86rem;background:#fafaf7}
   .pyr-tier.own{background:#FFF3C4;border:1.5px solid var(--gelb);font-weight:800}
-  .pyr-tier .st{flex:none;width:1.5rem;height:1.5rem;border-radius:50%;background:#eee;color:#555;font-size:.72rem;font-weight:800;display:inline-flex;align-items:center;justify-content:center}
-  .pyr-tier.own .st{background:var(--gelb);color:#000}
-  .pyr-tier .eb{margin-left:auto;color:#888;font-size:.72rem;flex:none}
+  .pyr-stepbar{display:flex;align-items:center;gap:.5rem;color:#fff;font-size:.74rem;font-weight:800;letter-spacing:.03em;padding:.3rem .6rem;border-radius:8px;margin:.7rem 0 .35rem;text-shadow:0 1px 2px rgba(0,0,0,.25)}
+  .pyr-stepbar:first-of-type{margin-top:0}
+  .pyr-stno{background:rgba(255,255,255,.25);border-radius:999px;padding:.08rem .55rem;font-size:.68rem;flex:none}
   .pyr-tier a{color:inherit;text-decoration:none;border-bottom:1px dotted #bbb}
   .pyr-note{color:#999;font-size:.72rem;margin-top:.4rem}
 
@@ -275,13 +275,26 @@ function pyrBlock(team, liga, staffelId){
   if (!jg || !PYRAMIDE[jg]) return '';
   const tiers = PYRAMIDE[jg];
   const norm = s => s.replace(/\s+/g,' ').replace(/AM\/WEN/g,'AM/WEN').replace(/\(D-?Jun\.?\)/g,'').toLowerCase();
-  let rows = '';
+  const EBFARB = {
+    'Bundes':  {c:'#b3001b', h:'🔴 Bundes-/NLZ-Ebene'},
+    'Region':  {c:'#6a3fb5', h:'🟣 Regionalebene'},
+    'Verband': {c:'#0b62c4', h:'🔵 Verbandsebene (BFV)'},
+    'Bezirk':  {c:'#1b8a3a', h:'🟢 Bezirksebene'},
+    'Kreis':   {c:'#b96a00', h:'🟠 Kreisebene'}
+  };
+  let rows = '', lastSt = null;
   for (const t of tiers){
+    if (t.st !== lastSt){
+      lastSt = t.st;
+      const eb = EBFARB[t.ebene] || {c:'#6b6b6b', h:''};
+      rows += `<div class="pyr-stepbar" style="background:${eb.c}"><span class="pyr-stno">Stufe ${t.st}</span>${esc(eb.h)}</div>`;
+    }
     const own = (staffelId && t.id === staffelId) ||
                 (!staffelId && (norm(liga).includes(norm(t.name)) || norm(t.name).includes(norm(liga))));
     const label = esc(t.name) + (own ? ' ⭐' : '');
     const inner = t.id ? `<a href="https://www.bfv.de/ergebnisse/wettbewerb/-/${t.id}" target="_blank" rel="noopener">${label}</a>` : label;
-    rows += `<div class="pyr-tier${own?' own':''}"><span class="st">${t.st}</span><span>${inner}</span><span class="eb">${esc(t.ebene)}</span></div>`;
+    const eb = EBFARB[t.ebene] || {c:'#6b6b6b'};
+    rows += `<div class="pyr-tier${own?' own':''}" style="border-left:4px solid ${eb.c}"><span>${inner}</span></div>`;
   }
   return `<div class="pyr"><h3>🏟️ Ligen-Pyramide ${esc(jg.replace(/ \(.-Junioren\)/,''))}</h3>${rows}<div class="pyr-note">Quelle: BFV — von der untersten Gruppe bis zur Spitze. Klick öffnet Tabelle &amp; Ergebnisse auf bfv.de. ⭐ = Spielklasse des eigenen Teams.</div></div>`;
 }
