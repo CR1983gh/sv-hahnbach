@@ -5,31 +5,35 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SV Hahnbach 1949 e.V. — Alle Mannschaften</title>
 <style>
-  :root{--gelb:#ffd200;--schwarz:#111;--gruen:#1b8a3a;--rot:#c0392b;--hell:#f7f5ef;--grau:#6b6b6b;--card:#fff}
+  :root{--gelb:#ffd200;--gelbfg:#111;--schwarz:#111;--gruen:#1b8a3a;--rot:#c0392b;--hell:#f7f5ef;--grau:#6b6b6b;--card:#fff;--fg:#111;--line:#eee;--line2:#e3e3e3;--hover:#fffbe6;--crestbg:#fff;--akz:#1a6fb5;--atagbg:#e8e8e8;--win:#eaf7ec;--draw:#fdf3e3;--lose:#fdecec;--abs:#f0f0f0}
+  html.th-dark{--gelb:#ffd200;--gelbfg:#111;--schwarz:#000;--hell:#14161a;--grau:#9aa0a8;--card:#1e2126;--fg:#e8e8e8;--line:#2c3038;--line2:#343943;--hover:#2a2e35;--crestbg:#fff;--akz:#6ab0ff;--atagbg:#343943;--win:#173221;--draw:#33290f;--lose:#38181a;--abs:#26292e}
+  html.th-blau{--gelb:#1d6fd6;--gelbfg:#fff;--schwarz:#0d3b73;--hell:#eef4fb;--card:#fff;--fg:#12253d;--grau:#5c6b7d;--line:#dde7f2;--line2:#c9d8ea;--hover:#e3eefc;--crestbg:#fff;--akz:#0d62c4;--atagbg:#dbe7f5;--win:#e4f4e8;--draw:#fdf3e3;--lose:#fdecec;--abs:#eef1f5}
+  html.th-gruen{--gelb:#8bc34a;--gelbfg:#14300a;--schwarz:#1b4d2b;--hell:#eff7ee;--card:#fff;--fg:#17301d;--grau:#5c7263;--line:#dcead9;--line2:#c6dcc2;--hover:#e6f4e1;--crestbg:#fff;--akz:#2e7d32;--atagbg:#d8e8d4;--win:#e0f3e2;--draw:#f7f3dc;--lose:#fbe9e7;--abs:#eaf0ea}
+  html.th-bayern{--gelb:#008a3b;--gelbfg:#fff;--schwarz:#dc052d;--hell:#fdf1f2;--card:#fff;--fg:#3c0a12;--grau:#8a5a61;--line:#f3d5d8;--line2:#eabcc1;--hover:#fde8ea;--crestbg:#fff;--akz:#007a33;--atagbg:#f6dadd;--win:#e2f4e7;--draw:#fdf3e3;--lose:#fde3e3;--abs:#f4ecee}
   *{box-sizing:border-box;margin:0;padding:0}
   html{-webkit-text-size-adjust:100%}
-  body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--hell);color:var(--schwarz);line-height:1.45}
+  body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--hell);color:var(--fg);line-height:1.45}
   header{background:var(--schwarz);color:#fff;padding:1.6rem 1rem 1.2rem;text-align:center;position:relative}
   header::after{content:"";position:absolute;left:0;right:0;bottom:0;height:6px;background:linear-gradient(90deg,var(--gelb) 0 50%,#fff 50% 100%)}
   .wappen{width:64px;height:64px;object-fit:contain;background:#fff;border-radius:14px;border:3px solid #fff;margin-bottom:.4rem;box-shadow:0 2px 8px rgba(0,0,0,.45)}
   div.wappen{display:inline-flex;align-items:center;justify-content:center;font-weight:900;font-size:1.2rem;letter-spacing:-1px;background:var(--gelb);color:var(--schwarz);border-radius:50%}
   header h1{font-size:1.5rem;letter-spacing:.5px}
   header p{color:#cfcfcf;margin-top:.2rem;font-size:.88rem}
-  .picker{position:sticky;top:0;z-index:20;background:#fff;border-bottom:2px solid var(--gelb);box-shadow:0 2px 6px rgba(0,0,0,.08)}
+  .picker{position:sticky;top:0;z-index:20;background:var(--card);border-bottom:2px solid var(--gelb);box-shadow:0 2px 6px rgba(0,0,0,.08)}
   .picker-inner{max-width:980px;margin:0 auto;display:flex;gap:.35rem;flex-wrap:wrap;justify-content:center;align-items:center;padding:.55rem .6rem}
   .group-label{font-size:.72rem;font-weight:800;text-transform:uppercase;color:var(--grau);margin:0 .2rem 0 .5rem;letter-spacing:.5px}
-  .tbtn{border:2px solid #ddd;background:#fff;color:var(--schwarz);border-radius:999px;padding:.25rem .7rem .25rem .35rem;font-size:.82rem;font-weight:700;cursor:pointer;transition:all .15s;display:inline-flex;align-items:center;gap:.35rem;white-space:nowrap}
-  .tbtn:hover{border-color:var(--gelb);background:#fffbe6}
+  .tbtn{border:2px solid var(--line2);background:var(--card);color:var(--fg);border-radius:999px;padding:.25rem .7rem .25rem .35rem;font-size:.82rem;font-weight:700;cursor:pointer;transition:all .15s;display:inline-flex;align-items:center;gap:.35rem;white-space:nowrap}
+  .tbtn:hover{border-color:var(--gelb);background:var(--hover)}
   .tbtn.active{background:var(--schwarz);color:var(--gelb);border-color:var(--schwarz)}
-  .tbtn img,.tbtn .crest-fb{width:22px;height:22px;border-radius:50%;object-fit:contain;background:#fff;flex:none}
+  .tbtn img,.tbtn .crest-fb{width:22px;height:22px;border-radius:50%;object-fit:contain;background:var(--crestbg);flex:none}
   main{max-width:980px;margin:0 auto;padding:1rem .8rem}
   .team-head{display:flex;flex-wrap:wrap;align-items:center;gap:.7rem;margin-bottom:.9rem}
-  .team-head img{width:42px;height:42px;border-radius:50%;object-fit:contain;background:#fff;border:2px solid var(--gelb)}
+  .team-head img{width:42px;height:42px;border-radius:50%;object-fit:contain;background:var(--crestbg);border:2px solid var(--gelb)}
   .team-head h2{font-size:1.3rem}
   .pyr{margin-top:1.4rem}
-  .pyr .tablewrap{border:1px solid #e3e3e3;border-radius:0}
-  .pyr tr.hahnbach td{background:var(--gelb);font-weight:800}
-  tr.hahnbach td{background:var(--gelb);font-weight:800}
+  .pyr .tablewrap{border:1px solid var(--line2);border-radius:0}
+  .pyr tr.hahnbach td{background:var(--gelb);color:var(--gelbfg);font-weight:800}
+  tr.hahnbach td{background:var(--gelb);color:var(--gelbfg);font-weight:800}
   /* Auf-/Abstiegszonen (Quelle bfv.de): farbiger Randbalken links */
   tr.z-A  td:first-child{box-shadow:inset 4px 0 0 #2e9e4f}
   tr.z-AR td:first-child{box-shadow:inset 4px 0 0 #8bc34a}
@@ -44,15 +48,15 @@
   tr.pyr-hdr td{color:#fff;font-size:.74rem;font-weight:800;letter-spacing:.03em;padding:.34rem .5rem;text-shadow:0 1px 2px rgba(0,0,0,.25);border-bottom:none}
   .pyr-stno{background:rgba(255,255,255,.25);border-radius:999px;padding:.08rem .55rem;font-size:.68rem;margin-right:.5rem}
   .pyr a{color:inherit;text-decoration:none;border-bottom:1px dotted #bbb}
-  .pyr-note{color:#999;font-size:.72rem;margin-top:.4rem}
+  .pyr-note{color:var(--grau);font-size:.72rem;margin-top:.4rem}
 
   .chip{background:var(--gelb);color:var(--schwarz);border-radius:999px;padding:.15rem .65rem;font-size:.78rem;font-weight:800}
   .chip.dark{background:var(--schwarz);color:var(--gelb)}
   h3.sec{font-size:1rem;border-left:5px solid var(--gelb);padding-left:.5rem;margin:1.2rem 0 .5rem}
   .card{background:var(--card);border-radius:12px;padding:.7rem .8rem;box-shadow:0 1px 4px rgba(0,0,0,.08);margin-bottom:.8rem}
   td.gdate{font-weight:700;font-size:.78rem;color:var(--grau);white-space:nowrap;vertical-align:middle}
-  td.gdate .wd{color:#1a6fb5}
-  .venue3{color:#9a9a9a;font-weight:400;font-size:.68rem;white-space:normal;max-width:8em;line-height:1.15}
+  td.gdate .wd{color:var(--akz)}
+  .venue3{color:var(--grau);font-weight:400;font-size:.68rem;white-space:normal;max-width:8em;line-height:1.15}
   td.gteam{white-space:nowrap;overflow:hidden;width:34%;vertical-align:middle}
   .gw{display:flex;align-items:center;min-width:0}
   .gteam.home .gw{justify-content:flex-end}
@@ -62,10 +66,10 @@
   td.gteam .crest{width:20px;height:20px;margin:0 .4rem;vertical-align:middle}
   td.gscore{text-align:center;white-space:nowrap}
   td.gha{white-space:nowrap}
-  tr.g-S{background:#eaf7ec}
-  tr.g-U{background:#fdf3e3}
-  tr.g-N{background:#fdecec}
-  tr.g-A{background:#f0f0f0}
+  tr.g-S{background:var(--win)}
+  tr.g-U{background:var(--draw)}
+  tr.g-N{background:var(--lose)}
+  tr.g-A{background:var(--abs)}
   @media (max-width: 620px){
     /* Spiele-Tabellen muessen ohne seitliches Scrollen passen */
     .tablewrap:has(.gdate){overflow:visible}
@@ -87,40 +91,40 @@
   .spiel:last-child{border-bottom:none}
   .row1{display:flex;align-items:center;gap:.5rem;min-width:0;justify-content:space-between}
   .when{font-weight:700;font-size:.82rem;color:var(--grau);white-space:nowrap}
-  .when .wd{color:#1a6fb5}
+  .when .wd{color:var(--akz)}
   .vsline{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:.2rem .5rem;font-size:.9rem;margin-top:.15rem}
   .vsline .cell{display:flex;align-items:center;gap:.35rem;min-width:0}
   .vsline .cell.home{justify-content:flex-end}
   .vsline .cell.away{justify-content:flex-start}
   .vsline .t{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .vsline .mid{flex:none}
-  .crest{width:22px;height:22px;border-radius:50%;object-fit:contain;background:#f2f2f2;flex:none}
-  .crest-fb{display:inline-flex;width:22px;height:22px;border-radius:50%;background:#eee;align-items:center;justify-content:center;font-size:.7rem;flex:none}
+  .crest{width:22px;height:22px;border-radius:50%;object-fit:contain;background:var(--crestbg);flex:none}
+  .crest-fb{display:inline-flex;width:22px;height:22px;border-radius:50%;background:var(--crestbg);align-items:center;justify-content:center;font-size:.7rem;flex:none}
   .tagcol{display:flex;align-items:center;gap:.4rem;flex:none}
   .venue2{display:inline;color:var(--grau);font-weight:400;font-size:.75rem;margin-left:.4rem}
   .home-tag{font-size:.68rem;font-weight:800;border-radius:4px;padding:.05rem .35rem;white-space:nowrap}
   .tag-l{display:none}
   @media(min-width:760px){.tag-s{display:none}.tag-l{display:inline}}
   .home-tag.h{background:var(--gelb);color:var(--schwarz)}
-  .home-tag.a{background:#e8e8e8;color:#555}
+  .home-tag.a{background:var(--atagbg);color:var(--grau)}
   .venue{font-size:.72rem;color:var(--grau);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:180px}
   .score{font-weight:900;background:var(--schwarz);color:var(--gelb);border-radius:6px;padding:.05rem .4rem;white-space:nowrap;flex:none}
   .score.sc-S{background:var(--gruen);color:#fff}
   .score.sc-U{background:#e08a00;color:#fff}
   .score.sc-N{background:var(--rot);color:#fff}
   .score.sc-A{background:#6b6b6b;color:#fff;font-size:.68rem;letter-spacing:.5px}
-  .spiel.resrow-A{background:#f0f0f0;border-left:4px solid #6b6b6b;border-radius:0 10px 10px 0;padding-left:.5rem}
+  .spiel.resrow-A{background:var(--abs);border-left:4px solid #6b6b6b;border-radius:0 10px 10px 0;padding-left:.5rem}
   .res-S{font-size:.72rem;font-weight:800;color:#fff;background:var(--gruen);padding:.15rem .5rem;border-radius:999px}
   .res-U{font-size:.72rem;font-weight:800;color:#fff;background:#e08a00;padding:.15rem .5rem;border-radius:999px}
   .res-N{font-size:.72rem;font-weight:800;color:#fff;background:var(--rot);padding:.15rem .5rem;border-radius:999px}
-  .spiel.resrow-S{background:#eaf7ec;border-left:4px solid var(--gruen)}
-  .spiel.resrow-U{background:#fdf3e3;border-left:4px solid #e08a00}
-  .spiel.resrow-N{background:#fdecec;border-left:4px solid var(--rot)}
+  .spiel.resrow-S{background:var(--win);border-left:4px solid var(--gruen)}
+  .spiel.resrow-U{background:var(--draw);border-left:4px solid #e08a00}
+  .spiel.resrow-N{background:var(--lose);border-left:4px solid var(--rot)}
   .spiel.resrow-S,.spiel.resrow-U,.spiel.resrow-N{border-radius:0 10px 10px 0;padding-left:.5rem}
   .tablewrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:0}
-  table{width:100%;border-collapse:collapse;font-size:.84rem;background:#fff}
+  table{width:100%;border-collapse:collapse;font-size:.84rem;background:var(--card)}
   th{background:var(--schwarz);color:var(--gelb);text-align:left;padding:.45rem .5rem;font-size:.74rem;text-transform:uppercase;letter-spacing:.4px;white-space:nowrap}
-  td{padding:.4rem .5rem;border-bottom:1px solid #eee;white-space:nowrap}
+  td{padding:.4rem .5rem;border-bottom:1px solid var(--line);white-space:nowrap}
   td.tname{white-space:normal;min-width:150px}
   td.tname .crest{width:20px;height:20px;margin-right:.45rem;vertical-align:middle}
   /* core columns (Pl., Team, Sp., Diff., Pkt.) fit the phone screen; extras scroll sideways */
@@ -129,8 +133,8 @@
     td.tname{min-width:125px}
     td.pkt{font-weight:800}
   }
-  tr.hahnbach td{background:var(--gelb);font-weight:800}
-  .links a{color:#1a6fb5;font-size:.82rem;text-decoration:none;margin-right:.8rem}
+  tr.hahnbach td{background:var(--gelb);color:var(--gelbfg);font-weight:800}
+  .links a{color:var(--akz);font-size:.82rem;text-decoration:none;margin-right:.8rem}
   .links a:hover{text-decoration:underline}
   .empty{color:var(--grau);font-style:italic;padding:.4rem .2rem}
   footer{background:var(--schwarz);color:#bbb;text-align:center;padding:1.1rem;font-size:.78rem;margin-top:1.5rem}
@@ -146,6 +150,16 @@
     .tagcol{grid-column:3;grid-row:1}
     .venue2{display:none}
   }
+  .themepick{position:absolute;top:.7rem;right:.7rem;display:flex;gap:.35rem;z-index:5}
+  .thsw{width:22px;height:22px;border-radius:50%;border:2px solid rgba(255,255,255,.6);cursor:pointer;padding:0;transition:transform .12s}
+  .thsw:hover{transform:scale(1.18)}
+  .thsw.on{border-color:#fff;box-shadow:0 0 0 2px var(--gelb)}
+  .th-sw-sg{background:linear-gradient(135deg,#111 0 50%,#ffd200 50% 100%)}
+  .th-sw-dark{background:linear-gradient(135deg,#000 0 50%,#1e2126 50% 100%)}
+  .th-sw-blau{background:linear-gradient(135deg,#0d3b73 0 50%,#1d6fd6 50% 100%)}
+  .th-sw-gruen{background:linear-gradient(135deg,#1b4d2b 0 50%,#8bc34a 50% 100%)}
+  .th-sw-bayern{background:linear-gradient(135deg,#dc052d 0 50%,#008a3b 50% 100%)}
+  @media (max-width:520px){.thsw{width:18px;height:18px}}
 </style>
 </head>
 <body>
@@ -155,6 +169,7 @@
        onerror="this.outerHTML='<div class=&quot;wappen&quot;>SCH</div>'">
   <h1>SV Hahnbach 1949 e.V.</h1>
   <p>Schwarz-Gelb aus der Oberpfalz · Alle Mannschaften auf einen Blick</p>
+  <div class="themepick" id="themepick" title="Farbtheme waehlen"></div>
 </header>
 
 <div class="picker"><div class="picker-inner" id="picker"></div></div>
@@ -446,6 +461,26 @@ function select(team){
   });
   window.scrollTo({top: 0, behavior: 'smooth'});
 }
+
+
+// ---- Themes ----
+const THEMES = [['', 'Schwarz-Gelb (Standard)', 'th-sw-sg'], ['th-dark', 'Dark Mode', 'th-sw-dark'],
+                ['th-blau', 'Blau', 'th-sw-blau'], ['th-gruen', 'Gruen', 'th-sw-gruen'],
+                ['th-bayern', 'Bayern', 'th-sw-bayern']];
+function applyTheme(t){
+  document.documentElement.className = document.documentElement.className.replace(/\bth-\w+\b/g,'').trim();
+  if (t) document.documentElement.classList.add(t);
+  document.querySelectorAll('.thsw').forEach((b,i)=>b.classList.toggle('on', THEMES[i][0]===t));
+  try{ localStorage.setItem('svh-theme', t); }catch(e){}
+}
+(function(){
+  const pick = document.getElementById('themepick');
+  pick.innerHTML = THEMES.map(([id,title,cls])=>`<button class="thsw ${cls}" title="${title}" aria-label="${title}"></button>`).join('');
+  pick.querySelectorAll('.thsw').forEach((b,i)=>b.addEventListener('click',()=>applyTheme(THEMES[i][0])));
+  let saved = '';
+  try{ saved = localStorage.getItem('svh-theme') || ''; }catch(e){}
+  applyTheme(saved);
+})();
 
 select('U13 (D-Junioren)');
 
