@@ -60,14 +60,14 @@
     /* Spiele-Tabellen muessen ohne seitliches Scrollen passen */
     .tablewrap:has(.gdate){overflow:visible}
     .tablewrap:has(.gdate) table{table-layout:fixed;width:100%}
-    td.gdate, th:nth-child(1){font-size:.68rem;width:21%}
+    td.gdate, th:nth-child(1){font-size:.68rem;width:20%}
     .yr, .venue3{display:none}
-    td.gteam, th:nth-child(2), th:nth-child(4){width:33%}
+    td.gteam, th:nth-child(2), th:nth-child(4){width:33.5%}
     .gscore, th:nth-child(3){width:10%}
     td.gteam .crest{width:17px;height:17px;margin:0 .25rem}
     .gscore, .score{font-size:.74rem;padding:.03rem .3rem}
-    td.gha, th.hc{width:4%;padding:0 0 0 .15rem}
-    .home-tag{padding:.02rem .18rem;font-size:.6rem}
+    td.gha, th.hc{width:6%;padding:0;overflow:hidden}
+    .home-tag{padding:.02rem .14rem;font-size:.58rem;margin:0}
     .tag-s{display:inline}.tag-l{display:none}
   }
   .spiel{display:block;padding:.55rem .2rem;border-bottom:1px dashed #e2e0d8}
@@ -291,7 +291,9 @@ function gameRow(g, withScore){
     : `<span style="color:var(--grau);flex:none">–</span>`;
   let hn = shortName(g.home), an = shortName(g.away);
   const font = '700 ' + (window.innerWidth >= 760 ? '14.7px' : '14.4px') + " 'Segoe UI',system-ui,sans-serif";
-  const maxW = Math.max(120, (window.innerWidth - 160) / 2);
+  const maxW = window.innerWidth <= 620
+      ? Math.max(80, (window.innerWidth - 235) / 2)
+      : Math.max(120, (window.innerWidth - 160) / 2);
   hn = fitName(hn, maxW, font); an = fitName(an, maxW, font);
   const rowCls = withScore && !isAbsage ? 'g-' + cls : (isAbsage ? 'g-A' : '');
   return `<tr class="${rowCls}">
