@@ -42,6 +42,20 @@
   .chip.dark{background:var(--schwarz);color:var(--gelb)}
   h3.sec{font-size:1rem;border-left:5px solid var(--gelb);padding-left:.5rem;margin:1.2rem 0 .5rem}
   .card{background:var(--card);border-radius:12px;padding:.7rem .8rem;box-shadow:0 1px 4px rgba(0,0,0,.08);margin-bottom:.8rem}
+  td.gdate{font-weight:700;font-size:.78rem;color:var(--grau);white-space:nowrap;vertical-align:middle}
+  td.gdate .wd{color:#1a6fb5}
+  .venue3{color:#9a9a9a;font-weight:400;font-size:.68rem;white-space:normal;max-width:8em;line-height:1.15}
+  td.gteam{white-space:nowrap;overflow:hidden;width:34%}
+  td.gteam.home{justify-content:flex-end;text-align:right}
+  td.gteam.away{text-align:left}
+  td.gteam .t{vertical-align:middle;display:inline-block;max-width:calc(100% - 30px);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  td.gteam .crest{width:20px;height:20px;margin:0 .4rem;vertical-align:middle}
+  td.gscore{text-align:center;white-space:nowrap}
+  td.gha{white-space:nowrap}
+  tr.g-S{background:#eaf7ec}
+  tr.g-U{background:#fdf3e3}
+  tr.g-N{background:#fdecec}
+  tr.g-A{background:#f0f0f0}
   .spiel{display:block;padding:.55rem .2rem;border-bottom:1px dashed #e2e0d8}
   .spiel:last-child{border-bottom:none}
   .row1{display:flex;align-items:center;gap:.5rem;min-width:0;justify-content:space-between}
@@ -263,12 +277,16 @@ function gameRow(g, withScore){
     : `<span style="color:var(--grau);flex:none">–</span>`;
   let hn = shortName(g.home), an = shortName(g.away);
   const font = '700 ' + (window.innerWidth >= 760 ? '14.7px' : '14.4px') + " 'Segoe UI',system-ui,sans-serif";
-  const maxW = Math.max(120, (window.innerWidth - 110) / 2);
+  const maxW = Math.max(120, (window.innerWidth - 160) / 2);
   hn = fitName(hn, maxW, font); an = fitName(an, maxW, font);
-  return `<div class="spiel${withScore && !isAbsage ? ' resrow-' + cls : (isAbsage ? ' resrow-A' : '')}">
-    <div class="row1"><span class="when"><span class="wd">${weekday(g.date)}.</span> ${esc(g.date)}${g.time ? ' · ' + esc(g.time) : ''}</span><span class="venue2">${venue}</span><span class="tagcol"><span class="home-tag ${isHome?'h':'a'}"><span class="tag-s">${isHome?'H':'A'}</span><span class="tag-l">${isHome?'HEIM':'AUSWÄRTS'}</span></span></span></div>
-    <div class="vsline"><span class="cell home"><span class="t">${esc(hn)}</span>${crest(g.home)}</span><span class="mid">${mid}</span><span class="cell away">${crest(g.away)}<span class="t">${esc(an)}</span></span></div>
-  </div>`;
+  const rowCls = withScore && !isAbsage ? 'g-' + cls : (isAbsage ? 'g-A' : '');
+  return `<tr class="${rowCls}">
+    <td class="gdate"><span class="wd">${weekday(g.date)}.</span> ${esc(g.date)}${g.time ? '<br>' + esc(g.time) : ''}${venue ? '<div class="venue3">' + venue + '</div>' : ''}</td>
+    <td class="gteam home"><span class="t">${esc(hn)}</span>${crest(g.home)}</td>
+    <td class="gscore">${mid}</td>
+    <td class="gteam away">${crest(g.away)}<span class="t">${esc(an)}</span></td>
+    <td class="gha"><span class="home-tag ${isHome?'h':'a'}"><span class="tag-s">${isHome?'H':'A'}</span><span class="tag-l">${isHome?'HEIM':'AUSWÄRTS'}</span></span></td>
+  </tr>`;
 }
 
 
@@ -330,17 +348,18 @@ function select(team){
   if (m.platz != null) h += `<span class="chip dark">Platz ${m.platz} · ${esc(m.tv)}</span>`;
   h += `</div>`;
 
-  h += `<h3 class="sec">📅 Nächste Spiele</h3><div class="card">`;
+  const GAME_HEAD = `<thead><tr><th>Datum</th><th>Heim</th><th></th><th>Auswärts</th><th></th></tr></thead>`;
+  h += `<h3 class="sec">📅 Nächste Spiele</h3><div class="tablewrap"><table>${GAME_HEAD}<tbody>`;
   h += d.games.length ? d.games.map(g => gameRow(g, false)).join('')
-                     : `<div class="empty">Derzeit keine Spiele angesetzt.</div>`;
-  h += `</div>`;
+                     : `<tr><td colspan="5"><div class="empty">Derzeit keine Spiele angesetzt.</div></td></tr>`;
+  h += `</tbody></table></div>`;
 
-  h += `<h3 class="sec">🏁 Ergebnisse Saison 26/27</h3><div class="card">`;
+  h += `<h3 class="sec">🏁 Ergebnisse Saison 26/27</h3><div class="tablewrap"><table>${GAME_HEAD}<tbody>`;
   const JUNK = /TORREICHSTES|HÖCHSTER|HÖCHSTE|ZUSAMMENFASSUNG|SPIELFREI|Abgesetzt|\d\s-\s\(?SG\)?\sSV\sHahnbach/;
   const res = (d.results||[]).filter(g => !JUNK.test(g.home) && !JUNK.test(g.away)).slice().reverse();
   h += res.length ? res.map(g => gameRow(g, true)).join('')
-                  : `<div class="empty">Noch keine Ergebnisse in dieser Saison (bzw. keine erfassten Pflichtspielergebnisse).</div>`;
-  h += `</div>`;
+                  : `<tr><td colspan="5"><div class="empty">Noch keine Ergebnisse in dieser Saison (bzw. keine erfassten Pflichtspielergebnisse).</div></td></tr>`;
+  h += `</tbody></table></div>`;
 
   if (d.standings && d.standings.length) {
     h += `<h3 class="sec">📊 Tabelle — ${esc(m.liga)}</h3><div class="tablewrap">`;
@@ -365,7 +384,7 @@ function select(team){
   view.innerHTML = h;
   // precise fit: shorten or shrink font so no name is cut off
   const font = getComputedStyle(document.body).fontFamily;
-  view.querySelectorAll('.vsline .t').forEach(el => {
+  view.querySelectorAll('.gteam .t').forEach(el => {
     const cs = getComputedStyle(el);
     const f = cs.fontWeight + ' ' + cs.fontSize + ' ' + font;
     let txt = el.textContent;
