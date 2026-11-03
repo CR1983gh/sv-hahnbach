@@ -45,7 +45,9 @@
   td.gdate{font-weight:700;font-size:.78rem;color:var(--grau);white-space:nowrap;vertical-align:middle}
   td.gdate .wd{color:#1a6fb5}
   .venue3{color:#9a9a9a;font-weight:400;font-size:.68rem;white-space:normal;max-width:8em;line-height:1.15}
-  td.gteam{white-space:nowrap;overflow:hidden;width:34%;display:flex;align-items:center}
+  td.gteam{white-space:nowrap;overflow:hidden;width:34%;vertical-align:middle}
+  .gw{display:flex;align-items:center;min-width:0}
+  .gteam.home .gw{justify-content:flex-end}
   td.gteam.home{justify-content:flex-end;text-align:right}
   td.gteam.away{text-align:left}
   td.gteam .t{vertical-align:middle;display:inline-block;max-width:calc(100% - 30px);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -300,9 +302,9 @@ function gameRow(g, withScore){
   const rowCls = withScore && !isAbsage ? 'g-' + cls : (isAbsage ? 'g-A' : '');
   return `<tr class="${rowCls}">
     <td class="gdate"><span class="wd">${weekday(g.date)}.</span> ${esc(g.date.slice(0,6))}<span class="yr">.${esc(g.date.slice(8))}</span>${g.time ? '<br>' + esc(g.time) : ''}${venue ? '<div class="venue3">' + venue + '</div>' : ''}</td>
-    <td class="gteam home"><span class="t">${esc(hn)}</span>${crest(g.home)}</td>
+    <td class="gteam home"><span class="gw"><span class="t">${esc(hn)}</span>${crest(g.home)}</span></td>
     <td class="gscore">${mid}</td>
-    <td class="gteam away">${crest(g.away)}<span class="t">${esc(an)}</span></td>
+    <td class="gteam away"><span class="gw">${crest(g.away)}<span class="t">${esc(an)}</span></span></td>
     <td class="gha"><span class="home-tag ${isHome?'h':'a'}"><span class="tag-s">${isHome?'H':'A'}</span><span class="tag-l">${isHome?'HEIM':'AUSWÄRTS'}</span></span></td>
   </tr>`;
 }
