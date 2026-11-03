@@ -53,6 +53,7 @@
   .venue3{color:var(--grau);font-weight:400;font-size:.68rem;white-space:normal;max-width:8em;line-height:1.15}
   td.gteam{white-space:nowrap;overflow:hidden;width:34%;vertical-align:middle}
   .gw{display:flex;align-items:center;min-width:0}
+  .starme{flex:none;margin-left:.25rem}
   .gteam.home .gw{justify-content:flex-end}
   td.gteam.home{justify-content:flex-end;text-align:right}
   td.gteam.away{text-align:left}
@@ -386,7 +387,7 @@ function select(team){
     d.standings.forEach(r => {
       const me = isHahnbach(r.name);
       const zc = zoneOf(parseInt(r.pos, 10) || 0);
-      h += `<tr class="${(me?'hahnbach':'') + (zc?' '+zc:'')}"><td>${esc(r.pos)}</td><td class="tname"><span class="gw">${crest(r.name)}<span class="t">${esc(shortName(r.name))}${me?' ⭐':''}</span></span></td>
+      h += `<tr class="${(me?'hahnbach':'') + (zc?' '+zc:'')}"><td>${esc(r.pos)}</td><td class="tname"><span class="gw">${crest(r.name)}<span class="t">${esc(shortName(r.name))}</span>${me?'<span class="starme">⭐</span>':''}</span></td>
         <td>${esc(r.sp)}</td><td>${Number(r.diff)>0?'+':''}${esc(r.diff)}</td><td class="pkt">${esc(r.pkt)}</td>
         <td class="xcol">${esc(r.g)}-${esc(r.u)}-${esc(r.v)}</td>
         <td class="xcol">${esc(r.tor)}</td></tr>`;
