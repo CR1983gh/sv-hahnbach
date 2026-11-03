@@ -3,7 +3,7 @@
   {
    "st": "1",
    "name": "Bundesliga (alle Staffeln)",
-   "id": null,
+   "id": "031983L2GC00000JVS5489BUVV628VP4-G",
    "ebene": "Bundes"
   },
   {
@@ -71,7 +71,7 @@
   {
    "st": "1",
    "name": "Bundesliga (alle Staffeln)",
-   "id": null,
+   "id": "031984MI6C00000OVS5489BUVV628VP4-G",
    "ebene": "Bundes"
   },
   {
@@ -94,8 +94,32 @@
   },
   {
    "st": "5",
-   "name": "Förderliga BFV-NLZ U16 (alle Regionen)",
-   "id": null,
+   "name": "U 16 (B-Jun.) Förderliga BFV Mitte",
+   "id": "031IUU98HG000006VS5489BUVVKNMR0J-G",
+   "ebene": "Verband"
+  },
+  {
+   "st": "5",
+   "name": "U 16 (B-Jun.) Förderliga BFV Nord",
+   "id": "031J59PG08000005VS5489BTVSRD0UH9-G",
+   "ebene": "Verband"
+  },
+  {
+   "st": "5",
+   "name": "U 16 (B-Jun.) Förderliga BFV Ost",
+   "id": "031ISH31G4000007VS5489BUVVKNMR0J-G",
+   "ebene": "Verband"
+  },
+  {
+   "st": "5",
+   "name": "U 16 (B-Jun.) Förderliga BFV Süd",
+   "id": "031J5G33KS000006VS5489BTVSRD0UH9-G",
+   "ebene": "Verband"
+  },
+  {
+   "st": "5",
+   "name": "U 16 (B-Jun.) Förderliga BFV Süd-West",
+   "id": "031IULDJJS000007VS5489BUVVKNMR0J-G",
    "ebene": "Verband"
   },
   {
@@ -162,8 +186,26 @@
   },
   {
    "st": "4",
-   "name": "Förderliga BFV-NLZ U14 (alle Regionen)",
-   "id": null,
+   "name": "U 14 (C-Jun.) Förderliga BFV-NLZ Nordost",
+   "id": "031H98TQCO00000AVS5489BTVVG7L386-G",
+   "ebene": "Verband"
+  },
+  {
+   "st": "4",
+   "name": "U 14 (C-Jun.) Förderliga BFV-NLZ Nordwest",
+   "id": "031H98TQ7C00000AVS5489BTVVG7L386-G",
+   "ebene": "Verband"
+  },
+  {
+   "st": "4",
+   "name": "U 14 (C-Jun.) Förderliga BFV-NLZ Südost",
+   "id": "031H98TQIC000009VS5489BTVVG7L386-G",
+   "ebene": "Verband"
+  },
+  {
+   "st": "4",
+   "name": "U 14 (C-Jun.) Förderliga BFV-NLZ Südwest",
+   "id": "031H98TQPS00000AVS5489BTVVG7L386-G",
    "ebene": "Verband"
   },
   {
@@ -248,14 +290,56 @@
   },
   {
    "st": "2",
-   "name": "Förderliga BFV-NLZ U13 (alle Regionen)",
-   "id": null,
+   "name": "U 13 (D-Jun.) Förderliga BFV-NLZ Nordost",
+   "id": "031JBL5394000008VS5489BTVSRD0UH9-G",
    "ebene": "Verband"
   },
   {
    "st": "2",
-   "name": "Förderliga BFV-NLZ U12 (alle Regionen)",
-   "id": null,
+   "name": "U 13 (D-Jun.) Förderliga BFV-NLZ Nordwest",
+   "id": "031JBL52V4000008VS5489BTVSRD0UH9-G",
+   "ebene": "Verband"
+  },
+  {
+   "st": "2",
+   "name": "U 13 (D-Jun.) Förderliga BFV-NLZ Südost",
+   "id": "031JBL53F4000008VS5489BTVSRD0UH9-G",
+   "ebene": "Verband"
+  },
+  {
+   "st": "2",
+   "name": "U 13 (D-Jun.) Förderliga BFV-NLZ Südwest",
+   "id": "031JBL53MC000008VS5489BTVSRD0UH9-G",
+   "ebene": "Verband"
+  },
+  {
+   "st": "2",
+   "name": "U 12 (D-Jun.) Förderliga BFV-NLZ Nordost",
+   "id": "031JBT49L8000009VS5489BTVSRD0UH9-G",
+   "ebene": "Verband"
+  },
+  {
+   "st": "2",
+   "name": "U 12 (D-Jun.) Förderliga BFV-NLZ Nordwest",
+   "id": "031JBT49FC000007VS5489BTVSRD0UH9-G",
+   "ebene": "Verband"
+  },
+  {
+   "st": "2",
+   "name": "U 12 (D-Jun.) Förderliga BFV-NLZ Süd",
+   "id": "031JBT49SC000009VS5489BTVSRD0UH9-G",
+   "ebene": "Verband"
+  },
+  {
+   "st": "2",
+   "name": "U 12 (D-Jun.) Förderliga BFV-NLZ Südost",
+   "id": "031JBT4A7O000009VS5489BTVSRD0UH9-G",
+   "ebene": "Verband"
+  },
+  {
+   "st": "2",
+   "name": "U 12 (D-Jun.) Förderliga BFV-NLZ Südwest",
+   "id": "031JBT4A28000009VS5489BTVSRD0UH9-G",
    "ebene": "Verband"
   },
   {

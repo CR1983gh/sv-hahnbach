@@ -253,7 +253,8 @@ def _collapse_groups(items, level_name):
     out = []
     for key, group in base.items():
         if len(group) > 4:
-            out.append((f"{level_name} (alle Staffeln)", None))
+            # klickbar halten: verlinkt auf die erste Staffel der Gruppe
+            out.append((f"{level_name} (alle Staffeln)", group[0][1]))
         else:
             out.extend(group)
     return out
@@ -284,8 +285,7 @@ def build_pyramide(today=None):
             if lid == "1107":
                 # User-Wunsch: erst die komplette Bundesliga-NLZ-Foerderliga,
                 # darunter die komplette BFV-NLZ-Foerderliga; hoechster Jahrgang
-                # zuerst; die vielen BFV-NLZ-Regionen pro Jahrgang zu einer
-                # Zeile buendeln
+                # zuerst; jede NLZ-Region als klickbare Einzelzeile
                 import collections
                 by_age = collections.defaultdict(lambda: {'buli': [], 'bfv': []})
                 for name, sid in items:
@@ -299,10 +299,8 @@ def build_pyramide(today=None):
                         rows.append({"st": str(st), "name": name, "id": sid, "ebene": "Bundes"})
                 st += 1
                 for age in ages:
-                    names = [n for n, _ in by_age[age]['bfv']]
-                    lbl = f"Förderliga BFV-NLZ U{age} (alle Regionen)" if len(names) > 1 else (names[0] if names else "")
-                    if lbl:
-                        rows.append({"st": str(st), "name": lbl, "id": None, "ebene": "Verband"})
+                    for name, sid in sorted(by_age[age]['bfv']):
+                        rows.append({"st": str(st), "name": name, "id": sid, "ebene": "Verband"})
                 continue
             items = _collapse_groups(items, lvl["value"])
             # BuLi-NLZ Foerderliga immer vor den BFV-NLZ-Staffeln
