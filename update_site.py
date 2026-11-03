@@ -171,6 +171,8 @@ def build_data(today=None):
         meta = meta_all[team]
         meta = dict(meta)
         meta["staffel"] = staffel
+        # Liga-Link primaer vom BFV (exakte Staffel), FuPa nur Fallback ohne Staffel-ID
+        meta["liga_bfv"] = f"https://www.bfv.de/ergebnisse/wettbewerb/-/{staffel}" if staffel else ""
         if staffel is None:
             data[team] = dict(meta=meta, games=[], results=[], standings=[])
             continue
