@@ -119,6 +119,8 @@ def build_data(today=None):
     data = {}
     for team, staffel in STAFFEL.items():
         meta = meta_all[team]
+        meta = dict(meta)
+        meta["staffel"] = staffel
         if staffel is None:
             data[team] = dict(meta=meta, games=[], results=[], standings=[])
             continue
@@ -144,6 +146,98 @@ def build_data(today=None):
     return data
 
 
+# ---- Liga-Pyramide: live vom BFV (next.bfv.de API, gleiche Quelle wie bfv.de) ----
+BFV_API = "https://next.bfv.de/bfv-api/v1/public"
+AMBERG_AREA = "00ES8GNJPC00000FVV0AG08LVUPGND5I"
+TEAMTYPE = {
+    "U19 (A-Junioren)": "360",
+    "U17 (B-Junioren)": "361",
+    "U15 (C-Junioren)": "362",
+    "U13 (D-Junioren)": "363",
+}
+# Levels, die ueberkreislich sind und daher immer gezeigt werden (alle Vereine
+# des Landkreises koennen dort landen); untere Levels nur Kreis Amberg/Weiden
+SUPRA_LEVELS = {"1", "17", "520", "387", "1107"}
+
+
+def current_season_code(today=None):
+    today = today or datetime.date.today()
+    y = today.year + (1 if today.month >= 7 else 0)
+    return f"{(y - 1) % 100:02d}{y % 100:02d}"
+
+
+def _collapse_groups(items, level_name):
+    """Mehrere Gruppen-Staffeln, die sich nur durch Gruppe A-H unterscheiden,
+    zu einer Zeile zusammenfassen (sonst 8 Reihen Bundesliga Muell)."""
+    if len(items) <= 4:
+        return items
+    import collections
+    base = collections.defaultdict(list)
+    for name, sid in items:
+        key = re.sub(r"\b[A-Z]\b", "#", name)
+        base[key].append((name, sid))
+    out = []
+    for key, group in base.items():
+        if len(group) > 4:
+            out.append((f"{level_name} (alle Staffeln)", None))
+        else:
+            out.extend(group)
+    return out
+
+
+def build_pyramide(today=None):
+    season = current_season_code(today)
+    pyr = {}
+    for label, ma in TEAMTYPE.items():
+        d = json.loads(fetch(f"{BFV_API}/getBfvWamTwo/wettkampftyp/1/saison/{season}/mannschaftsart/{ma}").decode())
+        rows = []
+        st = 0
+        for lvl in d["leagueLevels"]:
+            lid = lvl["id"]
+            t = json.loads(fetch(
+                f"{BFV_API}/getBfvWamThree/wettkampftyp/1/saison/{season}/spielklasse/{lid}/mannschaftsart/{ma}"
+            ).decode())
+            comps = t.get("competitions", {}).get(lid, {})
+            items = []
+            for aid, svs in comps.items():
+                for sv in svs:
+                    name = sv["value"]
+                    keep = aid == AMBERG_AREA or "Oberpfalz" in name or lid in SUPRA_LEVELS
+                    if keep:
+                        items.append((name, sv["id"]))
+            if not items:
+                continue  # Level existiert in dieser Saison (fuer uns) nicht, z.B. U13-BOL Oberpfalz
+            if lid == "1107":
+                # BuLi-NLZ-Foerderliga steht ueber der BFV-NLZ-Foerderliga;
+                # die vielen BFV-NLZ-Regionen pro Jahrgang zu einer Zeile buendeln
+                st += 1
+                buli = [x for x in items if "BuLi" in x[0]]
+                buli.sort(key=lambda x: x[0])
+                for name, sid in buli:
+                    rows.append({"st": str(st), "name": name, "id": sid, "ebene": "Bundes"})
+                bfv = [x for x in items if "BuLi" not in x[0]]
+                import collections
+                by_age = collections.defaultdict(list)
+                for name, sid in bfv:
+                    m = re.match(r"U\s*(\d+)", name)
+                    by_age[m.group(1) if m else "?"].append(name)
+                for age, names in sorted(by_age.items(), key=lambda kv: -int(kv[0]) if kv[0].isdigit() else 0):
+                    lbl = f"Förderliga BFV-NLZ U{age} (alle Regionen)" if len(names) > 1 else names[0]
+                    rows.append({"st": str(st), "name": lbl, "id": None, "ebene": "Verband"})
+                continue
+            items = _collapse_groups(items, lvl["value"])
+            # BuLi-NLZ Foerderliga immer vor den BFV-NLZ-Staffeln
+            items.sort(key=lambda x: 0 if "BuLi" in x[0] else 1)
+            st += 1
+            ebene = {"1": "Bundes", "17": "Region", "520": "Verband", "387": "Verband",
+                     "1107": "Verband", "389": "Bezirk", "390": "Bezirk"}.get(lid, "Kreis")
+            for name, sid in items:
+                rows.append({"st": str(st), "name": name, "id": sid, "ebene": ebene})
+        if rows:
+            pyr[label] = rows
+    return pyr
+
+
 def sanity_check(data):
     """Refuse to deploy suspicious data."""
     problems = []
@@ -163,9 +257,20 @@ def sanity_check(data):
     return problems
 
 
-def render(data):
+def render(data, pyramide=None):
     badges = json.load(open("badges.json", encoding="utf-8"))
     html = open("index.html", encoding="utf-8").read()
+    if pyramide is None:
+        try:
+            pyramide = json.load(open("ligapyramide.json", encoding="utf-8"))
+        except Exception:
+            pyramide = None
+    if pyramide:
+        html = re.sub(
+            r"/\*__PYRAMIDE__\*/\{.*?\};(?=\nconst TEAM_JG)",
+            "/*__PYRAMIDE__*/" + json.dumps(pyramide, ensure_ascii=False) + ";",
+            html, count=1, flags=re.S,
+        )
     html = re.sub(
         r"/\*__DATA__\*/\{.*?\};(?=\nconst BADGES)",
         "/*__DATA__*/" + json.dumps(data, ensure_ascii=False) + ";",
@@ -222,7 +327,14 @@ def main():
         for p in problems:
             print("  - " + p, file=sys.stderr)
         return 1
-    html = render(data)
+    pyramide = None
+    try:
+        pyramide = build_pyramide()
+        json.dump(pyramide, open("ligapyramide.json", "w", encoding="utf-8"), ensure_ascii=False, indent=1)
+        print(f"Pyramide built: {sum(len(v) for v in pyramide.values())} Ligen.")
+    except Exception as e:  # noqa: BLE001
+        print(f"WARNING: pyramide build failed, keeping previous: {e}", file=sys.stderr)
+    html = render(data, pyramide)
     if os.environ.get("GITHUB_TOKEN"):
         # GitHub Actions: push via API (no git credentials needed)
         current = open("index.html", encoding="utf-8").read()
