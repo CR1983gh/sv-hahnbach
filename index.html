@@ -27,7 +27,7 @@
   .team-head img{width:42px;height:42px;border-radius:50%;object-fit:contain;background:#fff;border:2px solid var(--gelb)}
   .team-head h2{font-size:1.3rem}
   .pyr{margin-top:1.4rem}
-  .pyr .tablewrap{border:1px solid #e3e3e3;border-radius:12px}
+  .pyr .tablewrap{border:1px solid #e3e3e3;border-radius:0}
   .pyr tr.hahnbach td{background:var(--gelb);font-weight:800}
   tr.hahnbach td{background:var(--gelb);font-weight:800}
   td.pyr-dot{width:1.1rem}
@@ -60,11 +60,14 @@
     /* Spiele-Tabellen muessen ohne seitliches Scrollen passen */
     .tablewrap:has(.gdate){overflow:visible}
     .tablewrap:has(.gdate) table{table-layout:fixed;width:100%}
-    td.gdate, th:nth-child(1){font-size:.68rem;width:20%}
+    td.gdate, th:nth-child(1){font-size:.68rem;width:15%}
     .yr, .venue3{display:none}
-    td.gteam, th:nth-child(2), th:nth-child(4){width:33.5%}
+    td.gteam, th:nth-child(2), th:nth-child(4){width:36.5%}
     .gscore, th:nth-child(3){width:10%}
     td.gteam .crest{width:17px;height:17px;margin:0 .25rem}
+    /* volle Namen: Umbruch statt Abschneiden */
+    td.gteam{white-space:normal}
+    td.gteam .t{white-space:normal;overflow:visible;text-overflow:clip;line-height:1.15;max-width:calc(100% - 22px)}
     .gscore, .score{font-size:.74rem;padding:.03rem .3rem}
     td.gha, th.hc{width:6%;padding:0;overflow:hidden}
     .home-tag{padding:.02rem .14rem;font-size:.58rem;margin:0}
@@ -104,7 +107,7 @@
   .spiel.resrow-U{background:#fdf3e3;border-left:4px solid #e08a00}
   .spiel.resrow-N{background:#fdecec;border-left:4px solid var(--rot)}
   .spiel.resrow-S,.spiel.resrow-U,.spiel.resrow-N{border-radius:0 10px 10px 0;padding-left:.5rem}
-  .tablewrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:12px}
+  .tablewrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:0}
   table{width:100%;border-collapse:collapse;font-size:.84rem;background:#fff}
   th{background:var(--schwarz);color:var(--gelb);text-align:left;padding:.45rem .5rem;font-size:.74rem;text-transform:uppercase;letter-spacing:.4px;white-space:nowrap}
   td{padding:.4rem .5rem;border-bottom:1px solid #eee;white-space:nowrap}
@@ -291,10 +294,9 @@ function gameRow(g, withScore){
     : `<span style="color:var(--grau);flex:none">–</span>`;
   let hn = shortName(g.home), an = shortName(g.away);
   const font = '700 ' + (window.innerWidth >= 760 ? '14.7px' : '14.4px') + " 'Segoe UI',system-ui,sans-serif";
-  const maxW = window.innerWidth <= 620
-      ? Math.max(80, (window.innerWidth - 235) / 2)
-      : Math.max(120, (window.innerWidth - 160) / 2);
-  hn = fitName(hn, maxW, font); an = fitName(an, maxW, font);
+  const narrow = window.innerWidth <= 620;
+  const maxW = narrow ? 0 : Math.max(120, (window.innerWidth - 160) / 2);
+  if (!narrow) { hn = fitName(hn, maxW, font); an = fitName(an, maxW, font); }
   const rowCls = withScore && !isAbsage ? 'g-' + cls : (isAbsage ? 'g-A' : '');
   return `<tr class="${rowCls}">
     <td class="gdate"><span class="wd">${weekday(g.date)}.</span> ${esc(g.date.slice(0,6))}<span class="yr">.${esc(g.date.slice(8))}</span>${g.time ? '<br>' + esc(g.time) : ''}${venue ? '<div class="venue3">' + venue + '</div>' : ''}</td>
