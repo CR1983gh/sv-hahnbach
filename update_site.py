@@ -113,6 +113,56 @@ def _d(s):
     return datetime.date(yy, mm, dd)
 
 
+def _ics_unesc(s):
+    """ICS-Wert-Escapes aufloesen (\\, \\; \\: \\N \\n)."""
+    return re.sub(r"\\([,;:\\nN])", r"\1", s)
+
+
+def parse_ics(raw):
+    """Parse BFV icsexport 'Aktuelle Spiele' (next games) into game dicts.
+    These turn up here BEFORE the PDF Spielplan shows rescheduled games."""
+    from zoneinfo import ZoneInfo
+    text = raw.decode("utf-8", errors="ignore")
+    # unfold folded lines (\r\n + space)
+    text = text.replace("\r\n ", "").replace("\n ", "")
+    out = []
+    ev = {}
+    for line in text.splitlines():
+        line = line.strip()
+        if line == "BEGIN:VEVENT":
+            ev = {}
+        elif line == "END:VEVENT":
+            summ = ev.get("SUMMARY")
+            if summ and ev.get("DTSTART"):
+                # SUMMARY: "Home-Away, Meisterschaften, Staffel ..." — erst am
+                # unescapeten Komma teilen, dann am Trenn-Bindestrich
+                first = summ.split("\\,")[0].split(",")[0]
+                cands = []
+                for m in re.finditer(r"-", first):
+                    home, away = first[:m.start()], first[m.end():]
+                    if "Hahnbach" in home or "Hahnbach" in away:
+                        hb_len = len(home) if "Hahnbach" in home else len(away)
+                        cands.append((hb_len, home, away))
+                if cands:
+                    _, home, away = min(cands)
+                    if "SPIELFREI" not in home and "SPIELFREI" not in away:
+                        try:
+                            z = datetime.datetime.strptime(ev["DTSTART"], "%Y%m%dT%H%M%SZ")
+                            loc = z.replace(tzinfo=datetime.timezone.utc).astimezone(ZoneInfo("Europe/Berlin"))
+                        except ValueError:
+                            loc = None
+                        if loc:
+                            out.append(dict(
+                                no="", date=loc.strftime("%d.%m.%Y"),
+                                time=loc.strftime("%H:%M"),
+                                home=_ics_unesc(home).strip(), away=_ics_unesc(away).strip(), score="",
+                            ))
+            ev = {}
+        elif ":" in line and line.split(":", 1)[0] in ("SUMMARY", "DTSTART"):
+            ev[line.split(":", 1)[0]] = line.split(":", 1)[1]
+    return out
+
+
 def build_data(today=None):
     today = today or datetime.date.today()
     meta_all = json.load(open("meta.json", encoding="utf-8"))
@@ -132,6 +182,28 @@ def build_data(today=None):
             g for g in mine if _d(g["date"]) >= today and not g["score"]
         ][:6]
         results = [g for g in mine if g["score"] and _d(g["date"]) <= today]
+        # ICS "Aktuelle Spiele": enthaelt kurzfristig angesetzte/verlegte Spiele,
+        # die im PDF-Spielplan noch fehlen (z.B. U13 II am 14.11.)
+        try:
+            ics_games = parse_ics(fetch(f"{BASE.replace('pdfexport','icsexport')}/Spielplan?staffel={staffel}&id={CLUB_ID}"))
+        except Exception:  # noqa: BLE001
+            ics_games = []
+        _norm = lambda s: re.sub(r"\s+", " ", s).strip().lower()  # noqa: E731
+        for g in ics_games:
+            if _d(g["date"]) < today or not ("Hahnbach" in g["home"] or "Hahnbach" in g["away"]):
+                continue
+            dup = any(
+                o["date"] == g["date"]
+                and (
+                    (_norm(o["home"]), _norm(o["away"])) == (_norm(g["home"]), _norm(g["away"]))
+                    or (_norm(o["home"]) in _norm(g["away"]) and _norm(g["home"]) in _norm(o["away"]))
+                )
+                for o in upcoming
+            )
+            if not dup:
+                upcoming.append(g)
+        upcoming.sort(key=lambda g: (_d(g["date"]), g["time"]))
+        upcoming = upcoming[:6]
         standings = parse_tabelle(
             pdf_text(fetch(f"{BASE}/spieltagsuebersicht?staffel={staffel}"))
         )
