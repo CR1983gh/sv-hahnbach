@@ -5,11 +5,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SV Hahnbach 1949 e.V. — Alle Mannschaften</title>
 <style>
-  :root{--gelb:#ffd200;--gelbfg:#111;--schwarz:#111;--gruen:#1b8a3a;--rot:#c0392b;--hell:#f7f5ef;--grau:#6b6b6b;--card:#fff;--fg:#111;--line:#eee;--line2:#e3e3e3;--hover:#fffbe6;--crestbg:#fff;--akz:#1a6fb5;--atagbg:#e8e8e8;--win:#eaf7ec;--draw:#fdf3e3;--lose:#fdecec;--abs:#f0f0f0}
-  html.th-dark{--gelb:#ffd200;--gelbfg:#111;--schwarz:#000;--hell:#14161a;--grau:#9aa0a8;--card:#1e2126;--fg:#e8e8e8;--line:#2c3038;--line2:#343943;--hover:#2a2e35;--crestbg:#fff;--akz:#6ab0ff;--atagbg:#343943;--win:#173221;--draw:#33290f;--lose:#38181a;--abs:#26292e}
-  html.th-blau{--gelb:#1d6fd6;--gelbfg:#fff;--schwarz:#0d3b73;--hell:#eef4fb;--card:#fff;--fg:#12253d;--grau:#5c6b7d;--line:#dde7f2;--line2:#c9d8ea;--hover:#e3eefc;--crestbg:#fff;--akz:#0d62c4;--atagbg:#dbe7f5;--win:#e4f4e8;--draw:#fdf3e3;--lose:#fdecec;--abs:#eef1f5}
-  html.th-gruen{--gelb:#8bc34a;--gelbfg:#14300a;--schwarz:#1b4d2b;--hell:#eff7ee;--card:#fff;--fg:#17301d;--grau:#5c7263;--line:#dcead9;--line2:#c6dcc2;--hover:#e6f4e1;--crestbg:#fff;--akz:#2e7d32;--atagbg:#d8e8d4;--win:#e0f3e2;--draw:#f7f3dc;--lose:#fbe9e7;--abs:#eaf0ea}
-  html.th-bayern{--gelb:#008a3b;--gelbfg:#fff;--schwarz:#dc052d;--hell:#fdf1f2;--card:#fff;--fg:#3c0a12;--grau:#8a5a61;--line:#f3d5d8;--line2:#eabcc1;--hover:#fde8ea;--crestbg:#fff;--akz:#007a33;--atagbg:#f6dadd;--win:#e2f4e7;--draw:#fdf3e3;--lose:#fde3e3;--abs:#f4ecee}
+  :root{--gelb:#8bc34a;--gelbfg:#14300a;--schwarz:#1b4d2b;--hell:#eff7ee;--grau:#5c7263;--card:#fff;--fg:#17301d;--line:#dcead9;--line2:#c6dcc2;--hover:#e6f4e1;--crestbg:#fff;--akz:#2e7d32;--atagbg:#d8e8d4;--win:#e0f3e2;--draw:#f7f3dc;--lose:#fbe9e7;--abs:#eaf0ea}
+  html.th-sg{--gelb:#ffd200;--gelbfg:#111;--schwarz:#111;--hell:#f7f5ef;--grau:#6b6b6b;--card:#fff;--fg:#111;--line:#eee;--line2:#e3e3e3;--hover:#fffbe6;--crestbg:#fff;--akz:#1a6fb5;--atagbg:#e8e8e8;--win:#eaf7ec;--draw:#fdf3e3;--lose:#fdecec;--abs:#f0f0f0}
+  html.th-blau{--gelb:#1d6fd6;--gelbfg:#fff;--schwarz:#0d3b73;--hell:#eef4fb;--card:#fff;--fg:#12253d;--grau:#5c6b7d;--line:#dde7f2;--line2:#c9d8ea;--hover:#e3eefc;--crestbg:#fff;--akz:#0d62c4;--atagbg:#dbe7f5--win:#e4f4e8;--draw:#fdf3e3;--lose:#fdecec;--abs:#eef1f5;}
+  html.th-pfirsich{--gelb:#f6a56b;--gelbfg:#4a2c12;--schwarz:#b56a3b;--hell:#fdf1e7;--fg:#4a3527;--grau:#8b7466;--line:#f3e2d3;--line2:#e8cfba;--hover:#fbe8d8;--akz:#c96f3f;--atagbg:#f5e3d4--win:#e7f3e4;--draw:#f8efd8;--lose:#f9e3dd;--abs:#f1e8e0;}
+  html.th-rose{--gelb:#f2a0b8;--gelbfg:#4d1f30;--schwarz:#c76a8a;--hell:#fdeef2;--fg:#46232f;--grau:#8d6b75;--line:#f6dbe4;--line2:#eec4d2;--hover:#fbe3ea;--akz:#c25d80;--atagbg:#f6dbe4--win:#e8f3e8;--draw:#f9eeda;--lose:#f9e2e6;--abs:#f2e7ea;}
+  html.th-lavendel{--gelb:#b8a8e0;--gelbfg:#2f2450;--schwarz:#7d6bb5;--hell:#f3f0fb;--fg:#332b4a;--grau:#77708d;--line:#e4ddf4;--line2:#d3c9ec;--hover:#ece6f9;--akz:#6f5bb0;--atagbg:#e6dff5--win:#e6f2e8;--draw:#f6efdb;--lose:#f3e3e9;--abs:#e9e4f0;}
+  html.th-himmel{--gelb:#9cc8f0;--gelbfg:#16324d;--schwarz:#5b8fc9;--hell:#edf5fd;--fg:#24384d;--grau:#6b7f92;--line:#d8e8f6;--line2:#c2daef;--hover:#e0eefb;--akz:#3f7fc0;--atagbg:#dbe9f6--win:#e2f2e9;--draw:#f7efd9;--lose:#f6e2e4;--abs:#e4ebf1;}
+  html.th-minze{--gelb:#9adbc4;--gelbfg:#123527;--schwarz:#5aa088;--hell:#ecf7f2;--fg:#22413a;--grau:#68857c;--line:#d7ede5;--line2:#bfdfd3;--hover:#dff2ea;--akz:#3d8f74;--atagbg:#dbeee6--win:#ddf1e3;--draw:#f3eed8;--lose:#f4e1e1;--abs:#e2ebe7;}
+  html.th-sand{--gelb:#e4d19b;--gelbfg:#443a1e;--schwarz:#a58e5f;--hell:#f8f4ea;--fg:#453d2c;--grau:#877c66;--line:#ece4d2;--line2:#ddd1b8;--hover:#f3ecdb;--akz:#8f7a48;--atagbg:#efe7d5--win:#e9f1dd;--draw:#f6edd2;--lose:#f5e2dc;--abs:#ebe6d8;}
+  html.th-koralle{--gelb:#f6b3a0;--gelbfg:#4d251b;--schwarz:#e0806a;--hell:#fdefec;--fg:#4a2e27;--grau:#8d716a;--line:#f7ded7;--line2:#f0c8bd;--hover:#fbe5df;--akz:#d0654d;--atagbg:#f7dfd7--win:#eaf2e3;--draw:#f9efd9;--lose:#f9e0dc;--abs:#f2e7e2;}
+  html.th-zitrone{--gelb:#f2e38a;--gelbfg:#453c12;--schwarz:#b3a14e;--hell:#fdf9e7;--fg:#47412a;--grau:#8a8266;--line:#f1ebd1;--line2:#e6dcb5;--hover:#f9f3d8;--akz:#96842f;--atagbg:#f3eeda--win:#eaf2d9;--draw:#f7edcb;--lose:#f6e2da;--abs:#eee9d8;}
+  html.th-beere{--gelb:#d3aede;--gelbfg:#3a2342;--schwarz:#a06fb0;--hell:#f6f0f7;--fg:#3b2c41;--grau:#7f7087;--line:#e9def0;--line2:#dbc9e6;--hover:#efe5f5;--akz:#8a54a0;--atagbg:#eadeef--win:#e7f1e7;--draw:#f5ecd9;--lose:#f3e0e6;--abs:#eae2ed;}
+  html.th-tuerkis{--gelb:#96d6de;--gelbfg:#0f3538;--schwarz:#4fa3b0;--hell:#eaf6f8;--fg:#1f3a3e;--grau:#658187;--line:#d5ebef;--line2:#bfe0e6;--hover:#dcf0f4;--akz:#2f8f9f;--atagbg:#d9ecef--win:#def0e6;--draw:#f2ecd6;--lose:#f3dfdf;--abs:#dfebe9;}
   *{box-sizing:border-box;margin:0;padding:0}
   html{-webkit-text-size-adjust:100%}
   body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--hell);color:var(--fg);line-height:1.45}
@@ -150,15 +158,23 @@
     .tagcol{grid-column:3;grid-row:1}
     .venue2{display:none}
   }
-  .themepick{position:absolute;top:.7rem;right:.7rem;display:flex;gap:.35rem;z-index:5}
+  .themepick{position:absolute;top:.7rem;right:.7rem;display:flex;gap:.3rem;z-index:5;flex-wrap:wrap;justify-content:flex-end;max-width:75%}
   .thsw{width:22px;height:22px;border-radius:50%;border:2px solid rgba(255,255,255,.6);cursor:pointer;padding:0;transition:transform .12s}
   .thsw:hover{transform:scale(1.18)}
   .thsw.on{border-color:#fff;box-shadow:0 0 0 2px var(--gelb)}
-  .th-sw-sg{background:linear-gradient(135deg,#111 0 50%,#ffd200 50% 100%)}
-  .th-sw-dark{background:linear-gradient(135deg,#000 0 50%,#1e2126 50% 100%)}
-  .th-sw-blau{background:linear-gradient(135deg,#0d3b73 0 50%,#1d6fd6 50% 100%)}
   .th-sw-gruen{background:linear-gradient(135deg,#1b4d2b 0 50%,#8bc34a 50% 100%)}
-  .th-sw-bayern{background:linear-gradient(135deg,#dc052d 0 50%,#008a3b 50% 100%)}
+  .th-sw-sg{background:linear-gradient(135deg,#111 0 50%,#ffd200 50% 100%)}
+  .th-sw-blau{background:linear-gradient(135deg,#0d3b73 0 50%,#1d6fd6 50% 100%)}
+  .th-sw-pfirsich{background:linear-gradient(135deg,#b56a3b 0 50%,#f6a56b 50% 100%)}
+  .th-sw-rose{background:linear-gradient(135deg,#c76a8a 0 50%,#f2a0b8 50% 100%)}
+  .th-sw-lavendel{background:linear-gradient(135deg,#7d6bb5 0 50%,#b8a8e0 50% 100%)}
+  .th-sw-himmel{background:linear-gradient(135deg,#5b8fc9 0 50%,#9cc8f0 50% 100%)}
+  .th-sw-minze{background:linear-gradient(135deg,#5aa088 0 50%,#9adbc4 50% 100%)}
+  .th-sw-sand{background:linear-gradient(135deg,#a58e5f 0 50%,#e4d19b 50% 100%)}
+  .th-sw-koralle{background:linear-gradient(135deg,#e0806a 0 50%,#f6b3a0 50% 100%)}
+  .th-sw-zitrone{background:linear-gradient(135deg,#b3a14e 0 50%,#f2e38a 50% 100%)}
+  .th-sw-beere{background:linear-gradient(135deg,#a06fb0 0 50%,#d3aede 50% 100%)}
+  .th-sw-tuerkis{background:linear-gradient(135deg,#4fa3b0 0 50%,#96d6de 50% 100%)}
   @media (max-width:520px){.thsw{width:18px;height:18px}}
 </style>
 </head>
@@ -464,9 +480,13 @@ function select(team){
 
 
 // ---- Themes ----
-const THEMES = [['', 'Schwarz-Gelb (Standard)', 'th-sw-sg'], ['th-dark', 'Dark Mode', 'th-sw-dark'],
-                ['th-blau', 'Blau', 'th-sw-blau'], ['th-gruen', 'Gruen', 'th-sw-gruen'],
-                ['th-bayern', 'Bayern', 'th-sw-bayern']];
+const THEMES = [['', 'Gruen (Standard)', 'th-sw-gruen'], ['th-sg', 'Schwarz-Gelb', 'th-sw-sg'],
+                ['th-blau', 'Blau', 'th-sw-blau'],
+                ['th-pfirsich', 'Pastell Pfirsich', 'th-sw-pfirsich'], ['th-rose', 'Pastell Rose', 'th-sw-rose'],
+                ['th-lavendel', 'Pastell Lavendel', 'th-sw-lavendel'], ['th-himmel', 'Pastell Himmel', 'th-sw-himmel'],
+                ['th-minze', 'Pastell Minze', 'th-sw-minze'], ['th-sand', 'Pastell Sand', 'th-sw-sand'],
+                ['th-koralle', 'Pastell Koralle', 'th-sw-koralle'], ['th-zitrone', 'Pastell Zitrone', 'th-sw-zitrone'],
+                ['th-beere', 'Pastell Beere', 'th-sw-beere'], ['th-tuerkis', 'Pastell Tuerkis', 'th-sw-tuerkis']];
 function applyTheme(t){
   document.documentElement.className = document.documentElement.className.replace(/\bth-\w+\b/g,'').trim();
   if (t) document.documentElement.classList.add(t);
@@ -479,6 +499,7 @@ function applyTheme(t){
   pick.querySelectorAll('.thsw').forEach((b,i)=>b.addEventListener('click',()=>applyTheme(THEMES[i][0])));
   let saved = '';
   try{ saved = localStorage.getItem('svh-theme') || ''; }catch(e){}
+  if (!THEMES.some(t => t[0] === saved)) saved = '';
   applyTheme(saved);
 })();
 
