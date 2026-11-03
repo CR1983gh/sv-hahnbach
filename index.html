@@ -26,14 +26,16 @@
   .team-head{display:flex;flex-wrap:wrap;align-items:center;gap:.7rem;margin-bottom:.9rem}
   .team-head img{width:42px;height:42px;border-radius:50%;object-fit:contain;background:#fff;border:2px solid var(--gelb)}
   .team-head h2{font-size:1.3rem}
-  .pyr{margin-top:1.1rem;background:#fff;border:1px solid #e3e3e3;border-radius:12px;padding:.9rem 1rem}
-  .pyr h3{font-size:.95rem;margin-bottom:.55rem;display:flex;align-items:center;gap:.4rem}
-  .pyr-tier{display:flex;align-items:center;gap:.5rem;padding:.42rem .6rem;border-radius:0 8px 8px 0;margin-bottom:.28rem;font-size:.86rem;background:#fafaf7}
-  .pyr-tier.own{background:#FFF3C4;border:1.5px solid var(--gelb);font-weight:800}
-  .pyr-stepbar{display:flex;align-items:center;gap:.5rem;color:#fff;font-size:.74rem;font-weight:800;letter-spacing:.03em;padding:.3rem .6rem;border-radius:8px;margin:.7rem 0 .35rem;text-shadow:0 1px 2px rgba(0,0,0,.25)}
-  .pyr-stepbar:first-of-type{margin-top:0}
-  .pyr-stno{background:rgba(255,255,255,.25);border-radius:999px;padding:.08rem .55rem;font-size:.68rem;flex:none}
-  .pyr-tier a{color:inherit;text-decoration:none;border-bottom:1px dotted #bbb}
+  .pyr{margin-top:1.4rem}
+  .pyr .tablewrap{border:1px solid #e3e3e3;border-radius:12px}
+  .pyr tr.hahnbach td{background:var(--gelb);font-weight:800}
+  tr.hahnbach td{background:var(--gelb);font-weight:800}
+  td.pyr-dot{width:1.1rem}
+  td.pyr-dot span{display:inline-block;width:.6rem;height:.6rem;border-radius:50%}
+  td.pyr-eb{color:var(--grau);font-size:.72rem;text-transform:uppercase;letter-spacing:.3px}
+  tr.pyr-hdr td{color:#fff;font-size:.74rem;font-weight:800;letter-spacing:.03em;padding:.34rem .5rem;text-shadow:0 1px 2px rgba(0,0,0,.25);border-bottom:none}
+  .pyr-stno{background:rgba(255,255,255,.25);border-radius:999px;padding:.08rem .55rem;font-size:.68rem;margin-right:.5rem}
+  .pyr a{color:inherit;text-decoration:none;border-bottom:1px dotted #bbb}
   .pyr-note{color:#999;font-size:.72rem;margin-top:.4rem}
 
   .chip{background:var(--gelb);color:var(--schwarz);border-radius:999px;padding:.15rem .65rem;font-size:.78rem;font-weight:800}
@@ -299,16 +301,17 @@ function pyrBlock(team, liga, staffelId){
         const kl = /KL/.test(kreisName(t.st)) ? 'Kreisliga' : /KK/.test(kreisName(t.st)) ? 'Kreisklasse' : 'Gruppe';
         hdr = `🟠 Kreisebene — ${kl}`;
       }
-      rows += `<div class="pyr-stepbar" style="background:${col}"><span class="pyr-stno">Stufe ${t.st}</span>${esc(hdr)}</div>`;
+      rows += `<tr class="pyr-hdr"><td colspan="3" style="background:${col}"><span class="pyr-stno">Stufe ${t.st}</span>${esc(hdr)}</td></tr>`;
     }
     const own = (staffelId && t.id === staffelId) ||
                 (!staffelId && (norm(liga).includes(norm(t.name)) || norm(t.name).includes(norm(liga))));
     const label = esc(t.name) + (own ? ' ⭐' : '');
     const inner = t.id ? `<a href="https://www.bfv.de/ergebnisse/wettbewerb/-/${t.id}" target="_blank" rel="noopener">${label}</a>` : label;
     const col = t.ebene === 'Kreis' ? kreisFarbe(t.st) : (EBFARB[t.ebene] ? EBFARB[t.ebene].c : '#6b6b6b');
-    rows += `<div class="pyr-tier${own?' own':''}" style="border-left:4px solid ${col}"><span>${inner}</span></div>`;
+    const ebName = t.ebene === 'Kreis' ? 'Kreis' : esc(t.ebene);
+    rows += `<tr class="${own ? 'hahnbach' : ''}"><td class="pyr-dot"><span style="background:${col}"></span></td><td class="tname">${inner}</td><td class="pyr-eb">${ebName}</td></tr>`;
   }
-  return `<div class="pyr"><h3>🏟️ Ligen-Pyramide ${esc(jg.replace(/ \(.-Junioren\)/,''))}</h3>${rows}<div class="pyr-note">Quelle: BFV — von der untersten Gruppe bis zur Spitze. Klick öffnet Tabelle &amp; Ergebnisse auf bfv.de. ⭐ = Spielklasse des eigenen Teams.</div></div>`;
+  return `<div class="pyr"><h3 class="sec">🏟️ Ligen-Pyramide ${esc(jg.replace(/ \(.-Junioren\)/,''))}</h3><div class="tablewrap"><table><thead><tr><th></th><th>Liga</th><th>Ebene</th></tr></thead><tbody>${rows}</tbody></table></div><div class="pyr-note">Quelle: BFV — von der untersten Gruppe bis zur Spitze. Klick öffnet Tabelle &amp; Ergebnisse auf bfv.de. ⭐ = Spielklasse des eigenen Teams.</div></div>`;
 }
 
 function select(team){
