@@ -93,31 +93,31 @@
    "ebene": "Verband"
   },
   {
-   "st": "4",
+   "st": "5",
    "name": "Förderliga BFV-NLZ U16 (alle Regionen)",
    "id": null,
    "ebene": "Verband"
   },
   {
-   "st": "5",
+   "st": "6",
    "name": "U 17 (B-Jun.) BOL Oberpfalz",
    "id": "031ER7VC88000005VS5489BTVUS470OH-G",
    "ebene": "Bezirk"
   },
   {
-   "st": "6",
+   "st": "7",
    "name": "U17 (B-Jun.) Q-KK Nord AM/WEN",
    "id": "031NLSEL7O000004VS5489BTVV1LNS7C-G",
    "ebene": "Kreis"
   },
   {
-   "st": "6",
+   "st": "7",
    "name": "U17 (B-Jun.) Q-KK Süd AM/WEN",
    "id": "031NLRSBD4000004VS5489BTVV1LNS7C-G",
    "ebene": "Kreis"
   },
   {
-   "st": "7",
+   "st": "8",
    "name": "U17 (B-Jun.) Q-Gruppe AM/WEN",
    "id": "031NLSP2Q4000004VS5489BTVV1LNS7C-G",
    "ebene": "Kreis"
@@ -161,73 +161,73 @@
    "ebene": "Bundes"
   },
   {
-   "st": "3",
+   "st": "4",
    "name": "Förderliga BFV-NLZ U14 (alle Regionen)",
    "id": null,
    "ebene": "Verband"
   },
   {
-   "st": "4",
+   "st": "5",
    "name": "U 15 (C-Jun.) BOL Oberpfalz",
    "id": "031I1M9KKK000005VS5489BTVSRD0UH9-G",
    "ebene": "Bezirk"
   },
   {
-   "st": "5",
+   "st": "6",
    "name": "U15 (C-Jun.) Q-KL AM/WEN",
    "id": "031NM9EH8O000003VS5489BTVV1LNS7C-G",
    "ebene": "Kreis"
   },
   {
-   "st": "6",
+   "st": "7",
    "name": "U15 (C-Jun.) Q-KK Nord AM/WEN",
    "id": "031NM11JCO000002VS5489BTVV1LNS7C-G",
    "ebene": "Kreis"
   },
   {
-   "st": "6",
+   "st": "7",
    "name": "U15 (C-Jun.) Q-KK Ost AM/WEN",
    "id": "031NM1ERS8000004VS5489BTVV1LNS7C-G",
    "ebene": "Kreis"
   },
   {
-   "st": "6",
+   "st": "7",
    "name": "U15 (C-Jun.) Q-KK Süd AM/WEN",
    "id": "031NM0K9P4000004VS5489BTVV1LNS7C-G",
    "ebene": "Kreis"
   },
   {
-   "st": "7",
+   "st": "8",
    "name": "U15 (C-Jun) Q-Gr. Mitte Amberg/Weiden",
    "id": "031NM9RKA8000004VS5489BTVV1LNS7C-G",
    "ebene": "Kreis"
   },
   {
-   "st": "7",
+   "st": "8",
    "name": "U15 (C-Jun) Q-Gr. Nord Amberg/Weiden",
    "id": "031NM99NNC000004VS5489BTVV1LNS7C-G",
    "ebene": "Kreis"
   },
   {
-   "st": "7",
+   "st": "8",
    "name": "U15 (C-Jun) Q-Gr. Ost Amberg/Weiden",
    "id": "031NM9BR9K000004VS5489BTVV1LNS7C-G",
    "ebene": "Kreis"
   },
   {
-   "st": "7",
+   "st": "8",
    "name": "U15 (C-Jun) Q-Gr. Süd Amberg/Weiden",
    "id": "031NM97GS4000004VS5489BTVV1LNS7C-G",
    "ebene": "Kreis"
   },
   {
-   "st": "7",
+   "st": "8",
    "name": "U15 (C-Jun) Q-Gr. West Amberg/Weiden",
    "id": "031NM9OJTS000004VS5489BTVV1LNS7C-G",
    "ebene": "Kreis"
   },
   {
-   "st": "7",
+   "st": "8",
    "name": "U15 (C2-Jun) Gruppe AM/WEN n.a.",
    "id": "031O1KSK7C000004VS5489BTVV1LNS7C-G",
    "ebene": "Kreis"
@@ -236,102 +236,102 @@
  "U13 (D-Junioren)": [
   {
    "st": "1",
-   "name": "U 12 (D-Jun.) Förderliga BuLi-NLZ",
-   "id": "031H9EE1C4000008VS5489BTVVG7L386-G",
-   "ebene": "Bundes"
-  },
-  {
-   "st": "1",
    "name": "U 13 (D-Jun.) Förderliga BuLi-NLZ",
    "id": "031H9EE164000008VS5489BTVVG7L386-G",
    "ebene": "Bundes"
   },
   {
    "st": "1",
+   "name": "U 12 (D-Jun.) Förderliga BuLi-NLZ",
+   "id": "031H9EE1C4000008VS5489BTVVG7L386-G",
+   "ebene": "Bundes"
+  },
+  {
+   "st": "2",
    "name": "Förderliga BFV-NLZ U13 (alle Regionen)",
    "id": null,
    "ebene": "Verband"
   },
   {
-   "st": "1",
+   "st": "2",
    "name": "Förderliga BFV-NLZ U12 (alle Regionen)",
    "id": null,
    "ebene": "Verband"
   },
   {
-   "st": "2",
+   "st": "3",
    "name": "U13 (D-Jun.) Q-KL AM/WEN",
    "id": "031NMEL2J8000004VS5489BTVV1LNS7C-G",
    "ebene": "Kreis"
   },
   {
-   "st": "3",
+   "st": "4",
    "name": "U13 (D-Jun.) Q-KK Nord AM/WEN",
    "id": "031NMGLHH0000004VS5489BTVV1LNS7C-G",
    "ebene": "Kreis"
   },
   {
-   "st": "3",
+   "st": "4",
    "name": "U13 (D-Jun.) Q-KK Süd AM/WEN",
    "id": "031NMGEI8C000004VS5489BTVV1LNS7C-G",
    "ebene": "Kreis"
   },
   {
-   "st": "4",
+   "st": "5",
    "name": "U13 (D-Jun.) D2/3-Gruppe AM/WEN n.a.",
    "id": "031NMIKURC000004VS5489BTVV1LNS7C-G",
    "ebene": "Kreis"
   },
   {
-   "st": "4",
+   "st": "5",
    "name": "U13 (D-Jun.) Q-Gr. Mitte AM/WEN",
    "id": "031NMH2FCS000004VS5489BTVV1LNS7C-G",
    "ebene": "Kreis"
   },
   {
-   "st": "4",
+   "st": "5",
    "name": "U13 (D-Jun.) Q-Gr. Nord 2 AM/WEN n.a.",
    "id": "031NMI1II0000004VS5489BTVV1LNS7C-G",
    "ebene": "Kreis"
   },
   {
-   "st": "4",
+   "st": "5",
    "name": "U13 (D-Jun.) Q-Gr. Nord AM/WEN",
    "id": "031NMH0DL0000003VS5489BTVV1LNS7C-G",
    "ebene": "Kreis"
   },
   {
-   "st": "4",
+   "st": "5",
    "name": "U13 (D-Jun.) Q-Gr. Ost 2 AM/WEN n.a.",
    "id": "031NMI89MG000004VS5489BTVV1LNS7C-G",
    "ebene": "Kreis"
   },
   {
-   "st": "4",
+   "st": "5",
    "name": "U13 (D-Jun.) Q-Gr. Ost AM/WEN",
    "id": "031NMH6MDC000004VS5489BTVV1LNS7C-G",
    "ebene": "Kreis"
   },
   {
-   "st": "4",
+   "st": "5",
    "name": "U13 (D-Jun.) Q-Gr. Süd 2 AM/WEN n.a.",
    "id": "031NMHHJ24000004VS5489BTVV1LNS7C-G",
    "ebene": "Kreis"
   },
   {
-   "st": "4",
+   "st": "5",
    "name": "U13 (D-Jun.) Q-Gr. Süd AM/WEN",
    "id": "031NMGUOF8000004VS5489BTVV1LNS7C-G",
    "ebene": "Kreis"
   },
   {
-   "st": "4",
+   "st": "5",
    "name": "U13 (D-Jun.) Q-Gr. West 2 AM/WEN n.a.",
    "id": "031NMI52CO000004VS5489BTVV1LNS7C-G",
    "ebene": "Kreis"
   },
   {
-   "st": "4",
+   "st": "5",
    "name": "U13 (D-Jun.) Q-Gr. West AM/WEN",
    "id": "031NMH47CS000003VS5489BTVV1LNS7C-G",
    "ebene": "Kreis"

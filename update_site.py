@@ -208,22 +208,27 @@ def build_pyramide(today=None):
             if not items:
                 continue  # Level existiert in dieser Saison (fuer uns) nicht, z.B. U13-BOL Oberpfalz
             if lid == "1107":
-                # BuLi-NLZ-Foerderliga steht ueber der BFV-NLZ-Foerderliga;
-                # die vielen BFV-NLZ-Regionen pro Jahrgang zu einer Zeile buendeln
-                st += 1
-                buli = [x for x in items if "BuLi" in x[0]]
-                buli.sort(key=lambda x: x[0])
-                for name, sid in buli:
-                    rows.append({"st": str(st), "name": name, "id": sid, "ebene": "Bundes"})
-                bfv = [x for x in items if "BuLi" not in x[0]]
+                # User-Wunsch: erst die komplette Bundesliga-NLZ-Foerderliga,
+                # darunter die komplette BFV-NLZ-Foerderliga; hoechster Jahrgang
+                # zuerst; die vielen BFV-NLZ-Regionen pro Jahrgang zu einer
+                # Zeile buendeln
                 import collections
-                by_age = collections.defaultdict(list)
-                for name, sid in bfv:
+                by_age = collections.defaultdict(lambda: {'buli': [], 'bfv': []})
+                for name, sid in items:
                     m = re.match(r"U\s*(\d+)", name)
-                    by_age[m.group(1) if m else "?"].append(name)
-                for age, names in sorted(by_age.items(), key=lambda kv: -int(kv[0]) if kv[0].isdigit() else 0):
-                    lbl = f"Förderliga BFV-NLZ U{age} (alle Regionen)" if len(names) > 1 else names[0]
-                    rows.append({"st": str(st), "name": lbl, "id": None, "ebene": "Verband"})
+                    age = m.group(1) if m else "99"
+                    (by_age[age]['buli'] if "BuLi" in name else by_age[age]['bfv']).append((name, sid))
+                ages = sorted(by_age, key=lambda a: -int(a) if a.isdigit() else 0)
+                st += 1
+                for age in ages:
+                    for name, sid in sorted(by_age[age]['buli']):
+                        rows.append({"st": str(st), "name": name, "id": sid, "ebene": "Bundes"})
+                st += 1
+                for age in ages:
+                    names = [n for n, _ in by_age[age]['bfv']]
+                    lbl = f"Förderliga BFV-NLZ U{age} (alle Regionen)" if len(names) > 1 else (names[0] if names else "")
+                    if lbl:
+                        rows.append({"st": str(st), "name": lbl, "id": None, "ebene": "Verband"})
                 continue
             items = _collapse_groups(items, lvl["value"])
             # BuLi-NLZ Foerderliga immer vor den BFV-NLZ-Staffeln
