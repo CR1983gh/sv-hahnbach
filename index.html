@@ -59,12 +59,14 @@
   @media (max-width: 620px){
     /* Spiele-Tabellen muessen ohne seitliches Scrollen passen */
     .tablewrap:has(.gdate){overflow:visible}
-    td.gdate, th:nth-child(1){font-size:.68rem}
+    .tablewrap:has(.gdate) table{table-layout:fixed;width:100%}
+    td.gdate, th:nth-child(1){font-size:.68rem;width:21%}
     .yr, .venue3{display:none}
-    td.gteam, th:nth-child(2), th:nth-child(4){width:37%}
+    td.gteam, th:nth-child(2), th:nth-child(4){width:33%}
+    .gscore, th:nth-child(3){width:10%}
     td.gteam .crest{width:17px;height:17px;margin:0 .25rem}
     .gscore, .score{font-size:.74rem;padding:.03rem .3rem}
-    td.gha, th.hc{width:1.6rem;padding:0 0 0 .15rem}
+    td.gha, th.hc{width:4%;padding:0 0 0 .15rem}
     .home-tag{padding:.02rem .18rem;font-size:.6rem}
     .tag-s{display:inline}.tag-l{display:none}
   }
