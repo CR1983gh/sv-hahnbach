@@ -331,7 +331,15 @@ function pyrBlock(team, liga, staffelId){
   const norm = s => s.replace(/\s+/g,' ').replace(/AM\/WEN/g,'AM/WEN').replace(/\(D-?Jun\.?\)/g,'').toLowerCase();
   // dezente Ebenen-Kurznamen statt Farbcodes
   const EBKURZ = { 'Profi':'Profi-Bundesligen', 'Bundes':'Bundesliga-NLZ', 'Region':'Regionalliga', 'Verband':'Verband', 'Bezirk':'Bezirk', 'Kreis':'Kreis' };
-  const kreisKlasse = name => /KL/.test(name) ? 'Kreisliga' : /KK/.test(name) ? 'Kreisklasse' : 'Gruppe';
+  const kreisKlasse = name => {
+    const n = name.toLowerCase();
+    if (/kreisliga|-kl\b| kl /.test(name) || n.includes('kreisliga')) return 'Kreisliga';
+    if (/kreisklasse|-kk\b| kk /.test(name) || n.includes('kreisklasse')) return 'Kreisklasse';
+    if (/a-?klasse/.test(n)) return 'A-Klasse';
+    if (/b-?klasse/.test(n)) return 'B-Klasse';
+    if (/c-?klasse/.test(n)) return 'C-Klasse';
+    return 'Gruppe';
+  };
   let rows = '', lastKey = null;
   for (const t of tiers){
     const key = t.st + '|' + t.ebene;
