@@ -163,6 +163,23 @@ def parse_ics(raw):
     return out
 
 
+def parse_zones(staffel):
+    """Auf-/Abstiegszonaender aus dem bfv.de-Tabellen-HTML (Next.js-Payload).
+    Liefert (aufstieg, aufstiegs-relegation, abstiegs-relegation, abstieg)."""
+    try:
+        t = fetch(
+            f"https://www.bfv.de/ergebnisse/wettbewerb/-/{staffel}/tabellen"
+        ).decode("utf-8", "replace")
+    except Exception:  # noqa: BLE001
+        return None
+    def g(k):
+        m = re.search(k + r'\\*":(\d+)', t)  # erster Treffer = Gesamttabelle
+        return int(m.group(1)) if m else 0
+    z = (g("promotionTeamCount"), g("promotionPlayoffTeamCount"),
+         g("relegationPlayoffTeamCount"), g("relegationTeamCount"))
+    return z if any(z) else None
+
+
 def build_data(today=None):
     today = today or datetime.date.today()
     meta_all = json.load(open("meta.json", encoding="utf-8"))
@@ -217,6 +234,9 @@ def build_data(today=None):
                 meta["tv"] = r["tor"]
                 break
         data[team] = dict(meta=meta, games=upcoming, results=results, standings=standings)
+        zones = parse_zones(staffel)
+        if zones:
+            data[team]["zones"] = zones
     return data
 
 
