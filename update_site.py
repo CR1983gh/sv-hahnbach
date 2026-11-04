@@ -244,6 +244,7 @@ def build_data(today=None):
 BFV_API = "https://next.bfv.de/bfv-api/v1/public"
 AMBERG_AREA = "00ES8GNJPC00000FVV0AG08LVUPGND5I"
 TEAMTYPE = {
+    "Herren": "359",
     "U19 (A-Junioren)": "360",
     "U17 (B-Junioren)": "361",
     "U15 (C-Junioren)": "362",
@@ -251,7 +252,7 @@ TEAMTYPE = {
 }
 # Levels, die ueberkreislich sind und daher immer gezeigt werden (alle Vereine
 # des Landkreises koennen dort landen); untere Levels nur Kreis Amberg/Weiden
-SUPRA_LEVELS = {"1", "17", "520", "387", "1107"}
+SUPRA_LEVELS = {"1", "2", "4", "17", "520", "387", "714", "1107"}
 
 
 def current_season_code(today=None):
@@ -326,8 +327,11 @@ def build_pyramide(today=None):
             # BuLi-NLZ Foerderliga immer vor den BFV-NLZ-Staffeln
             items.sort(key=lambda x: 0 if "BuLi" in x[0] else 1)
             st += 1
-            ebene = {"1": "Bundes", "17": "Region", "520": "Verband", "387": "Verband",
-                     "1107": "Verband", "389": "Bezirk", "390": "Bezirk"}.get(lid, "Kreis")
+            ebene = {"1": "Bundes", "17": "Region", "2": "Profi", "4": "Profi", "714": "Region",
+                     "520": "Verband", "387": "Verband", "1107": "Verband",
+                     "389": "Bezirk", "390": "Bezirk"}.get(lid, "Kreis")
+            if label.startswith("Herren") and lid in ("1", "2", "4"):
+                ebene = "Profi"  # Herren: BL/2.BL/3.Liga = Profi-Ebene
             for name, sid in items:
                 rows.append({"st": str(st), "name": name, "id": sid, "ebene": ebene})
         if rows:
