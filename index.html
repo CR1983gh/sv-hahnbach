@@ -331,10 +331,15 @@ function pyrBlock(team, liga, staffelId){
   const norm = s => s.replace(/\s+/g,' ').replace(/AM\/WEN/g,'AM/WEN').replace(/\(D-?Jun\.?\)/g,'').toLowerCase();
   // dezente Ebenen-Kurznamen statt Farbcodes
   const EBKURZ = { 'Profi':'Profi-Bundesligen', 'Bundes':'Bundesliga-NLZ', 'Region':'Regionalliga', 'Verband':'Verband', 'Bezirk':'Bezirk', 'Kreis':'Kreis' };
+  const ebKurz = (ebene, name) => {
+    if (ebene === 'Verband' && /NLZ/.test(name)) return 'BFV-NLZ';
+    return EBKURZ[ebene] || ebene;
+  };
   const kreisKlasse = name => {
     const n = name.toLowerCase();
-    if (/kreisliga|-kl\b| kl /.test(name) || n.includes('kreisliga')) return 'Kreisliga';
-    if (/kreisklasse|-kk\b| kk /.test(name) || n.includes('kreisklasse')) return 'Kreisklasse';
+    // BFV-Notation: Q-KL = Kreisliga, Q-KK = Kreisklasse
+    if (/kreisliga/.test(n) || /-kl\b/.test(n) || /-kl /.test(n)) return 'Kreisliga';
+    if (/kreisklasse/.test(n) || /-kk\b/.test(n) || /-kk /.test(n)) return 'Kreisklasse';
     if (/a-?klasse/.test(n)) return 'A-Klasse';
     if (/b-?klasse/.test(n)) return 'B-Klasse';
     if (/c-?klasse/.test(n)) return 'C-Klasse';
@@ -346,13 +351,13 @@ function pyrBlock(team, liga, staffelId){
     if (key !== lastKey){
       lastKey = key;
       const kl = t.ebene === 'Kreis' ? ' — ' + kreisKlasse(t.name) : '';
-      rows += `<tr class="pyr-hdr"><td colspan="2"><span class="pyr-stno">Stufe ${t.st}</span>${esc(EBKURZ[t.ebene] || t.ebene)}${esc(kl)}</td></tr>`;
+      rows += `<tr class="pyr-hdr"><td colspan="2"><span class="pyr-stno">Stufe ${t.st}</span>${esc(ebKurz(t.ebene, t.name))}${esc(kl)}</td></tr>`;
     }
     const own = (staffelId && t.id === staffelId) ||
                 (!staffelId && (norm(liga).includes(norm(t.name)) || norm(t.name).includes(norm(liga))));
     const label = esc(t.name) + (own ? ' ⭐' : '');
     const inner = t.id ? `<a href="https://www.bfv.de/ergebnisse/wettbewerb/-/${t.id}" target="_blank" rel="noopener">${label}</a>` : label;
-    const ebName = EBKURZ[t.ebene] || t.ebene;
+    const ebName = ebKurz(t.ebene, t.name);
     rows += `<tr class="${own ? 'hahnbach' : ''}"><td class="tname">${inner}</td><td class="pyr-eb">${esc(ebName)}</td></tr>`;
   }
   return `<div class="pyr"><h3 class="sec">🏟️ Ligen-Pyramide ${esc(jg.replace(/ \(.-Junioren\)/,''))}</h3><div class="tablewrap"><table><thead><tr><th>Liga</th><th>Ebene</th></tr></thead><tbody>${rows}</tbody></table></div><div class="pyr-note">Quelle: BFV — von der untersten Gruppe bis zur Spitze. Klick öffnet Tabelle &amp; Ergebnisse auf bfv.de. ⭐ = Spielklasse des eigenen Teams.</div></div>`;
