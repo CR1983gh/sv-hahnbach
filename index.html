@@ -125,11 +125,14 @@
   /* core columns (Pl., Team, Sp., Pkt.) fit the phone screen; extras scroll sideways */
   /* numeric columns Sp./Pkt./S-U-N/Tore/Diff. evenly spaced */
   .tablewrap.st table{table-layout:fixed}
-  .tablewrap.st th:nth-child(1){width:7%}
+  .tablewrap.st th:nth-child(1){width:6.5%}
   .tablewrap.st th:nth-child(2){width:auto}
-  .tablewrap.st th:nth-child(n+3){width:13.2%;text-align:center}
+  .tablewrap.st th:nth-child(n+3){width:12.1%;text-align:center}
   .tablewrap.st td:nth-child(n+3){text-align:center}
-  .tablewrap.st td.tname{white-space:normal}
+  /* Teamname moeglichst 1-zeilig: Umbruch aus, notfalls Ellipsis */
+  .tablewrap.st td.tname{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+  .tablewrap.st td.tname .gw{overflow:hidden}
+  .tablewrap.st td.tname .t{white-space:nowrap;overflow:hidden;text-overflow:clip;max-width:calc(100% - 26px)}
   @media (max-width: 560px){
     th, td{padding-left:.35rem; padding-right:.35rem}
     td.tname{min-width:125px}
@@ -414,7 +417,7 @@ function select(team){
     d.standings.forEach(r => {
       const me = isHahnbach(r.name);
       const zc = zoneOf(parseInt(r.pos, 10) || 0);
-      h += `<tr class="${(me?'hahnbach':'') + (zc?' '+zc:'')}"><td>${esc(r.pos)}</td><td class="tname"><span class="gw">${crest(r.name)}<span class="t">${esc(shortName(r.name))}</span>${me?'<span class="starme">⭐</span>':''}</span></td>
+      h += `<tr class="${(me?'hahnbach':'') + (zc?' '+zc:'')}"><td>${esc(r.pos)}</td><td class="tname"><span class="gw">${crest(r.name)}<span class="t" title="${esc(r.name)}">${esc(shortName(r.name))}</span>${me?'<span class="starme">⭐</span>':''}</span></td>
         <td>${esc(r.sp)}</td><td class="pkt">${esc(r.pkt)}</td>
         <td class="xcol">${esc(r.g)}-${esc(r.u)}-${esc(r.v)}</td>
         <td class="xcol">${esc(r.tor)}</td>
