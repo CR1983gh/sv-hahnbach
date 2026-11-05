@@ -125,13 +125,14 @@
   /* core columns (Pl., Team, Sp., Pkt.) fit the phone screen; extras scroll sideways */
   /* numeric columns Sp./Pkt./S-U-N/Tore/Diff. evenly spaced */
   .tablewrap.st table{table-layout:fixed}
-  .tablewrap.st th:nth-child(1){width:6.5%}
+  .tablewrap.st th:nth-child(1){width:5.5%}
   .tablewrap.st th:nth-child(2){width:auto}
-  .tablewrap.st th:nth-child(n+3){width:12.1%;text-align:center}
+  .tablewrap.st th:nth-child(n+3){width:10.9%;text-align:center}
   .tablewrap.st td:nth-child(n+3){text-align:center}
   /* Teamname: immer komplett, 1-zeilig — Schrift wird bei Bedarf automatisch verkleinert */
   .tablewrap.st td.tname{white-space:nowrap;overflow:hidden;min-width:0}
   .tablewrap.st td.tname.wrapok{white-space:normal}
+  .tablewrap.st td.tname.wrapok .t{white-space:normal}
   .tablewrap.st td.tname .gw{overflow:visible}
   .tablewrap.st td.tname .t{white-space:nowrap;max-width:calc(100% - 26px)}
   @media (max-width: 560px){
