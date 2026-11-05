@@ -129,10 +129,11 @@
   .tablewrap.st th:nth-child(2){width:auto}
   .tablewrap.st th:nth-child(n+3){width:12.1%;text-align:center}
   .tablewrap.st td:nth-child(n+3){text-align:center}
-  /* Teamname moeglichst 1-zeilig: Umbruch aus, notfalls Ellipsis */
-  .tablewrap.st td.tname{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
-  .tablewrap.st td.tname .gw{overflow:hidden}
-  .tablewrap.st td.tname .t{white-space:nowrap;overflow:hidden;text-overflow:clip;max-width:calc(100% - 26px)}
+  /* Teamname: immer komplett, 1-zeilig — Schrift wird bei Bedarf automatisch verkleinert */
+  .tablewrap.st td.tname{white-space:nowrap;overflow:hidden;min-width:0}
+  .tablewrap.st td.tname.wrapok{white-space:normal}
+  .tablewrap.st td.tname .gw{overflow:visible}
+  .tablewrap.st td.tname .t{white-space:nowrap;max-width:calc(100% - 26px)}
   @media (max-width: 560px){
     th, td{padding-left:.35rem; padding-right:.35rem}
     td.tname{min-width:125px}
@@ -442,7 +443,19 @@ function select(team){
     ${m.liga_bfv ? `<a href="${m.liga_bfv}" target="_blank" rel="noopener">Liga auf bfv.de →</a>` : (m.fupa ? `<a href="${m.fupa}" target="_blank" rel="noopener">Liga auf FuPa →</a>` : '')}</p>`;
 
   view.innerHTML = h;
-  // precise fit: shorten or shrink font so no name is cut off
+  // Table names: NEVER shorten. Shrink font until 1-line fits; last resort = wrap (never cut).
+  view.querySelectorAll('.tablewrap.st td.tname .t').forEach(el => {
+    let fs = 13.4;
+    el.style.fontSize = fs + 'px';
+    while (el.scrollWidth > el.clientWidth + 1 && fs > 9.5) {
+      fs -= 0.4; el.style.fontSize = fs + 'px';
+    }
+    // still doesn't fit -> allow wrap for that row instead of truncating
+    if (el.scrollWidth > el.clientWidth + 1) {
+      el.closest('td.tname').classList.add('wrapok');
+      el.style.fontSize = '';
+    }
+  });
   const font = getComputedStyle(document.body).fontFamily;
   view.querySelectorAll('.gteam .t').forEach(el => {
     const cs = getComputedStyle(el);
