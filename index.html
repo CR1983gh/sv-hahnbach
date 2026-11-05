@@ -403,14 +403,15 @@ function select(team){
       return '';
     };
     h += `<h3 class="sec">📊 Tabelle — ${esc(m.liga)}</h3><div class="tablewrap">`;
-    h += `<table><thead><tr><th>Pl.</th><th>Team</th><th>Sp.</th><th>Diff.</th><th>Pkt.</th><th class="xcol">S-U-N</th><th class="xcol">Tore</th></tr></thead><tbody>`;
+    h += `<table><thead><tr><th>Pl.</th><th>Team</th><th>Sp.</th><th>Pkt.</th><th class="xcol">S-U-N</th><th class="xcol">Tore</th><th class="xcol">Diff.</th></tr></thead><tbody>`;
     d.standings.forEach(r => {
       const me = isHahnbach(r.name);
       const zc = zoneOf(parseInt(r.pos, 10) || 0);
       h += `<tr class="${(me?'hahnbach':'') + (zc?' '+zc:'')}"><td>${esc(r.pos)}</td><td class="tname"><span class="gw">${crest(r.name)}<span class="t">${esc(shortName(r.name))}</span>${me?'<span class="starme">⭐</span>':''}</span></td>
-        <td>${esc(r.sp)}</td><td>${Number(r.diff)>0?'+':''}${esc(r.diff)}</td><td class="pkt">${esc(r.pkt)}</td>
+        <td>${esc(r.sp)}</td><td class="pkt">${esc(r.pkt)}</td>
         <td class="xcol">${esc(r.g)}-${esc(r.u)}-${esc(r.v)}</td>
-        <td class="xcol">${esc(r.tor)}</td></tr>`;
+        <td class="xcol">${esc(r.tor)}</td>
+        <td class="xcol">${Number(r.diff)>0?'+':''}${esc(r.diff)}</td></tr>`;
     });
     h += `</tbody></table></div>`;
     if (z.some(x => x > 0)) {
