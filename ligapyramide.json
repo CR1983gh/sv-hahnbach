@@ -514,20 +514,8 @@
   },
   {
    "st": "5",
-   "name": "U13 (D-Jun.) D2/3-Gruppe AM/WEN n.a.",
-   "id": "031NMIKURC000004VS5489BTVV1LNS7C-G",
-   "ebene": "Kreis"
-  },
-  {
-   "st": "5",
    "name": "U13 (D-Jun.) Q-Gr. Mitte AM/WEN",
    "id": "031NMH2FCS000004VS5489BTVV1LNS7C-G",
-   "ebene": "Kreis"
-  },
-  {
-   "st": "5",
-   "name": "U13 (D-Jun.) Q-Gr. Nord 2 AM/WEN n.a.",
-   "id": "031NMI1II0000004VS5489BTVV1LNS7C-G",
    "ebene": "Kreis"
   },
   {
@@ -538,20 +526,8 @@
   },
   {
    "st": "5",
-   "name": "U13 (D-Jun.) Q-Gr. Ost 2 AM/WEN n.a.",
-   "id": "031NMI89MG000004VS5489BTVV1LNS7C-G",
-   "ebene": "Kreis"
-  },
-  {
-   "st": "5",
    "name": "U13 (D-Jun.) Q-Gr. Ost AM/WEN",
    "id": "031NMH6MDC000004VS5489BTVV1LNS7C-G",
-   "ebene": "Kreis"
-  },
-  {
-   "st": "5",
-   "name": "U13 (D-Jun.) Q-Gr. Süd 2 AM/WEN n.a.",
-   "id": "031NMHHJ24000004VS5489BTVV1LNS7C-G",
    "ebene": "Kreis"
   },
   {
@@ -562,14 +538,38 @@
   },
   {
    "st": "5",
+   "name": "U13 (D-Jun.) Q-Gr. West AM/WEN",
+   "id": "031NMH47CS000003VS5489BTVV1LNS7C-G",
+   "ebene": "Kreis"
+  },
+  {
+   "st": "5",
+   "name": "U13 (D-Jun.) Q-Gr. Nord 2 AM/WEN n.a.",
+   "id": "031NMI1II0000004VS5489BTVV1LNS7C-G",
+   "ebene": "Kreis"
+  },
+  {
+   "st": "5",
+   "name": "U13 (D-Jun.) Q-Gr. Ost 2 AM/WEN n.a.",
+   "id": "031NMI89MG000004VS5489BTVV1LNS7C-G",
+   "ebene": "Kreis"
+  },
+  {
+   "st": "5",
+   "name": "U13 (D-Jun.) Q-Gr. Süd 2 AM/WEN n.a.",
+   "id": "031NMHHJ24000004VS5489BTVV1LNS7C-G",
+   "ebene": "Kreis"
+  },
+  {
+   "st": "5",
    "name": "U13 (D-Jun.) Q-Gr. West 2 AM/WEN n.a.",
    "id": "031NMI52CO000004VS5489BTVV1LNS7C-G",
    "ebene": "Kreis"
   },
   {
    "st": "5",
-   "name": "U13 (D-Jun.) Q-Gr. West AM/WEN",
-   "id": "031NMH47CS000003VS5489BTVV1LNS7C-G",
+   "name": "U13 (D-Jun.) D2/3-Gruppe AM/WEN n.a.",
+   "id": "031NMIKURC000004VS5489BTVV1LNS7C-G",
    "ebene": "Kreis"
   }
  ]

@@ -324,8 +324,17 @@ def build_pyramide(today=None):
                         rows.append({"st": str(st), "name": name, "id": sid, "ebene": "Verband"})
                 continue
             items = _collapse_groups(items, lvl["value"])
-            # BuLi-NLZ Foerderliga immer vor den BFV-NLZ-Staffeln
-            items.sort(key=lambda x: 0 if "BuLi" in x[0] else 1)
+
+            def grp_rank(nm):
+                # User-Wunsch: erst alle normalen Gruppen, dann die "2"er-Gruppen,
+                # zuletzt D2/3-(Reserve-)Gruppen
+                toks = nm.replace("(", " ").replace(")", " ").split()
+                if any(t.startswith("D2/3") or t.startswith("C2") or t.startswith("B2") for t in toks):
+                    return 2
+                if any(t == "2" or t == "II" for t in toks):
+                    return 1
+                return 0
+            items.sort(key=lambda x: (grp_rank(x[0]), 0 if "BuLi" in x[0] else 1, x[0]))
             st += 1
             ebene = {"1": "Bundes", "17": "Region", "2": "Profi", "4": "Profi", "714": "Region",
                      "520": "Verband", "387": "Verband", "1107": "Verband",
