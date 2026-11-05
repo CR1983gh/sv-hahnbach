@@ -122,7 +122,14 @@
   td{padding:.4rem .5rem;border-bottom:1px solid var(--line);white-space:nowrap}
   td.tname{white-space:normal;min-width:150px}
   td.tname .crest{width:20px;height:20px;margin-right:.45rem;vertical-align:middle}
-  /* core columns (Pl., Team, Sp., Diff., Pkt.) fit the phone screen; extras scroll sideways */
+  /* core columns (Pl., Team, Sp., Pkt.) fit the phone screen; extras scroll sideways */
+  /* numeric columns Sp./Pkt./S-U-N/Tore/Diff. evenly spaced */
+  .tablewrap.st table{table-layout:fixed}
+  .tablewrap.st th:nth-child(1){width:7%}
+  .tablewrap.st th:nth-child(2){width:auto}
+  .tablewrap.st th:nth-child(n+3){width:13.2%;text-align:center}
+  .tablewrap.st td:nth-child(n+3){text-align:center}
+  .tablewrap.st td.tname{white-space:normal}
   @media (max-width: 560px){
     th, td{padding-left:.35rem; padding-right:.35rem}
     td.tname{min-width:125px}
@@ -402,7 +409,7 @@ function select(team){
       if (n - pos < z[3] + z[2]) return 'z-NR';
       return '';
     };
-    h += `<h3 class="sec">📊 Tabelle — ${esc(m.liga)}</h3><div class="tablewrap">`;
+    h += `<h3 class="sec">📊 Tabelle — ${esc(m.liga)}</h3><div class="tablewrap st">`;
     h += `<table><thead><tr><th>Pl.</th><th>Team</th><th>Sp.</th><th>Pkt.</th><th class="xcol">S-U-N</th><th class="xcol">Tore</th><th class="xcol">Diff.</th></tr></thead><tbody>`;
     d.standings.forEach(r => {
       const me = isHahnbach(r.name);
