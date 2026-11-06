@@ -409,7 +409,7 @@ function select(team){
   const m = d.meta;
   const view = document.getElementById('teamView');
 
-  let h = `<div class="team-head">${crest(team)}<h2>${esc(kurzName(team))}</h2><span class="chip">${esc(m.liga)}</span>`;
+  let h = `<div class="team-head">${crest('SV Hahnbach')}<h2>${esc(kurzName(team))}</h2><span class="chip">${esc(m.liga)}</span>`;
   if (m.platz != null) h += `<span class="chip dark">Platz ${m.platz} · ${esc(m.tv)}</span>`;
   h += `</div>`;
 
