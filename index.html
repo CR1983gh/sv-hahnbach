@@ -50,6 +50,7 @@
   .card{background:var(--card);border-radius:12px;padding:.7rem .8rem;box-shadow:0 1px 4px rgba(0,0,0,.08);margin-bottom:.8rem}
   td.gdate{font-weight:700;font-size:.78rem;color:var(--grau);white-space:nowrap;vertical-align:middle}
   td.gdate .wd{color:var(--akz)}
+  .cd{font-size:.68rem;color:var(--grau)}
   .venue3{color:var(--grau);font-weight:400;font-size:.68rem;white-space:normal;max-width:8em;line-height:1.15}
   td.gteam{white-space:nowrap;overflow:hidden;width:34%;vertical-align:middle}
   .gw{display:flex;align-items:center;min-width:0}
@@ -116,6 +117,12 @@
   .spiel.resrow-U{background:var(--draw);border-left:4px solid #e08a00}
   .spiel.resrow-N{background:var(--lose);border-left:4px solid var(--rot)}
   .spiel.resrow-S,.spiel.resrow-U,.spiel.resrow-N{border-radius:0 10px 10px 0;padding-left:.5rem}
+  .formbar{display:flex;gap:.3rem;margin:.4rem 0;align-items:center}
+  .formbar .flbl{font-size:.62rem;font-weight:700;color:var(--grau);margin-right:.15rem}
+  .fchip{min-width:1.4rem;height:1.4rem;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;color:var(--fg);flex:none}
+  .fchip.c-S{background:var(--win)}
+  .fchip.c-U{background:var(--draw)}
+  .fchip.c-N{background:var(--lose)}
   .tablewrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:0}
   table{width:100%;border-collapse:collapse;font-size:.84rem;background:var(--card)}
   th{background:var(--schwarz);color:var(--gelb);text-align:left;padding:.45rem .5rem;font-size:.74rem;text-transform:uppercase;letter-spacing:.4px;white-space:nowrap}
@@ -199,6 +206,21 @@ function weekday(dateStr){
   return WD[new Date(yy, mm-1, dd).getDay()];
 }
 function esc(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML}
+
+function countdownText(dateStr, timeStr){
+  if (!dateStr) return '';
+  const p = String(dateStr).split('.').map(Number);
+  if (p.length < 3 || p.some(n => !Number.isFinite(n))) return '';
+  const hm = String(timeStr || '').split(':').map(Number);
+  const std = hm.length > 1 && Number.isFinite(hm[0]) ? hm[0] : 15;
+  const min = hm.length > 1 && Number.isFinite(hm[1]) ? hm[1] : 0;
+  const diff = new Date(p[2], p[1]-1, p[0], std, min) - new Date();
+  if (diff <= 0) return '';
+  if (diff < 60*60*1000) return 'jetzt';
+  if (diff < 24*60*60*1000) return 'in ' + Math.floor(diff/(60*60*1000)) + ' h';
+  if (diff < 7*24*60*60*1000) return 'in ' + Math.floor(diff/(24*60*60*1000)) + ' Tagen';
+  return '';
+}
 
 // Shorten long team names for narrow screens
 const SHORT = {
@@ -389,9 +411,33 @@ function select(team){
   if (m.platz != null) h += `<span class="chip dark">Platz ${m.platz} · ${esc(m.tv)}</span>`;
   h += `</div>`;
 
+  // Formbar: letzte 5 Spiele mit Ergebnis (älteste links, neuestes rechts)
+  const formGames = (d.results||[]).filter(g => g.score && !/\D/.test(g.score.replace(':', '')));
+  const formLast5 = formGames.slice(-5);
+  if (formLast5.length){
+    let chips = '';
+    for (const g of formLast5){
+      const [fa, fb] = g.score.split(':').map(Number);
+      if (isNaN(fa) || isNaN(fb)) continue;
+      const ownHome = isHahnbach(g.home);
+      const own = ownHome ? fa : fb, opp = ownHome ? fb : fa;
+      const cls = own > opp ? 'S' : own < opp ? 'N' : 'U';
+      const lbl = cls === 'S' ? 'Sieg' : cls === 'N' ? 'Niederlage' : 'Unentschieden';
+      chips += `<span class="fchip c-${cls}" title="${esc(g.date + ' ' + g.home + ' ' + g.score + ' ' + g.away + ' — ' + lbl)}">${esc(cls)}</span>`;
+    }
+    if (chips) h += `<div class="formbar"><span class="flbl">Form:</span>${chips}</div>`;
+  }
+
   const GAME_HEAD = `<thead><tr><th>Datum</th><th>Heim</th><th></th><th>Auswärts</th><th class="hc"></th></tr></thead>`;
   h += `<h3 class="sec">📅 Nächste Spiele</h3><div class="tablewrap"><table>${GAME_HEAD}<tbody>`;
-  h += d.games.length ? d.games.map(g => gameRow(g, false)).join('')
+  h += d.games.length ? d.games.map((g, i) => {
+    let row = gameRow(g, false);
+    if (i === 0) {
+      const cd = countdownText(g.date, g.time);
+      if (cd) row = row.replace('</td>', '<div class="cd">⏳ ' + esc(cd) + '</div></td>');
+    }
+    return row;
+  }).join('')
                      : `<tr><td colspan="5"><div class="empty">Derzeit keine Spiele angesetzt.</div></td></tr>`;
   h += `</tbody></table></div>`;
 
