@@ -218,7 +218,7 @@ function countdownText(dateStr, timeStr){
   if (diff <= 0) return '';
   if (diff < 60*60*1000) return 'jetzt';
   if (diff < 24*60*60*1000) return 'in ' + Math.floor(diff/(60*60*1000)) + ' h';
-  if (diff < 7*24*60*60*1000) return 'in ' + Math.floor(diff/(24*60*60*1000)) + ' Tagen';
+  if (diff < 21*24*60*60*1000) return 'in ' + Math.floor(diff/(24*60*60*1000)) + ' Tagen';
   return '';
 }
 
