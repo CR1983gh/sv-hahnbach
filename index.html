@@ -162,6 +162,25 @@
     .tagcol{grid-column:3;grid-row:1}
     .venue2{display:none}
   }
+  /* Übersicht "Alle Teams" */
+  .ovcard{background:var(--card);border-radius:12px;padding:.6rem .7rem;box-shadow:0 1px 4px rgba(0,0,0,.08)}
+  .ovhead{display:flex;align-items:center;gap:.4rem;cursor:pointer;font-weight:700}
+  .ovcols{display:flex;gap:.8rem;margin-top:.4rem;font-size:.78rem}
+  .ovcol{flex:1;min-width:0}
+  @media(max-width:520px){.ovcols{flex-direction:column;gap:.3rem}}
+  .ovlbl{font-size:.62rem;text-transform:uppercase;letter-spacing:.4px;color:var(--grau)}
+  .ovwrap{display:flex;flex-direction:column;gap:.55rem}
+  .ovhead .ovname{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .ovchips{margin-left:auto;display:flex;gap:.3rem;align-items:center;flex-wrap:wrap;justify-content:flex-end;flex:none;max-width:55%}
+  .ovchip{background:var(--gelb);color:var(--schwarz);border-radius:999px;padding:.1rem .5rem;font-size:.62rem;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+  .ovchip.dark{background:var(--schwarz);color:var(--gelb)}
+  .ovrow{display:flex;align-items:center;gap:.35rem;min-width:0;margin-top:.15rem}
+  .ovdate{font-weight:800;flex:none}
+  .ovgeg{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .ovha{flex:none;font-size:.6rem;font-weight:900;border:1.5px solid var(--grau);color:var(--grau);border-radius:4px;padding:0 .22rem;line-height:1.35}
+  .ovnone{color:var(--grau)}
+  .ovbtn{border-color:var(--akz,var(--gelb));background:var(--gelb);color:var(--schwarz)}
+  .ovbtn.active{background:var(--schwarz);color:var(--gelb);border-color:var(--schwarz)}
 </style>
 </head>
 <body>
@@ -318,6 +337,11 @@ function kurzName(t){
 }
 
 const picker = document.getElementById('picker');
+const ovBtn = document.createElement('button');
+ovBtn.className = 'tbtn ovbtn'; ovBtn.id = 'ovBtn';
+ovBtn.innerHTML = '<span>🏠 Übersicht</span>';
+ovBtn.onclick = () => renderOverview();
+picker.appendChild(ovBtn);
 GROUPS.forEach(g => {
   const lbl = document.createElement('span');
   lbl.className = 'group-label'; lbl.textContent = g.label;
@@ -509,6 +533,63 @@ function select(team){
 }
 
 
+
+function ovGegner(name){
+  let s = shortName(name || '');
+  s = s.replace(/\((SG|SG1)\)\s*/g, '');
+  return s.trim();
+}
+
+function renderOverview(){
+  document.querySelectorAll('.tbtn').forEach(b => b.classList.toggle('active', b === ovBtn));
+  const view = document.getElementById('teamView');
+  let h = `<h3 class="sec">🏟️ Alle Mannschaften</h3><div class="ovwrap">`;
+  Object.keys(DATA).forEach(team => {
+    const d = DATA[team] || {}, m = d.meta || {};
+    const res = (d.results || []).filter(g => g.score && g.home && g.away && /^\s*\d+:\d+\s*$/.test(g.score));
+    const last = res.length ? res[res.length - 1] : null;
+    const next = (d.games || []).find(g => (g.score || '') === '' && g.home && g.away) || null;
+
+    let chips = `<span class="ovchip">${esc(m.liga || '')}</span>`;
+    chips += m.platz != null
+      ? `<span class="ovchip dark">Pl. ${esc(String(m.platz))}</span>`
+      : `<span class="ovchip dark">Kinderfestival</span>`;
+
+    let lastHtml = `<span class="ovnone">—</span>`;
+    if (last){
+      const hn = isHahnbach(last.home);
+      const opp = hn ? last.away : last.home;
+      const cls = resultClass(last);
+      lastHtml = `<span class="ovdate">${esc((last.date || '').slice(0, 5))}</span>` +
+        `<span class="ovgeg" title="${esc(opp)}">${esc(ovGegner(opp))}</span>` +
+        `<span class="ovha">${hn ? 'H' : 'A'}</span>` +
+        `<span class="score sc-${cls}">${esc(last.score)}</span>`;
+    }
+
+    let nextHtml = `<span class="ovnone">—</span>`;
+    if (next){
+      const hn2 = isHahnbach(next.home);
+      const opp2 = hn2 ? next.away : next.home;
+      nextHtml = `<span class="ovdate">${esc((next.date || '').slice(0, 5))}${next.time ? ' ' + esc(next.time) : ''}</span>` +
+        `<span class="ovgeg" title="${esc(opp2)}">${esc(ovGegner(opp2))}</span>` +
+        `<span class="ovha">${hn2 ? 'H' : 'A'}</span>`;
+    }
+
+    h += `<div class="ovcard">
+      <div class="ovhead" onclick="select('${team.replace(/'/g, "\\'")}')">
+        ${crest('SV Hahnbach')}<span class="ovname">${esc(kurzName(team))}</span>
+        <span class="ovchips">${chips}</span>
+      </div>
+      <div class="ovcols">
+        <div class="ovcol"><div class="ovlbl">Letztes Spiel</div><div class="ovrow">${lastHtml}</div></div>
+        <div class="ovcol"><div class="ovlbl">Nächstes Spiel</div><div class="ovrow">${nextHtml}</div></div>
+      </div>
+    </div>`;
+  });
+  h += `</div>`;
+  view.innerHTML = h;
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
 
 select('U13 (D-Junioren)');
 
