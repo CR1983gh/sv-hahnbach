@@ -47,16 +47,35 @@ TABLE_RE = re.compile(
 )
 
 
+def clean_team(name):
+    """Remove BFV PDF artifacts from team names."""
+    s = name.strip()
+    # trailing score/status notes: '2:0 U', '3:1 E', 'n.an.', 'a.o.', 'w.K.'
+    s = re.sub(r"\s+\d+:\d+\s+[A-ZÄÖÜ]\.?$", "", s)
+    s = re.sub(r"\s+n\.?an\.?$", "", s)
+    s = re.sub(r"\s+(a\.o\.|w\.K\.|k\.A\.)$", "", s)
+    # stray parentheses around whole name: '(SpVgg Ebermannsdorf)'
+    m = re.fullmatch(r"\(([^()]+)\)", s)
+    if m:
+        s = m.group(1)
+    return s.strip()
+
+
 def parse_spielplan(text):
     """Parse Mannschaftsspielplan PDF text into game dicts."""
     out = []
+    seen = set()
     for line in text.split("\n"):
         m = GAME_RE.match(line)
         if not m:
             continue
-        home, away = m.group(4).strip(), m.group(5).strip()
+        home, away = clean_team(m.group(4)), clean_team(m.group(5))
         if JUNK.search(home) or JUNK.search(away):
             continue
+        key = (m.group(2), (m.group(3) or "").strip(), home, away)
+        if key in seen:
+            continue
+        seen.add(key)
         out.append(
             dict(
                 no=m.group(1),
