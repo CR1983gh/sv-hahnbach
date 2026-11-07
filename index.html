@@ -191,6 +191,8 @@
   .ovmatch{flex:1;min-width:0;display:flex;align-items:center;gap:.3rem;flex-wrap:wrap;font-size:.78rem}
   .ovteamchip{flex:none;font-size:.62rem;font-weight:800;color:var(--akz);background:transparent;border:1px solid var(--akz);border-radius:999px;padding:.05rem .45rem;cursor:pointer;white-space:nowrap}
   .ovgame[onclick]{cursor:pointer}
+  .ovgame.ovtoday{outline:2px solid var(--akz);background:color-mix(in srgb, var(--akz) 8%, var(--card))}
+  .ovheute{display:inline-block;font-size:.58rem;font-weight:900;color:var(--gelb);background:var(--schwarz);border-radius:4px;padding:0 .3rem;letter-spacing:.5px}
   .ovown{font-weight:800}
   .ovcd{font-size:.62rem;color:var(--akz)}
   .ovtbl{margin-bottom:.8rem;min-width:0}
@@ -252,8 +254,8 @@ function countdownText(dateStr, timeStr){
   const diff = new Date(p[2], p[1]-1, p[0], std, min) - new Date();
   if (diff <= 0) return '';
   if (diff < 60*60*1000) return 'jetzt';
-  if (diff < 24*60*60*1000) return 'in ' + Math.floor(diff/(60*60*1000)) + ' h';
-  if (diff < 21*24*60*60*1000) return 'in ' + Math.floor(diff/(24*60*60*1000)) + ' Tagen';
+  if (diff < 24*60*60*1000){ const n = Math.floor(diff/(60*60*1000)); return 'in ' + n + (n === 1 ? ' Stunde' : ' Stunden'); }
+  if (diff < 21*24*60*60*1000){ const n = Math.floor(diff/(24*60*60*1000)); return 'in ' + n + (n === 1 ? ' Tag' : ' Tagen'); }
   return '';
 }
 
@@ -589,14 +591,15 @@ function ovNextBlock(){
   all.sort((a, b) => (a.dt - b.dt) || String(a.g.time || '').localeCompare(String(b.g.time || '')));
   if (!all.length) return `<div class="empty">Derzeit keine zukünftigen Spiele angesetzt.</div>`;
   let h = '', last = null;
-  all.forEach(({ team, g }) => {
+  all.forEach(({ team, g, dt }) => {
     if (g.date !== last){
       last = g.date;
       h += `<div class="ovday">${esc(weekday(g.date))}., ${esc(g.date.slice(0, 5))}.</div>`;
     }
     const cd = countdownText(g.date, g.time);
-    h += `<div class="ovgame">
-      <div class="ovwhen">${esc(g.time || g.date.slice(0, 5))}${cd ? `<div class="ovcd">⏳ ${esc(cd)}</div>` : ''}</div>
+    const isToday = !!dt && dt.getTime() === today.getTime();
+    h += `<div class="ovgame${isToday ? ' ovtoday' : ''}">
+      <div class="ovwhen">${esc(g.time || g.date.slice(0, 5))}${cd ? `<div class="ovcd">⏳ ${esc(cd)}</div>` : ''}${isToday ? '<div><span class="ovheute">HEUTE</span></div>' : ''}</div>
       <div class="ovmatch">${ovMatchHtml(g)}</div>
       ${ovTeamChip(team)}
     </div>`;
