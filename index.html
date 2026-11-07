@@ -5,10 +5,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SV Hahnbach 1949 e.V. — Alle Mannschaften</title>
 <style>
-  :root{--gelb:#9cc8f0;--gelbfg:#16324d;--schwarz:#5b8fc9;--hell:#edf5fd;--grau:#6b7f92;--card:#fff;--gruen:#1b8a3a;--rot:#c0392b;--fg:#24384d;--line:#d8e8f6;--line2:#c2daef;--hover:#e0eefb;--crestbg:#fff;--akz:#3f7fc0;--atagbg:#dbe9f6;--own:#fdeadb;--win:#cdeed8;--draw:#f7efd9;--lose:#f9d4da;--abs:#e6ebf1}
+  :root{--gelb:#9cc8f0;--gelbfg:#16324d;--schwarz:#5b8fc9;--hell:#edf5fd;--grau:#6b7f92;--card:#fff;--gruen:#1b8a3a;--rot:#c0392b;--fg:#24384d;--line:#d8e8f6;--line2:#c2daef;--hover:#e0eefb;--crestbg:#fff;--akz:#3f7fc0;--atagbg:#dbe9f6;--own:#fdeadb;--win:#cdeed8;--draw:#f7efd9;--lose:#f9d4da;--abs:#e6ebf1;
+    --r-card:12px;--r-row:10px;--r-pill:999px;--r-mini:6px;
+    --shadow-card:0 1px 4px rgba(0,0,0,.08);--shadow-row:0 1px 3px rgba(0,0,0,.07);
+    --line-card:0px solid transparent;
+    --font-head:inherit;--font-body:inherit;
+    --head-transform:none;--head-spacing:normal;--head-weight:800}
   *{box-sizing:border-box;margin:0;padding:0}
-  html{-webkit-text-size-adjust:100%}
-  body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--hell);color:var(--fg);line-height:1.45}
+  html{-webkit-text-size-adjust:100%;font-family:'Segoe UI',system-ui,-apple-system,sans-serif}
+  body{font-family:var(--font-body);background:var(--hell);color:var(--fg);line-height:1.45}
   header{background:var(--schwarz);color:#fff;padding:1.6rem 1rem 1.2rem;text-align:center;position:relative}
   header::after{content:"";position:absolute;left:0;right:0;bottom:0;height:6px;background:linear-gradient(90deg,var(--gelb) 0 50%,#fff 50% 100%)}
   .wappen{width:64px;height:64px;object-fit:contain;background:#fff;border-radius:14px;border:3px solid #fff;margin-bottom:.4rem;box-shadow:0 2px 8px rgba(0,0,0,.45)}
@@ -18,7 +23,7 @@
   .picker{position:sticky;top:0;z-index:20;background:var(--card);border-bottom:2px solid var(--gelb);box-shadow:0 2px 6px rgba(0,0,0,.08)}
   .picker-inner{max-width:980px;margin:0 auto;display:flex;gap:.35rem;flex-wrap:wrap;justify-content:center;align-items:center;padding:.55rem .6rem}
   .group-label{font-size:.72rem;font-weight:800;text-transform:uppercase;color:var(--grau);margin:0 .2rem 0 .5rem;letter-spacing:.5px}
-  .tbtn{border:2px solid var(--line2);background:var(--card);color:var(--fg);border-radius:999px;padding:.25rem .7rem .25rem .35rem;font-size:.82rem;font-weight:700;cursor:pointer;transition:all .15s;display:inline-flex;align-items:center;gap:.35rem;white-space:nowrap}
+  .tbtn{border:2px solid var(--line2);background:var(--card);color:var(--fg);border-radius:var(--r-pill);padding:.25rem .7rem .25rem .35rem;font-size:.82rem;font-weight:700;cursor:pointer;transition:all .15s;display:inline-flex;align-items:center;gap:.35rem;white-space:nowrap}
   .tbtn:hover{border-color:var(--gelb);background:var(--hover)}
   .tbtn.active{background:var(--schwarz);color:var(--gelb);border-color:var(--schwarz)}
   .tbtn img,.tbtn .crest-fb{width:22px;height:22px;border-radius:50%;object-fit:contain;background:var(--crestbg);flex:none}
@@ -44,10 +49,11 @@
   .pyr a{color:inherit;text-decoration:none;border-bottom:1px dotted #bbb}
   .pyr-note{color:var(--grau);font-size:.72rem;margin-top:.4rem}
 
-  .chip{background:var(--gelb);color:var(--schwarz);border-radius:999px;padding:.15rem .65rem;font-size:.78rem;font-weight:800}
+  .chip{background:var(--gelb);color:var(--schwarz);border-radius:var(--r-pill);padding:.15rem .65rem;font-size:.78rem;font-weight:800}
   .chip.dark{background:var(--schwarz);color:var(--gelb)}
   h3.sec{font-size:1rem;border-left:5px solid var(--gelb);padding-left:.5rem;margin:1.2rem 0 .5rem}
-  .card{background:var(--card);border-radius:12px;padding:.7rem .8rem;box-shadow:0 1px 4px rgba(0,0,0,.08);margin-bottom:.8rem}
+  h2,.sec{font-family:var(--font-head);text-transform:var(--head-transform);letter-spacing:var(--head-spacing);font-weight:var(--head-weight)}
+  .card{background:var(--card);border-radius:var(--r-card);padding:.7rem .8rem;box-shadow:var(--shadow-card);border:var(--line-card);margin-bottom:.8rem}
   td.gdate{font-weight:700;font-size:.78rem;color:var(--grau);white-space:nowrap;vertical-align:middle}
   td.gdate .wd{color:var(--akz)}
   .cd{font-size:.68rem;color:var(--grau)}
@@ -104,7 +110,7 @@
   .home-tag.h{background:var(--gelb);color:var(--schwarz)}
   .home-tag.a{background:var(--atagbg);color:var(--grau)}
   .venue{font-size:.72rem;color:var(--grau);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:180px}
-  .score{font-weight:900;background:var(--schwarz);color:var(--gelb);border-radius:6px;padding:.05rem .4rem;white-space:nowrap;flex:none}
+  .score{font-weight:900;background:var(--schwarz);color:var(--gelb);border-radius:var(--r-mini);padding:.05rem .4rem;white-space:nowrap;flex:none}
   .score.sc-S{background:var(--gruen);color:#fff}
   .score.sc-U{background:#e08a00;color:#fff}
   .score.sc-N{background:var(--rot);color:#fff}
@@ -163,7 +169,7 @@
     .venue2{display:none}
   }
   /* Übersicht "Alle Teams" */
-  .ovcard{background:var(--card);border-radius:12px;padding:.6rem .7rem;box-shadow:0 1px 4px rgba(0,0,0,.08)}
+  .ovcard{background:var(--card);border-radius:var(--r-card);padding:.6rem .7rem;box-shadow:var(--shadow-card);border:var(--line-card)}
   .ovhead{display:flex;align-items:center;gap:.4rem;cursor:pointer;font-weight:700}
   .ovcols{display:flex;gap:.8rem;margin-top:.4rem;font-size:.78rem}
   .ovcol{flex:1;min-width:0}
@@ -177,22 +183,22 @@
   .ovrow{display:flex;align-items:center;gap:.35rem;min-width:0;margin-top:.15rem}
   .ovdate{font-weight:800;flex:none}
   .ovgeg{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-  .ovha{flex:none;font-size:.6rem;font-weight:900;border:1.5px solid var(--grau);color:var(--grau);border-radius:4px;padding:0 .22rem;line-height:1.35}
+  .ovha{flex:none;font-size:.6rem;font-weight:900;border:1.5px solid var(--grau);color:var(--grau);border-radius:var(--r-mini);padding:0 .22rem;line-height:1.35}
   .ovnone{color:var(--grau)}
   .ovbtn{border-color:var(--akz,var(--gelb));background:var(--gelb);color:var(--schwarz)}
   .ovbtn.active{background:var(--schwarz);color:var(--gelb);border-color:var(--schwarz)}
   /* Sub-Tabs auf der Übersichtsseite */
   .ovtabs{display:flex;gap:.35rem;margin-bottom:.6rem;flex-wrap:wrap}
-  .ovtab{border:1.5px solid var(--grau);background:var(--card);color:var(--fg);border-radius:999px;padding:.28rem .7rem;font-size:.74rem;font-weight:700;cursor:pointer}
+  .ovtab{border:1.5px solid var(--grau);background:var(--card);color:var(--fg);border-radius:var(--r-pill);padding:.28rem .7rem;font-size:.74rem;font-weight:700;cursor:pointer}
   .ovtab.on{background:var(--schwarz);color:var(--gelb);border-color:var(--schwarz)}
   .ovday{font-size:.7rem;font-weight:800;color:var(--grau);text-transform:uppercase;letter-spacing:.4px;margin:.7rem 0 .25rem}
-  .ovgame{display:flex;align-items:center;gap:.5rem;background:var(--card);border-radius:10px;padding:.4rem .55rem;margin-bottom:.3rem;box-shadow:0 1px 3px rgba(0,0,0,.07);min-width:0}
+  .ovgame{display:flex;align-items:center;gap:.5rem;background:var(--card);border-radius:var(--r-row);padding:.4rem .55rem;margin-bottom:.3rem;box-shadow:var(--shadow-row);border:var(--line-card);min-width:0}
   .ovwhen{flex:none;font-size:.68rem;color:var(--grau);font-weight:700;min-width:3.6rem}
   .ovmatch{flex:1;min-width:0;display:flex;align-items:center;gap:.3rem;flex-wrap:wrap;font-size:.78rem}
   .ovteamchip{flex:none;font-size:.62rem;font-weight:800;color:var(--akz);background:transparent;border:1px solid var(--akz);border-radius:999px;padding:.05rem .45rem;cursor:pointer;white-space:nowrap}
   .ovgame[onclick]{cursor:pointer}
   .ovgame.ovtoday{outline:2px solid var(--akz);background:color-mix(in srgb, var(--akz) 8%, var(--card))}
-  .ovheute{display:inline-block;font-size:.58rem;font-weight:900;color:var(--gelb);background:var(--schwarz);border-radius:4px;padding:0 .3rem;letter-spacing:.5px}
+  .ovheute{display:inline-block;font-size:.58rem;font-weight:900;color:var(--gelb);background:var(--schwarz);border-radius:var(--r-mini);padding:0 .3rem;letter-spacing:.5px}
   .ovvenue{font-size:.62rem;color:var(--grau);flex-basis:100%;padding-left:.2rem}
   .ovmatch .score{margin-left:auto}
   .ovown{font-weight:800}
@@ -201,6 +207,20 @@
   .ovth{display:flex;align-items:center;gap:.4rem;margin:.5rem 0 .3rem;font-weight:800;font-size:.88rem;min-width:0}
   .ovth .ovtname{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
   @media(max-width:520px){.ovgame{flex-wrap:wrap}.ovteamchip{order:-1;width:max-content}}
+  /* ===== Style-System (nur Form/Typografie, keine Farben) ===== */
+  .styleSel{font-size:.66rem;padding:.15rem .3rem;border-radius:var(--r-mini);border:1px solid var(--grau);background:var(--card);color:var(--fg);max-width:8em}
+  [data-style="brutal"]{--r-card:0;--r-row:0;--r-pill:0;--r-mini:0;--shadow-card:4px 4px 0 rgba(0,0,0,.9);--shadow-row:3px 3px 0 rgba(0,0,0,.9);--line-card:2px solid var(--schwarz);--head-transform:uppercase;--head-spacing:.5px;--head-weight:900}
+  [data-style="brutal"] .ovtab{border-width:2px}
+  [data-style="editorial"]{--r-card:0;--r-row:0;--r-pill:0;--r-mini:0;--shadow-card:none;--shadow-row:none;--font-head:Georgia,'Times New Roman',serif;--head-weight:700;--head-spacing:.2px}
+  [data-style="editorial"] .ovgame{border-bottom:1px solid var(--grau);border-radius:0;box-shadow:none;background:transparent}
+  [data-style="editorial"] .ovcard{border-bottom:1px solid var(--grau);border-radius:0;box-shadow:none}
+  [data-style="kissen"]{--r-card:20px;--r-row:16px;--shadow-card:0 4px 14px rgba(0,0,0,.10);--shadow-row:0 3px 10px rgba(0,0,0,.08)}
+  [data-style="kissen"] .ovgame{padding:.65rem .8rem}
+  [data-style="kissen"] .card{padding:.9rem 1rem}
+  [data-style="terminal"]{--font-body:ui-monospace,'Cascadia Mono',Menlo,Consolas,monospace;--font-head:ui-monospace,'Cascadia Mono',Menlo,Consolas,monospace;--r-card:2px;--r-row:2px;--r-pill:2px;--r-mini:2px;--shadow-card:none;--shadow-row:none;--line-card:1px dashed var(--grau);--head-transform:uppercase;--head-spacing:1px;--head-weight:700}
+  [data-style="zeilen"]{--r-card:0;--r-row:0;--shadow-card:none;--shadow-row:none}
+  [data-style="zeilen"] .ovgame{border-bottom:1px solid color-mix(in srgb, var(--grau) 40%, transparent);border-radius:0;padding:.45rem .3rem}
+  [data-style="zeilen"] .card{background:transparent;box-shadow:none;border-radius:0;border-top:1px solid color-mix(in srgb,var(--grau) 40%, transparent)}
 </style>
 </head>
 <body>
@@ -222,6 +242,17 @@
       🔄 Auf Aktualisierung prüfen
     </button>
     <div id="refreshMsg" style="margin-top:.5rem;font-size:.78rem"></div>
+  </div>
+  <div style="margin-top:.8rem">
+    <label for="styleSel" style="font-size:.72rem">Design:</label>
+    <select id="styleSel" class="styleSel" aria-label="Design-Sprache waehlen">
+      <option value="modern">Modern</option>
+      <option value="brutal">Brutal</option>
+      <option value="editorial">Editorial</option>
+      <option value="kissen">Kissen</option>
+      <option value="terminal">Terminal</option>
+      <option value="zeilen">Zeilen</option>
+    </select>
   </div>
 </footer>
 
@@ -703,6 +734,14 @@ function renderOverview(){
     <div id="ovBody">${ovBodyHtml()}</div>`;
   window.scrollTo({top: 0, behavior: 'smooth'});
 }
+
+// Design-Sprache (Form/Typografie) umschalten
+function applyStyle(s){document.documentElement.dataset.style=s;try{localStorage.setItem('hbStyle',s)}catch(e){}}
+const styleSel = document.getElementById('styleSel');
+const st = localStorage.getItem('hbStyle') || 'modern';
+applyStyle(st);
+styleSel.value = st;
+styleSel.onchange = function(){ applyStyle(this.value); };
 
 select('U13 (D-Junioren)');
 
