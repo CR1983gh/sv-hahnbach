@@ -181,6 +181,22 @@
   .ovnone{color:var(--grau)}
   .ovbtn{border-color:var(--akz,var(--gelb));background:var(--gelb);color:var(--schwarz)}
   .ovbtn.active{background:var(--schwarz);color:var(--gelb);border-color:var(--schwarz)}
+  /* Sub-Tabs auf der Übersichtsseite */
+  .ovtabs{display:flex;gap:.35rem;margin-bottom:.6rem;flex-wrap:wrap}
+  .ovtab{border:1.5px solid var(--grau);background:var(--card);color:var(--fg);border-radius:999px;padding:.28rem .7rem;font-size:.74rem;font-weight:700;cursor:pointer}
+  .ovtab.on{background:var(--schwarz);color:var(--gelb);border-color:var(--schwarz)}
+  .ovday{font-size:.7rem;font-weight:800;color:var(--grau);text-transform:uppercase;letter-spacing:.4px;margin:.7rem 0 .25rem}
+  .ovgame{display:flex;align-items:center;gap:.5rem;background:var(--card);border-radius:10px;padding:.4rem .55rem;margin-bottom:.3rem;box-shadow:0 1px 3px rgba(0,0,0,.07);min-width:0}
+  .ovwhen{flex:none;font-size:.68rem;color:var(--grau);font-weight:700;min-width:3.6rem}
+  .ovmatch{flex:1;min-width:0;display:flex;align-items:center;gap:.3rem;flex-wrap:wrap;font-size:.78rem}
+  .ovteamchip{flex:none;font-size:.62rem;font-weight:800;color:var(--akz);background:transparent;border:1px solid var(--akz);border-radius:999px;padding:.05rem .45rem;cursor:pointer;white-space:nowrap}
+  .ovgame[onclick]{cursor:pointer}
+  .ovown{font-weight:800}
+  .ovcd{font-size:.62rem;color:var(--akz)}
+  .ovtbl{margin-bottom:.8rem;min-width:0}
+  .ovth{display:flex;align-items:center;gap:.4rem;margin:.5rem 0 .3rem;font-weight:800;font-size:.88rem;min-width:0}
+  .ovth .ovtname{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  @media(max-width:520px){.ovgame{flex-wrap:wrap}.ovteamchip{order:-1;width:max-content}}
 </style>
 </head>
 <body>
@@ -540,54 +556,121 @@ function ovGegner(name){
   return s.trim();
 }
 
+let ovTab = 'next';
+
+function ovDateCmp(dateStr){
+  const p = String(dateStr || '').split('.').map(Number);
+  if (p.length < 3 || p.some(n => !Number.isFinite(n))) return null;
+  return new Date(p[2], p[1]-1, p[0]);
+}
+function ovTeamChip(team){
+  return `<button class="ovteamchip" onclick="select('${team.replace(/'/g, "\\'")}')">${esc(kurzName(team))}</button>`;
+}
+function ovMatchHtml(g){
+  const hn = ovGegner(g.home), an = ovGegner(g.away);
+  return crest(g.home) +
+    `<span class="${isHahnbach(g.home) ? 'ovown' : ''}" title="${esc(g.home)}">${esc(hn)}</span>` +
+    `<span style="color:var(--grau)">–</span>` +
+    `<span class="${isHahnbach(g.away) ? 'ovown' : ''}" title="${esc(g.away)}">${esc(an)}</span>` +
+    crest(g.away);
+}
+
+function ovNextBlock(){
+  const today = new Date(); today.setHours(0, 0, 0, 0);
+  const all = [];
+  Object.keys(DATA).forEach(team => {
+    ((DATA[team] || {}).games || []).forEach(g => {
+      if ((g.score || '') !== '' || !g.home || !g.away) return;
+      const dt = ovDateCmp(g.date);
+      if (!dt || dt < today) return;
+      all.push({ team, g, dt });
+    });
+  });
+  all.sort((a, b) => (a.dt - b.dt) || String(a.g.time || '').localeCompare(String(b.g.time || '')));
+  if (!all.length) return `<div class="empty">Derzeit keine zukünftigen Spiele angesetzt.</div>`;
+  let h = '', last = null;
+  all.forEach(({ team, g }) => {
+    if (g.date !== last){
+      last = g.date;
+      h += `<div class="ovday">${esc(weekday(g.date))}., ${esc(g.date.slice(0, 5))}.</div>`;
+    }
+    const cd = countdownText(g.date, g.time);
+    h += `<div class="ovgame">
+      <div class="ovwhen">${esc(g.time || g.date.slice(0, 5))}${cd ? `<div class="ovcd">⏳ ${esc(cd)}</div>` : ''}</div>
+      <div class="ovmatch">${ovMatchHtml(g)}</div>
+      ${ovTeamChip(team)}
+    </div>`;
+  });
+  return h;
+}
+
+function ovResultsBlock(){
+  const all = [];
+  Object.keys(DATA).forEach(team => {
+    ((DATA[team] || {}).results || []).forEach(g => {
+      const sc = String(g.score || '').trim();
+      if (!/^\d+:\d+$/.test(sc) || !g.home || !g.away) return;
+      all.push({ team, g: Object.assign({}, g, { score: sc }) });
+    });
+  });
+  all.sort((a, b) => (ovDateCmp(b.g.date) || 0) - (ovDateCmp(a.g.date) || 0));
+  const top = all.slice(0, 30);
+  if (!top.length) return `<div class="empty">Keine Ergebnisse gefunden.</div>`;
+  let h = '', last = null;
+  top.forEach(({ team, g }) => {
+    if (g.date !== last){
+      last = g.date;
+      h += `<div class="ovday">${esc(weekday(g.date))}., ${esc(g.date.slice(0, 5))}.</div>`;
+    }
+    const cls = resultClass(g);
+    h += `<div class="ovgame">
+      <div class="ovwhen">${esc(g.date.slice(0, 5))}</div>
+      <div class="ovmatch">${ovMatchHtml(g)}<span class="score sc-${cls}">${esc(g.score)}</span></div>
+      ${ovTeamChip(team)}
+    </div>`;
+  });
+  return h;
+}
+
+function ovTableBlock(){
+  let h = '';
+  Object.keys(DATA).forEach(team => {
+    const d = DATA[team] || {}, st = d.standings || [], m = d.meta || {};
+    if (!st.length) return;
+    const me = st.find(r => /Hahnbach/.test(r.name || ''));
+    const diff = me ? Number(me.diff) : NaN;
+    const dchip = me ? `<span class="ovchip dark" style="margin-left:auto">${diff > 0 ? '+' : ''}${esc(me.diff)}</span>` : '';
+    h += `<div class="ovtbl">
+      <div class="ovth"><span class="ovtname">${esc(kurzName(team))}</span><span class="ovchip">${esc(m.liga || '')}</span></div>
+      ${me ? `<div class="ovgame" onclick="select('${team.replace(/'/g, "\\'")}')">
+        <div class="ovmatch">Pl. ${esc(me.pos)} · ${esc(me.pkt)} Pkt · ${esc(me.g)}-${esc(me.u)}-${esc(me.v)} · ${esc(me.tor)}</div>
+        ${dchip}
+      </div>` : `<div class="empty">Eigener Tabellenplatz nicht erfasst.</div>`}
+    </div>`;
+  });
+  return h || `<div class="empty">Keine Tabellen verfügbar.</div>`;
+}
+
+function ovBodyHtml(){
+  return ovTab === 'res' ? ovResultsBlock() : ovTab === 'tbl' ? ovTableBlock() : ovNextBlock();
+}
+function ovSetTab(t){
+  ovTab = t;
+  document.querySelectorAll('.ovtab').forEach(b => b.classList.toggle('on', b.dataset.tab === t));
+  const body = document.getElementById('ovBody');
+  if (body) body.innerHTML = ovBodyHtml();
+}
+
 function renderOverview(){
   document.querySelectorAll('.tbtn').forEach(b => b.classList.toggle('active', b === ovBtn));
   const view = document.getElementById('teamView');
-  let h = `<h3 class="sec">🏟️ Alle Mannschaften</h3><div class="ovwrap">`;
-  Object.keys(DATA).forEach(team => {
-    const d = DATA[team] || {}, m = d.meta || {};
-    const res = (d.results || []).filter(g => g.score && g.home && g.away && /^\s*\d+:\d+\s*$/.test(g.score));
-    const last = res.length ? res[res.length - 1] : null;
-    const next = (d.games || []).find(g => (g.score || '') === '' && g.home && g.away) || null;
-
-    let chips = `<span class="ovchip">${esc(m.liga || '')}</span>`;
-    chips += m.platz != null
-      ? `<span class="ovchip dark">Pl. ${esc(String(m.platz))}</span>`
-      : `<span class="ovchip dark">Kinderfestival</span>`;
-
-    let lastHtml = `<span class="ovnone">—</span>`;
-    if (last){
-      const hn = isHahnbach(last.home);
-      const opp = hn ? last.away : last.home;
-      const cls = resultClass(last);
-      lastHtml = `<span class="ovdate">${esc((last.date || '').slice(0, 5))}</span>` +
-        `<span class="ovgeg" title="${esc(opp)}">${esc(ovGegner(opp))}</span>` +
-        `<span class="ovha">${hn ? 'H' : 'A'}</span>` +
-        `<span class="score sc-${cls}">${esc(last.score)}</span>`;
-    }
-
-    let nextHtml = `<span class="ovnone">—</span>`;
-    if (next){
-      const hn2 = isHahnbach(next.home);
-      const opp2 = hn2 ? next.away : next.home;
-      nextHtml = `<span class="ovdate">${esc((next.date || '').slice(0, 5))}${next.time ? ' ' + esc(next.time) : ''}</span>` +
-        `<span class="ovgeg" title="${esc(opp2)}">${esc(ovGegner(opp2))}</span>` +
-        `<span class="ovha">${hn2 ? 'H' : 'A'}</span>`;
-    }
-
-    h += `<div class="ovcard">
-      <div class="ovhead" onclick="select('${team.replace(/'/g, "\\'")}')">
-        ${crest('SV Hahnbach')}<span class="ovname">${esc(kurzName(team))}</span>
-        <span class="ovchips">${chips}</span>
-      </div>
-      <div class="ovcols">
-        <div class="ovcol"><div class="ovlbl">Letztes Spiel</div><div class="ovrow">${lastHtml}</div></div>
-        <div class="ovcol"><div class="ovlbl">Nächstes Spiel</div><div class="ovrow">${nextHtml}</div></div>
-      </div>
-    </div>`;
-  });
-  h += `</div>`;
-  view.innerHTML = h;
+  view.innerHTML = `<h3 class="sec">🏟️ Alle Mannschaften</h3>
+    <div class="ovtabs">
+      <button class="ovtab${ovTab === 'next' ? ' on' : ''}" data-tab="next" onclick="ovSetTab('next')">📅 Nächste Spiele</button>
+      <button class="ovtab${ovTab === 'res' ? ' on' : ''}" data-tab="res" onclick="ovSetTab('res')">📊 Ergebnisse</button>
+      <button class="ovtab${ovTab === 'tbl' ? ' on' : ''}" data-tab="tbl" onclick="ovSetTab('tbl')">🏆 Tabellen</button>
+    </div>
+    <div id="ovBody">${ovBodyHtml()}</div>`;
   window.scrollTo({top: 0, behavior: 'smooth'});
 }
 
