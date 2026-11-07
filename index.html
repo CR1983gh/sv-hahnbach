@@ -193,6 +193,8 @@
   .ovgame[onclick]{cursor:pointer}
   .ovgame.ovtoday{outline:2px solid var(--akz);background:color-mix(in srgb, var(--akz) 8%, var(--card))}
   .ovheute{display:inline-block;font-size:.58rem;font-weight:900;color:var(--gelb);background:var(--schwarz);border-radius:4px;padding:0 .3rem;letter-spacing:.5px}
+  .ovvenue{font-size:.62rem;color:var(--grau);flex-basis:100%;padding-left:.2rem}
+  .ovmatch .score{margin-left:auto}
   .ovown{font-weight:800}
   .ovcd{font-size:.62rem;color:var(--akz)}
   .ovtbl{margin-bottom:.8rem;min-width:0}
@@ -472,25 +474,50 @@ function select(team){
     if (chips) h += `<div class="formbar"><span class="flbl">Form:</span>${chips}</div>`;
   }
 
-  const GAME_HEAD = `<thead><tr><th>Datum</th><th>Heim</th><th></th><th>Auswärts</th><th class="hc"></th></tr></thead>`;
-  h += `<h3 class="sec">📅 Nächste Spiele</h3><div class="tablewrap"><table>${GAME_HEAD}<tbody>`;
-  h += d.games.length ? d.games.map((g, i) => {
-    let row = gameRow(g, false);
-    if (i === 0) {
+  // Nächste Spiele: Karten-Zeilen im Look der Übersicht (.ovday/.ovgame/.ovwhen/.ovmatch)
+  h += `<h3 class="sec">📅 Nächste Spiele</h3>`;
+  if (!d.games.length){
+    h += `<div class="empty">Derzeit keine Spiele angesetzt.</div>`;
+  } else {
+    let lastN = null;
+    d.games.forEach(g => {
+      if (g.date !== lastN){
+        lastN = g.date;
+        h += `<div class="ovday">${esc(weekday(g.date))}., ${esc(g.date.slice(0, 5))}.</div>`;
+      }
       const cd = countdownText(g.date, g.time);
-      if (cd) row = row.replace('</td>', '<div class="cd">⏳ ' + esc(cd) + '</div></td>');
-    }
-    return row;
-  }).join('')
-                     : `<tr><td colspan="5"><div class="empty">Derzeit keine Spiele angesetzt.</div></td></tr>`;
-  h += `</tbody></table></div>`;
+      h += `<div class="ovgame">
+        <div class="ovwhen">${esc(g.date.slice(0, 5))}<div>${esc(g.time || '')}</div>${cd ? `<div class="ovcd">⏳ ${esc(cd)}</div>` : ''}</div>
+        <div class="ovmatch">${ovMatchHtml(g)}</div>
+        ${g.venue ? `<div class="ovvenue">📍 ${esc(String(g.venue).split(',')[0])}</div>` : ''}
+      </div>`;
+    });
+  }
 
-  h += `<h3 class="sec">🏁 Ergebnisse Saison 26/27</h3><div class="tablewrap"><table>${GAME_HEAD}<tbody>`;
+  // Ergebnisse: gleiche Karten-Zeilen, neueste zuerst, mit Ergebnis-Pill
+  h += `<h3 class="sec">🏁 Ergebnisse Saison 26/27</h3>`;
   const JUNK = /TORREICHSTES|HÖCHSTER|HÖCHSTE|ZUSAMMENFASSUNG|SPIELFREI|Abgesetzt|\d\s-\s\(?SG\)?\sSV\sHahnbach/;
   const res = (d.results||[]).filter(g => !JUNK.test(g.home) && !JUNK.test(g.away)).slice().reverse();
-  h += res.length ? res.map(g => gameRow(g, true)).join('')
-                  : `<tr><td colspan="5"><div class="empty">Noch keine Ergebnisse in dieser Saison (bzw. keine erfassten Pflichtspielergebnisse).</div></td></tr>`;
-  h += `</tbody></table></div>`;
+  if (!res.length){
+    h += `<div class="empty">Noch keine Ergebnisse in dieser Saison (bzw. keine erfassten Pflichtspielergebnisse).</div>`;
+  } else {
+    let lastR = null;
+    res.forEach(g => {
+      if (g.date !== lastR){
+        lastR = g.date;
+        h += `<div class="ovday">${esc(weekday(g.date))}., ${esc(g.date.slice(0, 5))}.</div>`;
+      }
+      const isAbsage = /ausgefallen|abgesagt/i.test(g.score || '');
+      const mid = isAbsage
+        ? `<span class="score sc-A">ABGESAGT</span>`
+        : (g.score ? `<span class="score sc-${resultClass(g)}">${esc(g.score)}</span>` : `<span style="color:var(--grau);flex:none">–</span>`);
+      h += `<div class="ovgame">
+        <div class="ovwhen">${esc(g.date.slice(0, 5))}</div>
+        <div class="ovmatch">${ovMatchHtml(g)}${mid}</div>
+        ${g.venue ? `<div class="ovvenue">📍 ${esc(String(g.venue).split(',')[0])}</div>` : ''}
+      </div>`;
+    });
+  }
 
   if (d.standings && d.standings.length) {
     const z = d.zones || [0,0,0,0];  // [Aufstieg, Aufstiegs-Relegation, Abstiegs-Relegation, Abstieg]
