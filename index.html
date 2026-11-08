@@ -209,7 +209,7 @@
   @media(max-width:520px){.ovgame{flex-wrap:wrap}.ovteamchip{order:-1;width:max-content}}
   /* ===== Style-System (nur Form/Typografie, keine Farben) ===== */
   .styleSel{font-size:.66rem;padding:.15rem .3rem;border-radius:var(--r-mini);border:1px solid var(--grau);background:var(--card);color:var(--fg);max-width:8em}
-  [data-style="brutal"]{--r-card:0;--r-row:0;--r-pill:0;--r-mini:0;--shadow-card:4px 4px 0 rgba(0,0,0,.9);--shadow-row:3px 3px 0 rgba(0,0,0,.9);--line-card:2px solid var(--schwarz);--head-transform:uppercase;--head-spacing:.5px;--head-weight:900}
+  [data-style="brutal"]{--r-card:0;--r-row:0;--r-pill:0;--r-mini:0;--shadow-card:none;--shadow-row:none;--line-card:2px solid var(--schwarz);--head-transform:uppercase;--head-spacing:.5px;--head-weight:900}
   [data-style="brutal"] .ovtab{border-width:2px}
   [data-style="editorial"]{--r-card:0;--r-row:0;--r-pill:0;--r-mini:0;--shadow-card:none;--shadow-row:none;--font-head:Georgia,'Times New Roman',serif;--head-weight:700;--head-spacing:.2px}
   [data-style="editorial"] .ovgame{border-bottom:1px solid var(--grau);border-radius:0;box-shadow:none;background:transparent}
@@ -227,8 +227,8 @@
   [data-style="brutal"] header::after{background:var(--gelb);height:8px}
   [data-style="brutal"] header h1{letter-spacing:2px}
   [data-style="brutal"] .picker{border-bottom:2px solid var(--schwarz);box-shadow:none}
-  [data-style="brutal"] .tbtn{box-shadow:2px 2px 0 var(--schwarz);border-color:var(--schwarz)}
-  [data-style="brutal"] .tbtn.active{box-shadow:none;transform:translate(1px,1px)}
+  [data-style="brutal"] .tbtn{box-shadow:none;border-color:var(--schwarz)}
+  [data-style="brutal"] .tbtn.active{box-shadow:none}
   [data-style="brutal"] .tbtn img,[data-style="brutal"] .tbtn .crest-fb{border-radius:0;border:1px solid var(--schwarz)}
   [data-style="brutal"] .group-label{letter-spacing:1.5px}
   [data-style="brutal"] h3.sec{border-left:7px solid var(--gelb);background:color-mix(in srgb,var(--gelb) 18%,transparent)}
@@ -239,7 +239,7 @@
   [data-style="brutal"] .crest{border-radius:0;border:1px solid var(--line2)}
   [data-style="brutal"] .pyr-stno{border-radius:0;border:1px solid var(--schwarz)}
   [data-style="brutal"] .zonelegend .lg{border-radius:0;border:1px solid var(--schwarz)}
-  [data-style="brutal"] .ovteamchip{border-width:2px;box-shadow:2px 2px 0 var(--schwarz)}
+  [data-style="brutal"] .ovteamchip{border-width:2px;box-shadow:none}
   [data-style="brutal"] .note,[data-style="brutal"] footer,[data-style="brutal"] .pyr-note{text-transform:uppercase;letter-spacing:.5px;font-size:.66rem}
 
   /* --- EDITORIAL: Zeitungslayout --- */
