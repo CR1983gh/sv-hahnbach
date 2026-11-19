@@ -521,7 +521,7 @@ GROUPS.forEach(g => {
 
 function gameRow(g, withScore){
   const isHome = isHahnbach(g.home);
-  const venue = g.venue ? esc(g.venue.split(',')[0]) : '';
+  const venue = g.venue ? esc((g.turnier ? '🏐 ' : '') + g.venue.split(',')[0]) : (g.turnier ? '🏐 ' + esc(g.turnier) : '');
   const isAbsage = withScore && /ausgefallen|abgesagt/i.test(g.score || '');
   const cls = withScore && !isAbsage ? resultClass(g) : '';
   const mid = isAbsage
@@ -632,7 +632,7 @@ function select(team){
       h += `<div class="ovgame">
         <div class="ovwhen">${esc(g.date.slice(0, 5))}<div>${esc(g.time || '')}</div>${cd ? `<div class="ovcd">⏳ ${esc(cd)}</div>` : ''}</div>
         <div class="ovmatch">${ovMatchHtml(g)}</div>
-        ${g.venue ? `<div class="ovvenue">📍 ${esc(String(g.venue).split(',')[0])}</div>` : ''}
+        ${g.venue || g.turnier ? `<div class="ovvenue">${g.turnier ? '🏐 ' + esc(g.turnier) : '📍 ' + esc(String(g.venue).split(',')[0])}${g.turnier && g.venue ? ' · ' + esc(String(g.venue).split(',')[0]) : ''}</div>` : ''}
       </div>`;
     });
   }
@@ -772,6 +772,7 @@ function ovNextBlock(){
       <div class="ovwhen">${esc(g.time || g.date.slice(0, 5))}${cd ? `<div class="ovcd">⏳ ${esc(cd)}</div>` : ''}${isToday ? '<div><span class="ovheute">HEUTE</span></div>' : ''}</div>
       <div class="ovmatch">${ovMatchHtml(g)}</div>
       ${ovTeamChip(team)}
+      ${g.turnier ? `<div class="ovvenue">🏐 ${esc(g.turnier)}${g.venue ? ' · ' + esc(String(g.venue).split(',')[0]) : ''}</div>` : (g.venue ? `<div class="ovvenue">📍 ${esc(String(g.venue).split(',')[0])}</div>` : '')}
     </div>`;
   });
   return h;

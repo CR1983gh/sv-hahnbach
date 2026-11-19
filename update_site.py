@@ -54,11 +54,60 @@ def clean_team(name):
     s = re.sub(r"\s+\d+:\d+\s+[A-ZÄÖÜ]\.?$", "", s)
     s = re.sub(r"\s+n\.?an\.?$", "", s)
     s = re.sub(r"\s+(a\.o\.|w\.K\.|k\.A\.)$", "", s)
+    # Hallenturnier-Tags: '(FB, DJ)', '(FB, CJ)', '(FB)' (Fair-Play-Regel-Klammern)
+    s = re.sub(r"\s*\((?:FB(?:, ?[A-ZÄÖÜ]{2})?)\)\s*$", "", s)
     # stray parentheses around whole name: '(SpVgg Ebermannsdorf)'
     m = re.fullmatch(r"\(([^()]+)\)", s)
     if m:
         s = m.group(1)
     return s.strip()
+
+
+TURNIER_KAT_RE = re.compile(
+    r"^\s*(A-Junioren|B-Junioren|C-Junioren|D-Junioren|E-Junioren|F-Junioren|G-Junioren|Herren|Frauen)\s*$"
+)
+TURNIER_GAME_RE = re.compile(
+    r"^\s*HM\s+Hallen-\s+(\d{2}\.\d{2}\.\d{4})\s+(\d{2}:\d{2})\s+(.+?)\s{2,}-\s{2,}(.+?)\s*$"
+)
+TURNIER_TYPE_RE = re.compile(r"^\s+(Bezirksturnier|Vereinsturnier)\s*$")
+TURNIER_VENUE_RE = re.compile(r"^\s+(\S.*,\d{5}\s+\S.*)$")
+
+
+def parse_turniere(text):
+    """Parse den Vereinsspielplan (Layout-Modus) und liefert die anstehenden
+    Hallen-Turnierspiele (Typ 'HM' = Hallen-/Vereinsturnier) als Dicts:
+    {kat, date, time, home, away, venue, tname}."""
+    out = []
+    kat = None
+    pending = None
+    for line in text.split("\n"):
+        km = TURNIER_KAT_RE.match(line)
+        if km:
+            kat = km.group(1)
+            continue
+        gm = TURNIER_GAME_RE.match(line)
+        if gm:
+            pending = dict(
+                kat=kat,
+                date=gm.group(1),
+                time=gm.group(2),
+                home=clean_team(gm.group(3)),
+                away=clean_team(gm.group(4)),
+                venue="",
+                tname="",
+            )
+            out.append(pending)
+            continue
+        tm = TURNIER_TYPE_RE.match(line)
+        if tm and pending is not None and not pending["tname"]:
+            pending["tname"] = tm.group(1)
+            continue
+        vm = TURNIER_VENUE_RE.match(line)
+        if vm and pending is not None and not pending["venue"]:
+            pending["venue"] = vm.group(1).strip()
+            pending = None
+            continue
+    return [t for t in out if t["kat"] and t["home"] and t["away"]]
 
 
 def parse_spielplan(text):
@@ -125,6 +174,16 @@ def pdf_text(raw):
     from pypdf import PdfReader
 
     return "\n".join(p.extract_text() for p in PdfReader(io.BytesIO(raw)).pages)
+
+
+def pdf_text_layout(raw):
+    """Layout-Modus: erhaelt Spalten des Vereinsspielplan-PDF (Default-Extrakt
+    interleavevt die Spalten zu Unsinn)."""
+    from pypdf import PdfReader
+
+    return "\n".join(
+        p.extract_text(extraction_mode="layout") for p in PdfReader(io.BytesIO(raw)).pages
+    )
 
 
 def _d(s):
@@ -203,6 +262,17 @@ def build_data(today=None):
     today = today or datetime.date.today()
     meta_all = json.load(open("meta.json", encoding="utf-8"))
     data = {}
+    # Hallen-/Vereinsturniere aus dem Vereins-Gesamtspielplan (Typ 'HM').
+    # Mapping Kategorie -> Team-Key; erste Stufe: D-Jugend (D1). Weitere
+    # Kategorien hier ergaenzen (z.B. "C-Junioren": "U15 (C-Junioren)").
+    turnier_teams = {"D-Junioren": "U13 (D-Junioren)"}
+    turniere = []
+    try:
+        turniere = parse_turniere(
+            pdf_text_layout(fetch(f"{BASE}/vereinsspiele?id={CLUB_ID}"))
+        )
+    except Exception as e:  # noqa: BLE001
+        print(f"WARNING: Vereinsspielplan/Turniere nicht abrufbar: {e}", file=sys.stderr)
     for team, staffel in STAFFEL.items():
         meta = meta_all[team]
         meta = dict(meta)
@@ -240,6 +310,31 @@ def build_data(today=None):
             )
             if not dup:
                 upcoming.append(g)
+        # Hallen-/Vereinsturnier-Spiele fuer dieses Team mergen (mit venue+turnier-Feld)
+        for t in turniere:
+            if turnier_teams.get(t["kat"]) != team or _d(t["date"]) < today:
+                continue
+            dup = any(
+                o["date"] == t["date"]
+                and (
+                    (_norm(o["home"]), _norm(o["away"])) == (_norm(t["home"]), _norm(t["away"]))
+                    or (_norm(o["home"]) in _norm(t["away"]) and _norm(t["home"]) in _norm(o["away"]))
+                )
+                for o in upcoming
+            )
+            if not dup:
+                upcoming.append(
+                    dict(
+                        no="TU",
+                        date=t["date"],
+                        time=t["time"],
+                        home=t["home"],
+                        away=t["away"],
+                        score="",
+                        venue=t["venue"],
+                        turnier=t["tname"] or "Hallenturnier",
+                    )
+                )
         upcoming.sort(key=lambda g: (_d(g["date"]), g["time"]))
         upcoming = upcoming[:6]
         standings = parse_tabelle(
