@@ -110,7 +110,7 @@
   .home-tag.h{background:var(--gelb);color:var(--schwarz)}
   .home-tag.a{background:var(--atagbg);color:var(--grau)}
   .venue{font-size:.72rem;color:var(--grau);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:180px}
-  .score{font-weight:900;font-size:.95rem;letter-spacing:.5px;text-shadow:0 1px 1.5px rgba(0,0,0,.35);background:var(--schwarz);color:var(--gelb);border-radius:var(--r-mini);padding:.15rem .55rem;white-space:nowrap;flex:none}
+  .score{font-weight:900;background:var(--schwarz);color:var(--gelb);border-radius:var(--r-mini);padding:.05rem .4rem;white-space:nowrap;flex:none}
   .score.sc-S{background:var(--gruen);color:#fff}
   .score.sc-U{background:#855000;color:#fff}
   .score.sc-N{background:var(--rot);color:#fff}
@@ -199,7 +199,8 @@
   .ovday{font-size:.7rem;font-weight:800;color:var(--grau);text-transform:uppercase;letter-spacing:.4px;margin:.7rem 0 .25rem}
   .ovgame{display:flex;align-items:center;gap:.5rem;background:var(--card);border-radius:var(--r-row);padding:.4rem .55rem;margin-bottom:.3rem;box-shadow:var(--shadow-row);border:var(--line-card);min-width:0}
   .ovwhen{flex:none;font-size:.68rem;color:var(--grau);font-weight:700;min-width:3.6rem}
-  .ovmatch{flex:1;min-width:0;display:flex;align-items:center;gap:.3rem;flex-wrap:wrap;font-size:.78rem}
+  .ovmatch{flex:1;min-width:0;display:flex;align-items:center;gap:.3rem;flex-wrap:wrap;font-size:.84rem}
+  .ovmatch > span:not(.score){font-weight:700;color:#0d1a26}
   .ovteamchip{flex:none;font-size:.62rem;font-weight:800;color:var(--akz);background:transparent;border:1px solid var(--akz);border-radius:999px;padding:.05rem .45rem;cursor:pointer;white-space:nowrap}
   .ovgame[onclick]{cursor:pointer}
   .ovgame.ovtoday{outline:2px solid var(--akz);background:color-mix(in srgb, var(--akz) 8%, var(--card))}
@@ -326,7 +327,7 @@
   [data-style="zeilen"] td{border-bottom:1px solid var(--line)}
   [data-style="zeilen"] .chip{background:none;border:1px solid var(--line2);color:var(--grau);font-weight:700}
   [data-style="zeilen"] .chip.dark{background:none;color:var(--fg)}
-  [data-style="zeilen"] .score{background:none;padding:0;text-shadow:none}
+  [data-style="zeilen"] .score{background:none;padding:0}
   [data-style="zeilen"] .score.sc-S{color:var(--gruen)}
   [data-style="zeilen"] .score.sc-U{color:#855000}
   [data-style="zeilen"] .score.sc-N{color:var(--rot)}
@@ -646,10 +647,7 @@ function select(team){
   if (m.platz != null) h += `<span class="chip dark">Platz ${m.platz} · ${esc(m.tv)}</span>`;
   h += `</div>`;
 
-  // Tabelle ganz oben bei der Mannschaft
-  h += standingsSection(d, m);
-
-  // Formbar: letzte 5 Spiele mit Ergebnis (älteste links, neuestes rechts)
+  // Formkurve: letzte 5 Spiele mit Ergebnis (aelteste links, neuestes rechts) — ueber der Tabelle
   const formGames = (d.results||[]).filter(g => g.score && !/\D/.test(g.score.replace(':', '')));
   const formLast5 = formGames.slice(-5);
   if (formLast5.length){
@@ -666,7 +664,10 @@ function select(team){
     if (chips) h += `<div class="formbar"><span class="flbl">Form:</span>${chips}</div>`;
   }
 
-  // Nächste Spiele: Karten-Zeilen im Look der Übersicht (.ovday/.ovgame/.ovwhen/.ovmatch)
+  // Tabelle direkt unter der Formkurve
+  h += standingsSection(d, m);
+
+  // Naechste Spiele: Karten-Zeilen im Look der Uebersicht (.ovday/.ovgame/.ovwhen/.ovmatch)
   h += `<h3 class="sec">📅 Nächste Spiele</h3>`;
   if (!d.games.length){
     h += `<div class="empty">Derzeit keine Spiele angesetzt.</div>`;
