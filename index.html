@@ -589,6 +589,41 @@ function pyrBlock(team, liga, staffelId){
   return `<div class="pyr"><h3 class="sec">🏟️ Ligen-Pyramide ${esc(jg.replace(/ \(.-Junioren\)/,''))}</h3><div class="tablewrap"><table><thead><tr><th>Liga</th><th>Ebene</th></tr></thead><tbody>${rows}</tbody></table></div><div class="pyr-note">Quelle: BFV — von der untersten Gruppe bis zur Spitze. Klick öffnet Tabelle &amp; Ergebnisse auf bfv.de. ⭐ = Spielklasse des eigenen Teams.</div></div>`;
 }
 
+function standingsSection(d, m){
+  if (d.standings && d.standings.length) {
+    const z = d.zones || [0,0,0,0];  // [Aufstieg, Aufstiegs-Relegation, Abstiegs-Relegation, Abstieg]
+    const n = d.standings.length;
+    const zoneOf = pos => {
+      if (pos <= z[0]) return 'z-A';
+      if (pos <= z[0] + z[1]) return 'z-AR';
+      if (n - pos < z[3]) return 'z-N';
+      if (n - pos < z[3] + z[2]) return 'z-NR';
+      return '';
+    };
+    let h = `<h3 class="sec">📊 Tabelle — ${esc(m.liga)}</h3><div class="tablewrap st">`;
+    h += `<table><thead><tr><th>Pl.</th><th>Team</th><th>Sp.</th><th>Pkt.</th><th class="xcol">S-U-N</th><th class="xcol">Tore</th><th class="xcol">Diff.</th></tr></thead><tbody>`;
+    d.standings.forEach(r => {
+      const me = isHahnbach(r.name);
+      const zc = zoneOf(parseInt(r.pos, 10) || 0);
+      h += `<tr class="${(me?'hahnbach':'') + (zc?' '+zc:'')}"><td>${esc(r.pos)}</td><td class="tname"><span class="gw">${crest(r.name)}<span class="t" title="${esc(r.name)}">${esc(shortName(r.name))}</span>${me?'<span class="starme">⭐</span>':''}</span></td>
+        <td>${esc(r.sp)}</td><td class="pkt">${esc(r.pkt)}</td>
+        <td class="xcol">${esc(r.g)}-${esc(r.u)}-${esc(r.v)}</td>
+        <td class="xcol">${esc(r.tor)}</td>
+        <td class="xcol">${Number(r.diff)>0?'+':''}${esc(r.diff)}</td></tr>`;
+    });
+    h += `</tbody></table></div>`;
+    if (z.some(x => x > 0)) {
+      const parts = [];
+      if (z[0]) parts.push(`<span class="lg z-A"></span>Aufstieg (${z[0]})`);
+      if (z[1]) parts.push(`<span class="lg z-AR"></span>Relegation Aufstieg (${z[1]})`);
+      if (z[2]) parts.push(`<span class="lg z-NR"></span>Relegation Abstieg (${z[2]})`);
+      if (z[3]) parts.push(`<span class="lg z-N"></span>Abstieg (${z[3]})`);
+      h += `<p class="note zonelegend">${parts.join(' · ')} — Quelle: bfv.de</p>`;
+    }
+    return h;
+  }
+  return `<h3 class="sec">📊 Tabelle</h3><p class="note">Für ${esc(m.liga)} wird beim BFV keine Tabelle geführt (Kinderfestival / Freundschaftsrunde).</p>`;
+}
 function select(team){
   document.querySelectorAll('.tbtn').forEach(b => b.classList.toggle('active', b.dataset.team === team));
   const d = DATA[team];
@@ -604,6 +639,9 @@ function select(team){
   let h = `<div class="team-head">${crest('SV Hahnbach')}<h2>${esc(kurzName(team))}</h2><span class="chip">${esc(m.liga)}</span>`;
   if (m.platz != null) h += `<span class="chip dark">Platz ${m.platz} · ${esc(m.tv)}</span>`;
   h += `</div>`;
+
+  // Tabelle ganz oben bei der Mannschaft
+  h += standingsSection(d, m);
 
   // Formbar: letzte 5 Spiele mit Ergebnis (älteste links, neuestes rechts)
   const formGames = (d.results||[]).filter(g => g.score && !/\D/.test(g.score.replace(':', '')));
@@ -665,40 +703,6 @@ function select(team){
         ${g.venue ? `<div class="ovvenue">📍 ${esc(String(g.venue).split(',')[0])}</div>` : ''}
       </div>`;
     });
-  }
-
-  if (d.standings && d.standings.length) {
-    const z = d.zones || [0,0,0,0];  // [Aufstieg, Aufstiegs-Relegation, Abstiegs-Relegation, Abstieg]
-    const n = d.standings.length;
-    const zoneOf = pos => {
-      if (pos <= z[0]) return 'z-A';
-      if (pos <= z[0] + z[1]) return 'z-AR';
-      if (n - pos < z[3]) return 'z-N';
-      if (n - pos < z[3] + z[2]) return 'z-NR';
-      return '';
-    };
-    h += `<h3 class="sec">📊 Tabelle — ${esc(m.liga)}</h3><div class="tablewrap st">`;
-    h += `<table><thead><tr><th>Pl.</th><th>Team</th><th>Sp.</th><th>Pkt.</th><th class="xcol">S-U-N</th><th class="xcol">Tore</th><th class="xcol">Diff.</th></tr></thead><tbody>`;
-    d.standings.forEach(r => {
-      const me = isHahnbach(r.name);
-      const zc = zoneOf(parseInt(r.pos, 10) || 0);
-      h += `<tr class="${(me?'hahnbach':'') + (zc?' '+zc:'')}"><td>${esc(r.pos)}</td><td class="tname"><span class="gw">${crest(r.name)}<span class="t" title="${esc(r.name)}">${esc(shortName(r.name))}</span>${me?'<span class="starme">⭐</span>':''}</span></td>
-        <td>${esc(r.sp)}</td><td class="pkt">${esc(r.pkt)}</td>
-        <td class="xcol">${esc(r.g)}-${esc(r.u)}-${esc(r.v)}</td>
-        <td class="xcol">${esc(r.tor)}</td>
-        <td class="xcol">${Number(r.diff)>0?'+':''}${esc(r.diff)}</td></tr>`;
-    });
-    h += `</tbody></table></div>`;
-    if (z.some(x => x > 0)) {
-      const parts = [];
-      if (z[0]) parts.push(`<span class="lg z-A"></span>Aufstieg (${z[0]})`);
-      if (z[1]) parts.push(`<span class="lg z-AR"></span>Relegation Aufstieg (${z[1]})`);
-      if (z[2]) parts.push(`<span class="lg z-NR"></span>Relegation Abstieg (${z[2]})`);
-      if (z[3]) parts.push(`<span class="lg z-N"></span>Abstieg (${z[3]})`);
-      h += `<p class="note zonelegend">${parts.join(' · ')} — Quelle: bfv.de</p>`;
-    }
-  } else {
-    h += `<h3 class="sec">📊 Tabelle</h3><p class="note">Für ${esc(m.liga)} wird beim BFV keine Tabelle geführt (Kinderfestival / Freundschaftsrunde).</p>`;
   }
 
   h += pyrBlock(team, m.liga, m.staffel);
