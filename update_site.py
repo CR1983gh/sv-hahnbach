@@ -258,14 +258,49 @@ def parse_zones(staffel):
     return z if any(z) else None
 
 
+TURNIER_KAT_BASE = {
+    "A-Junioren": "U19 (A-Junioren)",
+    "B-Junioren": "U17 (B-Junioren)",
+    "C-Junioren": "U15 (C-Junioren)",
+    "D-Junioren": "U13 (D-Junioren)",
+    "E-Junioren": "U11 (E-Junioren)",
+    "F-Junioren": "U9 (F-Junioren)",
+    "G-Junioren": "U7 (G-Junioren)",
+}
+
+
+def turnier_team_key(t, valid_teams=None):
+    """Team-Key eines Turnierspiels: Basis-Team der Kategorie + II/III-Suffix
+    aus dem Hahnbach-Mannschaftsnamen (z.B. 'SV Hahnbach II' bei F-Junioren
+    -> 'U9 II (F-Junioren)')."""
+    valid = valid_teams or set(STAFFEL)
+    base = TURNIER_KAT_BASE.get(t["kat"])
+    if not base:
+        return None
+    side = t["home"] if "Hahnbach" in t["home"] else (
+        t["away"] if "Hahnbach" in t["away"] else None)
+    if side is None:
+        return None
+    m = re.search(r"\bHahnbach\s+(III|II|I|3|2)\b", side)
+    squad = {"I": 1, "1": 1, "II": 2, "2": 2, "III": 3, "3": 3}[m.group(1)] if m else 1
+    if squad == 1:
+        return base if base in valid else None
+    prefix = base.split(" ")[0]  # z.B. 'U13'
+    for k in sorted(valid):
+        toks = k.split()
+        if k.startswith(prefix) and len(toks) >= 3 and toks[1] in ("II", "2", "III", "3"):
+            ks = 2 if toks[1] in ("II", "2") else 3
+            if ks == squad:
+                return k
+    # Fallback: keine eigene Staffel fuer diese Stufe -> Basis-Team
+    return base if base in valid else None
+
+
 def build_data(today=None):
     today = today or datetime.date.today()
     meta_all = json.load(open("meta.json", encoding="utf-8"))
     data = {}
     # Hallen-/Vereinsturniere aus dem Vereins-Gesamtspielplan (Typ 'HM').
-    # Mapping Kategorie -> Team-Key; erste Stufe: D-Jugend (D1). Weitere
-    # Kategorien hier ergaenzen (z.B. "C-Junioren": "U15 (C-Junioren)").
-    turnier_teams = {"D-Junioren": "U13 (D-Junioren)"}
     turniere = []
     try:
         turniere = parse_turniere(
@@ -273,14 +308,31 @@ def build_data(today=None):
         )
     except Exception as e:  # noqa: BLE001
         print(f"WARNING: Vereinsspielplan/Turniere nicht abrufbar: {e}", file=sys.stderr)
+
     for team, staffel in STAFFEL.items():
         meta = meta_all[team]
         meta = dict(meta)
         meta["staffel"] = staffel
         # Liga-Link primaer vom BFV (exakte Staffel), FuPa nur Fallback ohne Staffel-ID
         meta["liga_bfv"] = f"https://www.bfv.de/ergebnisse/wettbewerb/-/{staffel}" if staffel else ""
+        def _turnier_games():
+            return [
+                dict(
+                    no="TU",
+                    date=t["date"],
+                    time=t["time"],
+                    home=t["home"],
+                    away=t["away"],
+                    score="",
+                    venue=t["venue"],
+                    turnier=t["tname"] or "Hallenturnier",
+                )
+                for t in turniere
+                if turnier_team_key(t) == team and _d(t["date"]) >= today
+            ]
+
         if staffel is None:
-            data[team] = dict(meta=meta, games=[], results=[], standings=[])
+            data[team] = dict(meta=meta, games=_turnier_games(), results=[], standings=[])
             continue
         games = parse_spielplan(
             pdf_text(fetch(f"{BASE}/Spielplan?staffel={staffel}&id={CLUB_ID}"))
@@ -311,30 +363,17 @@ def build_data(today=None):
             if not dup:
                 upcoming.append(g)
         # Hallen-/Vereinsturnier-Spiele fuer dieses Team mergen (mit venue+turnier-Feld)
-        for t in turniere:
-            if turnier_teams.get(t["kat"]) != team or _d(t["date"]) < today:
-                continue
+        for g in _turnier_games():
             dup = any(
-                o["date"] == t["date"]
+                o["date"] == g["date"]
                 and (
-                    (_norm(o["home"]), _norm(o["away"])) == (_norm(t["home"]), _norm(t["away"]))
-                    or (_norm(o["home"]) in _norm(t["away"]) and _norm(t["home"]) in _norm(o["away"]))
+                    (_norm(o["home"]), _norm(o["away"])) == (_norm(g["home"]), _norm(g["away"]))
+                    or (_norm(o["home"]) in _norm(g["away"]) and _norm(g["home"]) in _norm(o["away"]))
                 )
                 for o in upcoming
             )
             if not dup:
-                upcoming.append(
-                    dict(
-                        no="TU",
-                        date=t["date"],
-                        time=t["time"],
-                        home=t["home"],
-                        away=t["away"],
-                        score="",
-                        venue=t["venue"],
-                        turnier=t["tname"] or "Hallenturnier",
-                    )
-                )
+                upcoming.append(g)
         upcoming.sort(key=lambda g: (_d(g["date"]), g["time"]))
         upcoming = upcoming[:6]
         standings = parse_tabelle(
