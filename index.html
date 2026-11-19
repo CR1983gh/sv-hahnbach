@@ -181,7 +181,7 @@
   .ovchip{background:var(--gelb);color:var(--schwarz);border-radius:999px;padding:.1rem .5rem;font-size:.62rem;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
   .pospill{display:inline-block;border-radius:999px;padding:.12rem .55rem;font-size:.72rem;font-weight:800;white-space:nowrap}
   .ovlegend{display:flex;align-items:center;gap:.4rem;font-size:.62rem;color:var(--grau);font-weight:700;margin:.1rem 0 .5rem .1rem}
-  .ovlegend-bar{display:inline-block;width:6rem;height:.55rem;border-radius:999px;background:linear-gradient(90deg,hsl(150,88%,45%),hsl(112,88%,48%),hsl(75,90%,45%),hsl(38,92%,50%),hsl(15,92%,48%),hsl(0,90%,48%))}
+  .ovlegend-bar{display:inline-block;width:6rem;height:.55rem;border-radius:999px;background:linear-gradient(90deg,hsl(150,88%,42%),hsl(107,88%,46%),hsl(70,90%,45%),hsl(38,92%,50%),hsl(13,92%,48%),hsl(0,90%,48%))}
   .ovlegend-lbl{white-space:nowrap}
   .ovchip.dark{background:var(--schwarz);color:var(--gelb)}
   .ovrow{display:flex;align-items:center;gap:.35rem;min-width:0;margin-top:.15rem}
@@ -811,10 +811,10 @@ function ovResultsBlock(){
 }
 
 function posColor(pos, total){
-  // Knalliger Farbgradient: Platz 1 = Gruen (hue 150), letzter Platz = Rot (hue 0)
-  // Hohe Saettigung + dunkle Randlinie -> deutlichere Stufen pro Rang
+  // Farbgradient mit Power-Kurve: Gruenzone komprimiert, Mittelfeld gespreizt
+  // (grelbes Gelb/Orange statt Gelbgruen), Ende klar Rot.
   const t = total > 1 ? Math.min(1, Math.max(0, (pos - 1) / (total - 1))) : 0;
-  const hue = Math.round(150 - 150 * t);
+  const hue = Math.round(150 * Math.pow(1 - t, 1.5));
   return { bg: `hsl(${hue}, 88%, 52%)`, fg: `hsl(${hue}, 95%, 12%)`, bd: `hsl(${hue}, 90%, 34%)` };
 }
 function ovTableBlock(){
