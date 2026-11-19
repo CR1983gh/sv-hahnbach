@@ -337,6 +337,12 @@
   [data-style="zeilen"] tr.pyr-hdr td{background:transparent;letter-spacing:1px}
   [data-style="zeilen"] .ovgame{padding-left:0;padding-right:0}
   [data-style="zeilen"] .fchip{border:1px solid currentColor}
+  /* Ergebnis-Zeilen komplett eingefaerbt: Sieg/Unentschieden/Niederlage/Absage */
+  .ovgame.res-S{background:color-mix(in srgb, var(--gruen) 16%, var(--card));border-left:4px solid var(--gruen)}
+  .ovgame.res-U{background:color-mix(in srgb, #e08a00 16%, var(--card));border-left:4px solid #e08a00}
+  .ovgame.res-N{background:color-mix(in srgb, var(--rot) 16%, var(--card));border-left:4px solid var(--rot)}
+  .ovgame.res-A{background:color-mix(in srgb, #6b6b6b 12%, var(--card));border-left:4px solid #6b6b6b;opacity:.85}
+  [data-style="zeilen"] .ovgame.res-S,[data-style="zeilen"] .ovgame.res-U,[data-style="zeilen"] .ovgame.res-N,[data-style="zeilen"] .ovgame.res-A{padding-left:.5rem;padding-right:.5rem;border-radius:var(--r-row)}
 </style>
 </head>
 <body>
@@ -694,10 +700,11 @@ function select(team){
         h += `<div class="ovday">${esc(weekday(g.date))}., ${esc(g.date.slice(0, 5))}.</div>`;
       }
       const isAbsage = /ausgefallen|abgesagt/i.test(g.score || '');
+      const rcls = isAbsage ? 'A' : (g.score ? resultClass(g) : '');
       const mid = isAbsage
         ? `<span class="score sc-A">ABGESAGT</span>`
         : (g.score ? `<span class="score sc-${resultClass(g)}">${esc(g.score)}</span>` : `<span style="color:var(--grau);flex:none">–</span>`);
-      h += `<div class="ovgame">
+      h += `<div class="ovgame${rcls ? ' res-' + rcls : ''}">
         <div class="ovwhen">${esc(g.date.slice(0, 5))}</div>
         <div class="ovmatch">${ovMatchHtml(g)}${mid}</div>
         ${g.venue ? `<div class="ovvenue">📍 ${esc(String(g.venue).split(',')[0])}</div>` : ''}
@@ -806,7 +813,7 @@ function ovResultsBlock(){
       h += `<div class="ovday">${esc(weekday(g.date))}., ${esc(g.date.slice(0, 5))}.</div>`;
     }
     const cls = resultClass(g);
-    h += `<div class="ovgame">
+    h += `<div class="ovgame res-${cls}">
       <div class="ovwhen">${esc(g.date.slice(0, 5))}</div>
       <div class="ovmatch">${ovMatchHtml(g)}<span class="score sc-${cls}">${esc(g.score)}</span></div>
       ${ovTeamChip(team)}
